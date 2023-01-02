@@ -24,51 +24,51 @@ function App() {
       </header>
       <hr></hr>
       <div id="container">
-        <img id="image" src={logo1}></img>
-        <div id="text-">
-          <i className="fa-solid fa-triangle"></i>
+        <img id="image" src={logo1} alt="logo1"></img>
+        <div id="text-container">
+     
           <h1>55</h1>
           <p>Haught or Naught</p>
           <p>High-minded or absent-minded?You decide.</p>
           <div id='profile'>
             <p>Submitted by: </p>
-            <img id="profile-img" src="http://qnimate.com/wp-content/uploads/2014/03/images2.jpg"></img>
+            <img id="profile-img" src="http://qnimate.com/wp-content/uploads/2014/03/images2.jpg" alt='profile'></img>
           </div>
         </div>
       </div>
       <div id="container">
-        <img id="image" src={logo2}></img>
+        <img id="image" src={logo2} alt="logo2" ></img>
         <div id="text-container">
           <h1>55</h1>
           <p>Haught or Naught</p>
           <p>High-minded or absent-minded?You decide.</p>
           <div id='profile'>
             <p>Submitted by: </p>
-            <img id="profile-img" src="http://qnimate.com/wp-content/uploads/2014/03/images2.jpg"></img>
+            <img id="profile-img" src="http://qnimate.com/wp-content/uploads/2014/03/images2.jpg" alt='profile'></img>
           </div>
         </div>
       </div>
       <div id="container">
-        <img id="image" src={logo3}></img>
+        <img id="image" src={logo3} alt="logo3"></img>
         <div id="text-container">
           <h1>55</h1>
           <p>Haught or Naught</p>
           <p>High-minded or absent-minded?You decide.</p>
           <div id='profile'>
             <p>Submitted by: </p>
-            <img id="profile-img" src="http://qnimate.com/wp-content/uploads/2014/03/images2.jpg"></img>
+            <img id="profile-img" src="http://qnimate.com/wp-content/uploads/2014/03/images2.jpg" alt='profile'></img>
           </div>
         </div>
       </div>
       <div id="container">
-        <img id="image" src={logo4}></img>
+        <img id="image" src={logo4} alt="logo4"></img>
         <div id="text-container">
           <h1>55</h1>
           <p>Haught or Naught</p>
           <p>High-minded or absent-minded?You decide.</p>
           <div id='profile'>
             <p>Submitted by: </p>
-            <img id="profile-img" src="http://qnimate.com/wp-content/uploads/2014/03/images2.jpg"></img>
+            <img id="profile-img" src="http://qnimate.com/wp-content/uploads/2014/03/images2.jpg" alt='profile'></img>
           </div>
         </div>
       </div>
