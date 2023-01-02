@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React-day-01</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <h1>Day-33</h1>
+
+    <div id="root1"></div>
+    <div id="root2"></div>
+    <div id="root3"></div>
+    <div id="root4"></div>
+    <div id="root5"></div>
+    <script type="text/babel">
+        // React code will go here
+        function Hello() {
+            return <h2> Hello React</h2>
+        }
+        ReactDOM.render(<Hello />, document.getElementById("root1"))
+
+        function CreateText() {
+            return <p>My name is Jaya</p>
+        }
+        ReactDOM.render(<CreateText />, document.getElementById("root2"))
+
+        function Image() {
+            return <img src="../img/detroit.png" alt=""></img>
+        }
+        ReactDOM.render(<Image />, document.getElementById("root3"))
+        
+        function Input(){
+            return <input placeholder="hha"></input>
+        }
+        ReactDOM.render(<Input />, document.getElementById("root4"))
+
+        function Select(){
+            return <select><option>jaya</option><option>puntsag</option></select>
+        }
+        ReactDOM.render(<Select />, document.getElementById("root5"))
+    </script>
+
+
+
+
+
+    <script crossorigin="" src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin="" src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+</body>
+
+</html>
