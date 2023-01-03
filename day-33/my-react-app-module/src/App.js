@@ -1,77 +1,35 @@
-import logo1 from './img/image-yellow.png';
-import logo2 from './img/image-aqua.png';
-import logo3 from './img/image-steel.png';
-import logo4 from './img/image-rose.png';
+// import logo1 from './img/image-yellow.png';
+// import logo2 from './img/image-aqua.png';
+// import logo3 from './img/image-steel.png';
+// import logo4 from './img/image-rose.png';
 import './App.css';
+import 'bootstrap-icons/font/bootstrap-icons.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'fontawesome/index'
+import Product1 from './Product1';
+import Product2 from './Product2';
+import Product3 from './Product3';
+import Product4 from './Product4';
+import ProductFunc from './ProductFunc';
+import ProductFunc2 from './ProductFunc2';
+import ProductFunc3 from './ProductFunc3';
+import ProductFunc4 from './ProductFunc4';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        {/* <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          E\dit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a> */}
-        <h1>Popular products</h1>
+        <h1 className="w-100">Popular products</h1>
       </header>
       <hr></hr>
-      <div id="container">
-        <img id="image" src={logo1} alt="logo1"></img>
-        <div id="text-container">
-     
-          <h1>55</h1>
-          <p>Haught or Naught</p>
-          <p>High-minded or absent-minded?You decide.</p>
-          <div id='profile'>
-            <p>Submitted by: </p>
-            <img id="profile-img" src="http://qnimate.com/wp-content/uploads/2014/03/images2.jpg" alt='profile'></img>
-          </div>
-        </div>
-      </div>
-      <div id="container">
-        <img id="image" src={logo2} alt="logo2" ></img>
-        <div id="text-container">
-          <h1>55</h1>
-          <p>Haught or Naught</p>
-          <p>High-minded or absent-minded?You decide.</p>
-          <div id='profile'>
-            <p>Submitted by: </p>
-            <img id="profile-img" src="http://qnimate.com/wp-content/uploads/2014/03/images2.jpg" alt='profile'></img>
-          </div>
-        </div>
-      </div>
-      <div id="container">
-        <img id="image" src={logo3} alt="logo3"></img>
-        <div id="text-container">
-          <h1>55</h1>
-          <p>Haught or Naught</p>
-          <p>High-minded or absent-minded?You decide.</p>
-          <div id='profile'>
-            <p>Submitted by: </p>
-            <img id="profile-img" src="http://qnimate.com/wp-content/uploads/2014/03/images2.jpg" alt='profile'></img>
-          </div>
-        </div>
-      </div>
-      <div id="container">
-        <img id="image" src={logo4} alt="logo4"></img>
-        <div id="text-container">
-          <h1>55</h1>
-          <p>Haught or Naught</p>
-          <p>High-minded or absent-minded?You decide.</p>
-          <div id='profile'>
-            <p>Submitted by: </p>
-            <img id="profile-img" src="http://qnimate.com/wp-content/uploads/2014/03/images2.jpg" alt='profile'></img>
-          </div>
-        </div>
-      </div>
+      <Product1 />
+      <Product2 />
+      <Product3 />
+      <Product4 />
+      <ProductFunc />
+      <ProductFunc2 />
+      <ProductFunc3 />
+      <ProductFunc4/>
     </div>
   );
 }
