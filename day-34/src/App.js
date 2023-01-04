@@ -3,31 +3,30 @@ import './App.css';
 import HelloWorld from './HelloWorld'
 
 function App() {
-//   function formatName(user) {
-//     return user.firstName + ' ' + user.lastName;
-//   }
+  // function formatName() {
+  //   return "jaya"
+  // }
 
-//   const user = {
-//     firstName: 'Harper',
-//     lastName: 'Perez'
-//   };
-  const customStyle = {
-    color: "#2ecc71",
-    fontSize: "26px",
-    };
+  // const user = {
+  //   firstName: 'Harper',
+  //   lastName: 'Perez'
+  // };
+  // const customStyle = {
+  //   color: "#2ecc71",
+  //   fontSize: "26px",
+  //   };
   // const element = (
   //   <h1>
-  //     Hello, {formatName(user)}!
+  //     Hello, {formatName()}!
   //   </h1>
   // )
-  const element = (<h1 style={customStyle}>Hello, Teacher</h1>)
-const secondElement = (<p className="my-text">My Next Text</p>)
+  // const secondElement = (<h1 style={customStyle}>Hello, Teacher</h1>)
+// const secondElement = (<p className="my-text">My Next Text</p>)
   return (
-    <div>
-    {element}
-    {secondElement}
+    
+   
     <HelloWorld />
-    </div>
+    
   );
 }
 
