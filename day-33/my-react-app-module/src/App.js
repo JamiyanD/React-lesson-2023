@@ -30,33 +30,16 @@ function App() {
     productImageUrl={product.productImageUrl}
      />
   })
-  // const productList2 = products.map((product) =>{
-  //   return <Product1 
-  //   id={product.id}
-  //   title={product.title} 
-  //   description={product.description}
-  //   url={product.url}
-  //   votes={product.votes}
-  //   submitterAvatarUrl={product.submitterAvatarUrl}
-  //   productImageUrl={product.productImageUrl}
-  //    />
-  // })
+
   return (
     <div className="App">
       <header className="App-header">
         <h1 className="w-100">Popular products</h1>
       </header>
       <hr></hr>
-      {/* <Product1 /> */}
-      {/* <Product2 />
-      <Product3 />
-      <Product4 /> */}
-      {/* <ProductFunc /> */}
-      {/* <ProductFunc2 />
-      <ProductFunc3 />
-      <ProductFunc4/> */}
+    
       {productList}
-      {/* {productList2} */}
+   
     </div>
   );
 }
