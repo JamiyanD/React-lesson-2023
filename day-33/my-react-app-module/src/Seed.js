@@ -12,6 +12,7 @@ function generateVoteCount() {
       votes: generateVoteCount(),
       submitterAvatarUrl: 'images/daniel.jpg',
       productImageUrl: 'images/image-aqua.png',
+      stars:1
     },
     {
       id: 2,
@@ -21,6 +22,7 @@ function generateVoteCount() {
       votes: generateVoteCount(),
       submitterAvatarUrl: 'images/kristy.png',
       productImageUrl: 'images/image-rose.png',
+      stars:2
     },
     {
       id: 3,
@@ -30,6 +32,7 @@ function generateVoteCount() {
       votes: generateVoteCount(),
       submitterAvatarUrl: 'images/veronika.jpg',
       productImageUrl: 'images/image-steel.png',
+      stars:4
     },
     {
       id: 4,
@@ -39,6 +42,7 @@ function generateVoteCount() {
       votes: generateVoteCount(),
       submitterAvatarUrl: 'images/molly.png',
       productImageUrl: 'images/image-yellow.png',
+      stars:3
     },
    ];
    

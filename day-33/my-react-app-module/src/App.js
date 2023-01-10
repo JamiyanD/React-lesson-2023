@@ -21,13 +21,13 @@ function App() {
   const productList = products.map((product) => {
     
     return <ProductFunc 
-   
+   id={product.id}
     title={product.title} 
     description={product.description}
-    
     votes={product.votes}
     submitterAvatarUrl={product.submitterAvatarUrl}
     productImageUrl={product.productImageUrl}
+    stars={product.stars}
      />
   })
 
