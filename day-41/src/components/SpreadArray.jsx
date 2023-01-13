@@ -14,6 +14,7 @@ export default function List() {
                 onClick={() => {
                     setName('');
                     setBooks([...books,{ id: nextId++, name: name }]);
+                    console.log(books)
                 }}
                 >
                     Add

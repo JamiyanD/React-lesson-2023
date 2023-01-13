@@ -29,7 +29,8 @@ function App() {
       <UpdateArrays />
       <List />
       <UpdatingObjects /> */}
-      <Exercises />
+      {/* <Exercises /> */}
+      <SpreadArray />
     </div>
   );
 }
