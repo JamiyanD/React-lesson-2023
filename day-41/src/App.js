@@ -6,7 +6,7 @@ import UpdateArrays from './components/UpdateArrays';
 import SpreadArray from './components/SpreadArray';
 import List from './components/SpreadArray';
 import UpdatingObjects from './components/UpdatingObjects';
-import Exercises from './components/Exercises';
+
 function App() {
   const [counter, setCounter] = useState(0)
   const [inputText, setInputText] = useState('hha')
