@@ -9,7 +9,7 @@ import { useState } from 'react';
 function App() {
   const [productList, setProductList] = useState(products) // useState deere products avj baiga uchir ProductList n adilhan array bolj baiga
 
-  function handleProductUpVote(productId){
+  function onVote(productId){
     console.log('upvoted',productId)
   
         const newProducts = productList.map(product => {
@@ -37,7 +37,8 @@ function App() {
     submitterAvatarUrl={product.submitterAvatarUrl}
     productImageUrl={product.productImageUrl}
     stars={product.stars}
-    onVote={handleProductUpVote}
+    onVote={onVote}
+    product={product}
      />
   )
 
