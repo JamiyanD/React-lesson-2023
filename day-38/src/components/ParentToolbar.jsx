@@ -7,7 +7,7 @@ export default function ParentToolbar(){
             alert("You clicked on the toolbar!")
         }}>
             <button onClick={(e) => {
-                e.stopPropagation()
+               
                 alert("Playing!")}}>Play Movie</button>
             <button onClick={(element) => {
                 element.stopPropagation()

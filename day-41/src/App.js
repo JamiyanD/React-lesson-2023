@@ -11,25 +11,25 @@ function App() {
   const [counter, setCounter] = useState(0)
   const [inputText, setInputText] = useState('hha')
   function handleInput(event){
-    return(
+  
     setInputText(event.target.value)
-    )}
+    }
   return (
     <div className="App">
-      {/* <p>{counter}</p>
+      <p>{counter}</p>
       <button onClick={() => {
         setCounter(counter + 1)
       }} >hhe</button>
       
-      <input className='' value={inputText}  onChange={(e) => {
+      <input className=''   onChange={(e) => {
         handleInput(e) // arrow function dotor deerh functionig duudaj baiga gsn ug
       }}></input>
-      <p>{inputText}</p> */}
-      {/* <Counter />
+      <p>{inputText}</p>
+      <Counter />
       <UpdateArrays />
       <List />
-      <UpdatingObjects /> */}
-      {/* <Exercises /> */}
+      <UpdatingObjects />
+      
       <SpreadArray />
     </div>
   );
