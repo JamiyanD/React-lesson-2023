@@ -7,12 +7,14 @@ export default function Movies(){
     return (
         <div>
             <h1>Movies</h1>
+            <Link to={'/'}>Home</Link>
             {
                 movieData.map((data, index) => {
                     return(
                         <Link to={`/movie/${data.id}`} key={index} state={data} >
                         <div  >{data.name}</div>
                         </Link>
+                        
                     )
                 })
             }
