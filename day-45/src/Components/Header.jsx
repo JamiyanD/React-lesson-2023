@@ -33,6 +33,15 @@ export default function Header() {
         >
           Accordion
         </Link>
+        <Link
+          to="/navigate"
+          className={activeIndex === 2 ? "active" : ""}
+          onClick={() => {
+            setActiveIndex(2);
+          }}
+        >
+          Navigate
+        </Link>
       </nav>
     </div>
   );

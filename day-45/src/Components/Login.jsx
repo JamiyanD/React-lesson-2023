@@ -17,7 +17,7 @@ export default function Login() {
       user.password === e.target.password.value
     ) {
       toast("permitted");
-      navigate("/", { replace: true, state: { bookName: "Fake Title" } });
+      navigate(-1, { state: { bookName: "Fake Title" } });
     } else {
       toast("not permitted");
       navigate("/register", {
@@ -26,6 +26,7 @@ export default function Login() {
       });
     }
   };
+
   return (
     <div>
       <Header />
