@@ -7,9 +7,9 @@ export default function TimerDashboard() {
   const [timers, setTimers] = useState([]);
   const [runningTime, setRunningTime] = useState(0);
 
-  useEffect(() => {
-    setTimers(timerData);
-  }, [timers]);
+  // useEffect(() => {
+  //   setTimers(timerData);
+  // }, [timers]);
 
   return (
     <div>
