@@ -10,7 +10,7 @@ export default function Button() {
     } else {
       console.log("It is not playing");
     }
-  }, [isPlaying]);
+  }, []);
 
   function handleClick() {
     console.log("You clicked me");

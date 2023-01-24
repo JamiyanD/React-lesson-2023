@@ -5,7 +5,7 @@ export default function Anime() {
 
   useEffect(() => {
     console.log("My anime Component");
-  }, []); // infinite loop ig boliuldag
+  }); // infinite loop ig boliuldag
 
   function handleClick(e) {
     console.log(e);

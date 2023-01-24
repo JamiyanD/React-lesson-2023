@@ -16,11 +16,11 @@ function App() {
     <div className="App">
       {/* <Input label='first input' handleInput={handleInput} inputText={inputText} />
       <Input label='second input' handleInput={handleInput} inputText={inputText} /> */}
-    {/* <Anime /> */}
-    {/* <Button />
-    <TopAnime /> */}
+    <Anime />
+    <Button />
+    {/* <TopAnime /> */}
     {/* <Exercises /> */}
-    <Pascal />
+    {/* <Pascal /> */}
     </div>
   );
 }
