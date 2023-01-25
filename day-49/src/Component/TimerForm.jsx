@@ -16,12 +16,10 @@ export default function TimerForm({
   const submitText = id ? "Update" : "Create  ";
 
   function handleTitleChange(e) {
-    console.log(e.target.value);
     setTimer({ ...timer, title: e.target.value });
   }
 
   function handleProjectChange(e) {
-    console.log(e.target.value);
     setTimer({ ...timer, project: e.target.value });
   }
   return (

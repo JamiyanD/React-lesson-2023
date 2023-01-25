@@ -7,20 +7,19 @@ import EditableTimerList from "./EditableTimerList";
 import ToggleableTimerForm from "./ToggleableTimerForm";
 import { newTimer } from "./Helpers";
 export default function TimerDashboard() {
-  const [timers, setTimers] = useState({ timers: [] });
+  const [timers, setTimers] = useState({ ob: [] });
 
   useEffect(() => {
-    setInterval(() => setTimers({ timers: timerData }), 1000);
+    setInterval(() => setTimers({ ob: timerData }), 1000);
   }, []);
-
+  // console.log(timers.ob);
   function handleEditFormSubmit(timer) {
     updateTimer(timer);
-    console.log("fsf");
   }
 
   function updateTimer(attributes) {
     setTimers({
-      timers: timers.timers.map((timer) => {
+      timers: timers.ob.map((timer) => {
         if (timer.id === attributes.id) {
           timer.title = attributes.title;
           timer.project = attributes.project;
@@ -37,13 +36,14 @@ export default function TimerDashboard() {
   function stopTimer(timerId) {
     const now = Date.now();
     setTimers({
-      timers: timers.timers.map((timer) => {
-        if (timer.id === timerId) {
-          const lastElapsed = now - timer.runningSince;
-          timer.elapsed = timer.elapsed + lastElapsed;
-          timer.runningSince = null;
+      ob: timers.ob.map((par) => {
+        console.log(par.elapsed);
+        if (par.id === timerId) {
+          const lastElapsed = now - par.runningSince;
+          par.elapsed = par.elapsed + lastElapsed;
+          par.runningSince = null;
         }
-        return timer;
+        return par;
       }),
     });
   }
@@ -54,18 +54,16 @@ export default function TimerDashboard() {
   function startTimer(timerId) {
     const now = Date.now();
     setTimers({
-      timers: timers.timers.map((timer) => {
-        console.log(timer.runningSince);
-        if (timer.id === timerId) {
-          timer.runningSince = now;
-
-          return timer;
+      ob: timers.ob.map((par) => {
+        console.log(par.elapsed);
+        if (par.id === timerId) {
+          par.runningSince = now;
+          return par;
         } else {
-          return timer;
+          return par;
         }
       }),
     });
-    console.log(now);
   }
 
   function handleTrashClick(timerId) {
@@ -73,7 +71,7 @@ export default function TimerDashboard() {
   }
 
   function deleteTimer(timerId) {
-    setTimers({ timers: timers.timers.filter((t) => (t.id = !timerId)) });
+    setTimers({ ob: timers.ob.filter((par) => (par.id = !timerId)) });
   }
 
   function handleCreateFormSubmit(timer) {
@@ -82,23 +80,23 @@ export default function TimerDashboard() {
   function createTimer(timer) {
     const t = newTimer(timer);
     setTimers({
-      timers: timers.timers.concat(t),
+      timers: timers.ob.concat(t),
     });
   }
 
   return (
     <div>
       <h1>Timers</h1>
-      {timers.timers && (
+      {timers.ob && (
         <div>
           <EditableTimerList
-            timers={timers.timers}
+            timers={timers.ob}
             onTrashClick={handleTrashClick}
             onStartClick={handleStartClick}
             onStopClick={handleStopClick}
             onFormSubmit={handleEditFormSubmit}
           />
-          {/* <ToggleableTimerForm onFormSubmit={handleCreateFormSubmit} /> */}
+          <ToggleableTimerForm onFormSubmit={handleCreateFormSubmit} />
         </div>
       )}
     </div>

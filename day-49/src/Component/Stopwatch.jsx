@@ -2,10 +2,9 @@ import React, { useState, useRef } from "react";
 import { useEffect } from "react";
 
 const Stopwatch = () => {
-  const [timer, setTimer] = useState(3595);
-  const countRef = useRef(null);
-  const [now, setNow] = useState(true);
-  const [ex, setEx] = useState(0);
+  const [timer, setTimer] = useState(0);
+  const [now, setNow] = useState(false);
+  const [intervalId, setIntervalId] = useState(null);
 
   const formatTime = () => {
     const getSeconds = `0${timer % 60}`.slice(-2);
@@ -14,38 +13,21 @@ const Stopwatch = () => {
     const getHours = `0${Math.floor(timer / 3600)}`.slice(-2);
     return `${getHours} : ${getMinutes} : ${getSeconds}`;
   };
-  //
-  //
-  //
-  //
-  //
 
-  const handleStart = () => {
-    // countRef.current = setInterval(() => {
-    //   setTimer((timer) => timer + 1);
-    // }, 1000);
-  };
   useEffect(() => {
     console.log("gadna");
-    if (!now) {
-      console.log("dotor");
-      setEx(ex + 1);
-      console.log(ex);
+    if (now) {
+      const id = setInterval(() => {
+        setTimer((timer) => timer + 1);
+      }, 1000);
+      setIntervalId(id);
+    } else {
+      clearInterval(intervalId);
     }
   }, [now]);
 
-  const handlePause = () => {
-    clearInterval(countRef.current);
-  };
-
-  const handleResume = () => {
-    countRef.current = setInterval(() => {
-      setTimer((timer) => timer + 1);
-    }, 1000);
-  };
-
   const handleReset = () => {
-    clearInterval(countRef.current);
+    clearInterval(intervalId);
     setTimer(0);
   };
 
@@ -53,18 +35,22 @@ const Stopwatch = () => {
     <div className="app">
       <h3>React Stopwatch</h3>
       <div className="stopwatch-card">
-        <p>{formatTime()}</p> {/* here we will show timer */}
+        <p>{formatTime()}</p>
         <div className="buttons">
           <button
             onClick={() => {
-              handleStart();
-              setNow(false);
+              setNow(true);
             }}
           >
             Start
           </button>
-          <button onClick={handlePause}>Pause</button>
-          <button onClick={handleResume}>Resume</button>
+          <button
+            onClick={() => {
+              setNow(false);
+            }}
+          >
+            Pause
+          </button>
           <button onClick={handleReset}>Reset</button>
         </div>
       </div>

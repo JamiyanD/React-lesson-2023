@@ -73,7 +73,7 @@ export default function Timer({
           }}
         >
           <DeleteIcon onClick={handleDelete} />
-          <ModeEditIcon onClick={onEditClick} />
+          <ModeEditIcon onClick={handleEditClick} />
         </Box>
         <TimerActionButton
           isTimerRunning={runningSince}
