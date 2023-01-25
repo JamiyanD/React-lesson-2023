@@ -15,6 +15,7 @@ export default function TimerDashboard() {
 
   function handleEditFormSubmit(timer) {
     updateTimer(timer);
+    console.log("fsf");
   }
 
   function updateTimer(attributes) {
@@ -54,6 +55,7 @@ export default function TimerDashboard() {
     const now = Date.now();
     setTimers({
       timers: timers.timers.map((timer) => {
+        console.log(timer.runningSince);
         if (timer.id === timerId) {
           timer.runningSince = now;
 
@@ -96,7 +98,7 @@ export default function TimerDashboard() {
             onStopClick={handleStopClick}
             onFormSubmit={handleEditFormSubmit}
           />
-          <ToggleableTimerForm onFormSubmit={handleCreateFormSubmit} />
+          {/* <ToggleableTimerForm onFormSubmit={handleCreateFormSubmit} /> */}
         </div>
       )}
     </div>
