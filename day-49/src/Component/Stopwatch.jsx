@@ -1,12 +1,14 @@
 import React, { useState, useRef } from "react";
+import { useEffect } from "react";
 
 const Stopwatch = () => {
   const [timer, setTimer] = useState(3595);
   const countRef = useRef(null);
+  const [now, setNow] = useState(true);
+  const [ex, setEx] = useState(0);
 
   const formatTime = () => {
     const getSeconds = `0${timer % 60}`.slice(-2);
-    console.log(getSeconds);
     const minutes = `${Math.floor(timer / 60)}`;
     const getMinutes = `0${minutes % 60}`.slice(-2);
     const getHours = `0${Math.floor(timer / 3600)}`.slice(-2);
@@ -19,10 +21,18 @@ const Stopwatch = () => {
   //
 
   const handleStart = () => {
-    countRef.current = setInterval(() => {
-      setTimer((timer) => timer + 1);
-    }, 1000);
+    // countRef.current = setInterval(() => {
+    //   setTimer((timer) => timer + 1);
+    // }, 1000);
   };
+  useEffect(() => {
+    console.log("gadna");
+    if (!now) {
+      console.log("dotor");
+      setEx(ex + 1);
+      console.log(ex);
+    }
+  }, [now]);
 
   const handlePause = () => {
     clearInterval(countRef.current);
@@ -45,7 +55,14 @@ const Stopwatch = () => {
       <div className="stopwatch-card">
         <p>{formatTime()}</p> {/* here we will show timer */}
         <div className="buttons">
-          <button onClick={handleStart}>Start</button>
+          <button
+            onClick={() => {
+              handleStart();
+              setNow(false);
+            }}
+          >
+            Start
+          </button>
           <button onClick={handlePause}>Pause</button>
           <button onClick={handleResume}>Resume</button>
           <button onClick={handleReset}>Reset</button>

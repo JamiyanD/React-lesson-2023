@@ -1,6 +1,29 @@
 import { width } from "@mui/system";
 import { Card, Grid, Button, CardContent, TextField } from "@mui/material";
-export default function TimerForm({ title, project }) {
+import { useState } from "react";
+export default function TimerForm({
+  id,
+  title,
+  project,
+  onFormSubmit,
+  onFormClose,
+}) {
+  const [timer, setTimer] = useState({
+    title: title || "",
+    project: project || "",
+  });
+
+  const submitText = id ? "Update" : "Create  ";
+
+  function handleTitleChange(e) {
+    console.log(e.target.value);
+    setTimer({ ...timer, title: e.target.value });
+  }
+
+  function handleProjectChange(e) {
+    console.log(e.target.value);
+    setTimer({ ...timer, project: e.target.value });
+  }
   return (
     <div>
       <h1>Timer Form</h1>
@@ -12,26 +35,38 @@ export default function TimerForm({ title, project }) {
                 <Grid item xs={12}>
                   <TextField
                     type="text"
-                    placeholder={title}
-                    label={title}
+                    placeholder={timer.title}
+                    label={"Title"}
+                    value={timer.title}
                     variant={"outlined"}
                     fullWidth={true}
+                    onChange={handleTitleChange}
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
                     type="text"
-                    placeholder={project}
+                    placeholder={timer.project}
+                    value={timer.project}
                     label={project}
                     variant={"outlined"}
                     fullWidth={true}
+                    onChange={handleProjectChange}
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Button color={"success"} variant={"outlined"}>
-                    Create
+                  <Button
+                    color={"success"}
+                    variant={"outlined"}
+                    onClick={onFormSubmit}
+                  >
+                    {submitText}
                   </Button>
-                  <Button color={"success"} variant={"outlined"}>
+                  <Button
+                    color={"success"}
+                    variant={"outlined"}
+                    onClick={onFormClose}
+                  >
                     Cancel
                   </Button>
                 </Grid>
