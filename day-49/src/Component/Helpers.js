@@ -27,7 +27,7 @@ function pad(numberString, size) {
 }
 
 function newTimer(attrs = {}) {
-  console.log(attrs);
+  
   return {
     title: attrs.title || "Timer",
     project: attrs.project || "Project",

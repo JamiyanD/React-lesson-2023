@@ -10,9 +10,9 @@ export default function TimerDashboard() {
   const [timers, setTimers] = useState({ ob: [] });
 
   useEffect(() => {
-    setInterval(() => setTimers({ ob: timerData }), 1000);
+    setInterval(() => setTimers({ ob: timerData }), 10000);
   }, []);
-  // console.log(timers.ob);
+  console.log(timers.ob);
   function handleEditFormSubmit(timer) {
     updateTimer(timer);
   }
@@ -71,7 +71,7 @@ export default function TimerDashboard() {
   }
 
   function deleteTimer(timerId) {
-    setTimers({ ob: timers.ob.filter((par) => (par.id = !timerId)) });
+    setTimers({ ob: timers.ob.filter((par) => par.id !== timerId) });
   }
 
   function handleCreateFormSubmit(timer) {
@@ -80,8 +80,9 @@ export default function TimerDashboard() {
   function createTimer(timer) {
     const t = newTimer(timer);
     setTimers({
-      timers: timers.ob.concat(t),
+      ob: timers.ob.concat(t),
     });
+    console.log(timer);
   }
 
   return (

@@ -24,6 +24,7 @@ export default function EditableTimer({
   function handleSubmit(timer) {
     onFormSubmit(timer);
     closeForm();
+    console.log(timer);
   }
 
   function closeForm() {

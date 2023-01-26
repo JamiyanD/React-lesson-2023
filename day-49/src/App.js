@@ -6,8 +6,8 @@ function App() {
   return (
     <div className="App">
       <h1>Timer App</h1>
-      <Stopwatch />
-      {/* <TimerDashboard /> */}
+      {/* <Stopwatch /> */}
+      <TimerDashboard />
     </div>
   );
 }
