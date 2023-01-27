@@ -1,4 +1,5 @@
-import Counter from "./Component/Counter";
+import Counter from "./Counter";
+import { useState } from "react";
 export default function Fancy() {
   const [isFancy, setIsFancy] = useState(false);
   return (

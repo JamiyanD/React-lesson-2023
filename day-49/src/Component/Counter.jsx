@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useState } from "react";
 
 export default function Counter({ isFancy, label, setIsFancy }) {
@@ -11,6 +12,15 @@ export default function Counter({ isFancy, label, setIsFancy }) {
   if (isFancy) {
     className += " fancy";
   }
+  function handleClick() {}
+  if (score < 10) {
+    setScore(score + 1);
+  }
+
+  useEffect(() => {
+    handleClick();
+  }, []);
+
   return (
     <div>
       <div
@@ -25,7 +35,7 @@ export default function Counter({ isFancy, label, setIsFancy }) {
         <p> {score}</p>
         <button
           onClick={() => {
-            setScore(score + 1);
+            handleClick();
           }}
         >
           Add one
