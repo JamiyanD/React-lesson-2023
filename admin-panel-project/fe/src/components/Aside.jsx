@@ -21,7 +21,7 @@ export default function Aside() {
 
   return (
     <List
-      sx={{ bgcolor: "background.paper" }}
+      sx={{ bgcolor: "background.paper", marginTop: "70px" }}
       component="nav"
       aria-labelledby="nested-list-subheader"
       subheader={
@@ -30,14 +30,15 @@ export default function Aside() {
         </ListSubheader>
       }
     >
-      <ListItemButton>
-        <ListItemIcon>
-          <SendIcon />
-        </ListItemIcon>
-        <Link to={"/users"} style={{ textDecoration: "none", color: "black" }}>
+      <Link to={"/users"} style={{ textDecoration: "none", color: "black" }}>
+        <ListItemButton>
+          <ListItemIcon>
+            <SendIcon />
+          </ListItemIcon>
+
           <ListItemText primary="User" />
-        </Link>
-      </ListItemButton>
+        </ListItemButton>
+      </Link>
       <ListItemButton>
         <ListItemIcon>
           <DraftsIcon />

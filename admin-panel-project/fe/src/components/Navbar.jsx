@@ -20,11 +20,11 @@ export default function ClippedDrawer() {
   return (
     <AppBar
       position="fixed"
-      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, marginBottom: "50px" }}
+      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
     >
       <Toolbar>
         <Typography variant="h6" noWrap component="div">
-          Clipped drawer
+          React Material Admin Full
         </Typography>
       </Toolbar>
     </AppBar>
