@@ -10,7 +10,6 @@ app.use(express.json());
 
 app.get("/users", (request, response) => {
   const body = request.body;
-  console.log(body);
 
   fs.readFile("./data/users.json", "utf-8", (readError, readData) => {
     // utf-8 n ymr formataar avhig zana
@@ -21,6 +20,7 @@ app.get("/users", (request, response) => {
       });
     }
     const objectData = JSON.parse(readData);
+    console.log(objectData);
     response.json({
       status: "success",
       data: objectData,
@@ -72,6 +72,7 @@ app.post("/users", (request, response) => {
 
 app.delete("/users", (request, response) => {
   const body = request.body;
+  console.log(body);
   fs.readFile("./data/users.json", "utf-8", (readError, readData) => {
     if (readError) {
       response.json({
@@ -81,7 +82,7 @@ app.delete("/users", (request, response) => {
     }
 
     const readObject = JSON.parse(readData);
-
+    console.log(readObject);
     const filteredObject = readObject.filter((o) => o.id !== body.userId);
     fs.writeFile(
       "./data/users.json",
@@ -102,11 +103,37 @@ app.delete("/users", (request, response) => {
   });
 });
 app.put("/users", (request, response) => {
-  const body = request.body;
-  console.log(body);
-  response.json({
-    status: "success",
-    data: [],
+  fs.readFile("./data/users.json", "utf-8", (readError, readData) => {
+    if (readError) {
+      response.json({
+        status: "file read error",
+        data: [],
+      });
+    }
+    const savedData = JSON.parse(readData);
+    const changedData = savedData.map((d) => {
+      if (d.id === request.body.id) {
+        (d.username = request.body.username), (d.age = request.body.age);
+      }
+      return d;
+    });
+
+    fs.writeFile(
+      "./data/users.json",
+      JSON.stringify(changedData),
+      (writeError) => {
+        if (writeError) {
+          response.json({
+            status: "file write error",
+            data: [],
+          });
+        }
+        response.json({
+          status: "success",
+          data: changedData,
+        });
+      }
+    );
   });
 });
 

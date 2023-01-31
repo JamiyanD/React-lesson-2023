@@ -4,6 +4,55 @@ import { useEffect, useState } from "react";
 function App() {
   const URL = "http://localhost:8080/users";
   const [users, setUsers] = useState([]);
+  const [isUpdate, setIsUpdate] = useState(false);
+  const newUser = {
+    id: "",
+    username: "",
+    age: "",
+  };
+  const [currentUser, setCurrentUser] = useState(newUser);
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    if (!isUpdate) {
+      const postData = {
+        username: e.target.username.value,
+        age: e.target.age.value,
+      };
+
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(postData),
+      };
+
+      const FETCHED_DATA = await fetch(URL, options); // hervee options bhq bol default oor get method yvuuldag
+      const FETCHED_JSON = await FETCHED_DATA.json();
+      console.log(FETCHED_JSON);
+      setUsers(FETCHED_JSON.data);
+    } else {
+      const putData = {
+        id: currentUser.id,
+        username: currentUser.username,
+        age: currentUser.age,
+      };
+      const options = {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(putData),
+      };
+      const FETCHED_DATA = await fetch(URL, options); // hervee options bhq bol default oor get method yvuuldag
+      const FETCHED_JSON = await FETCHED_DATA.json();
+      console.log(FETCHED_JSON);
+      setUsers(FETCHED_JSON.data);
+      setIsUpdate(false);
+      // setCurrentUser(newUser);
+    }
+  }
 
   async function fetchAllData() {
     // fetch a data from localhost
@@ -31,40 +80,31 @@ function App() {
     setUsers(FETCHED_JSON.data);
   }
 
-  async function handleUpdate(dataId) {
-    console.log(dataId);
-    const options = {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(dataId),
-    };
-    const FETCHED_DATA = await fetch(URL, options);
-    const FETCHED_JSON = await FETCHED_DATA.json();
-    console.log(FETCHED_JSON);
+  async function handleEdit(userId) {
+    console.log(userId);
+
+    setIsUpdate(true);
+    const filteredUser = users.filter((user) => user.id === userId)[0];
+    console.log(filteredUser);
+    if (filteredUser) {
+      setCurrentUser({
+        ...currentUser,
+        id: filteredUser.id,
+        age: filteredUser.age,
+        username: filteredUser.username,
+      });
+    }
   }
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    const postData = {
-      username: e.target.username.value,
-      age: e.target.age.value,
-    };
-
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(postData),
-    };
-
-    const FETCHED_DATA = await fetch(URL, options); // hervee options bhq bol default oor get method yvuuldag
-    const FETCHED_JSON = await FETCHED_DATA.json();
-    console.log(FETCHED_JSON);
-    setUsers(FETCHED_JSON.data);
+  function handleUserName(e) {
+    setCurrentUser({ ...currentUser, username: e.target.value });
+    console.log(currentUser);
   }
+
+  function handleUserAge(e) {
+    setCurrentUser({ ...currentUser, age: e.target.value });
+  }
+
   return (
     <div className="App">
       <h1>Day-52 - NodeJS FS MOdule</h1>
@@ -72,15 +112,19 @@ function App() {
       <form onSubmit={handleSubmit}>
         <label>
           User Name:
-          <input name="username" />
+          <input
+            name="username"
+            value={currentUser.username}
+            onChange={handleUserName}
+          />
         </label>
         <br />
         <label>
           Age:
-          <input name="age" />
+          <input name="age" value={currentUser.age} onChange={handleUserAge} />
         </label>
         <br />
-        <button> Submit</button>
+        <button>{isUpdate ? "Update" : "Submit"}</button>
       </form>
       <h3>Users List</h3>
       {users &&
@@ -91,7 +135,7 @@ function App() {
                 {user.username} : {user.age}
               </p>{" "}
               <button onClick={() => handleDelete(user.id)}>Delete</button>
-              <button onClick={() => handleUpdate(user.id)}>Update</button>
+              <button onClick={() => handleEdit(user.id)}>Edit</button>
             </div>
           );
         })}
