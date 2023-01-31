@@ -33,13 +33,14 @@ const rows = [
 ];
 export default function UsersTable() {
   return (
-    <div style={{ height: 400, width: "100%" }}>
+    <div style={{ height: "500px", width: "800px" }}>
       <DataGrid
         rows={rows}
         columns={columns}
         pageSize={5}
         rowsPerPageOptions={[5]}
         checkboxSelection
+        sx={{}}
       />
     </div>
   );
