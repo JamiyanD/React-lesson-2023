@@ -23,7 +23,7 @@ function App() {
     imgURL: "",
   });
   const [currentProducts, setCurrentProducts] = useState({
-    image: "",
+    imgURL: "",
     title: "",
     subtitle: "",
     price: "",
@@ -38,10 +38,6 @@ function App() {
 
   return (
     <div className="App">
-      {/* <Navbar /> */}
-
-      {/* <Box style={{ display: "flex" }}>
-        <Aside /> */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route

@@ -49,7 +49,6 @@ export default function NewUser({
         radio: currentUser.radio,
         imgURL: currentUser.imgURL,
       };
-      console.log(putData);
       const options = {
         method: "PUT",
         headers: {

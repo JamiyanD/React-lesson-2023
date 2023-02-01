@@ -34,9 +34,9 @@ app.post("/data", (request, response) => {
     name: request.body.name,
     major: request.body.major,
   };
-  data=[...data,newData];
+  data = [...data, newData];
   response.json(data);
-  console.log(request.body);
+  console.log(data);
 });
 
 app.delete("/data", (request, response) => {
@@ -47,26 +47,23 @@ app.delete("/data", (request, response) => {
 });
 
 app.put("/data", (request, response) => {
-  
-  
-//   const newData = {
-//     id: request.body.id,
-//     name: request.body.name,
-//     major: request.body.major,
-//   };
-  
-// data.splice(request.body.id - 1,1,newData)
+  //   const newData = {
+  //     id: request.body.id,
+  //     name: request.body.name,
+  //     major: request.body.major,
+  //   };
 
-const newData = data.map(d => {
-  if(d.id === request.body.id){
-    d.name = request.body.name,
-    d.major = request.body.major
-  }
-  return d
-})
+  // data.splice(request.body.id - 1,1,newData)
+
+  const newData = data.map((d) => {
+    if (d.id === request.body.id) {
+      (d.name = request.body.name), (d.major = request.body.major);
+    }
+    return d;
+  });
   response.json(data);
-  console.log(request.body)
-})
+  console.log(request.body);
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

@@ -5,7 +5,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/joy/Stack";
 import IconButton from "@mui/material/IconButton";
@@ -20,11 +20,11 @@ export default function NewUser({
   productUpdate,
   setProductUpdate,
 }) {
-  const URL = "http://localhost:8080/newProducts";
+  const url = "http://localhost:8080/newProducts";
+  const [image, setImage] = useState(null);
 
   async function handleSubmit(e) {
     e.preventDefault();
-    console.log(currentProducts);
     if (!productUpdate) {
       const options = {
         method: "POST",
@@ -33,12 +33,13 @@ export default function NewUser({
         },
         body: JSON.stringify(currentProducts),
       };
-      const FETCHED_DATA = await fetch(URL, options); // hervee options bhq bol default oor get method yvuuldag
+      const FETCHED_DATA = await fetch(url, options); // hervee options bhq bol default oor get method yvuuldag
       const FETCHED_JSON = await FETCHED_DATA.json();
-      console.log(FETCHED_JSON);
+      console.log(currentProducts);
     } else {
       const putData = {
-        image: currentProducts.image,
+        id: currentProducts.id,
+        imgURL: currentProducts.imgURL,
         title: currentProducts.title,
         subtitle: currentProducts.subtitle,
         price: currentProducts.price,
@@ -50,7 +51,6 @@ export default function NewUser({
         technology: currentProducts.technology,
         rating: currentProducts.rating,
       };
-      console.log(putData);
       const options = {
         method: "PUT",
         headers: {
@@ -61,15 +61,18 @@ export default function NewUser({
       const FETCHED_DATA = await fetch(URL, options); // hervee options bhq bol default oor get method yvuuldag
       const FETCHED_JSON = await FETCHED_DATA.json();
       console.log(FETCHED_JSON.data);
-
       setProductUpdate(false);
     }
   }
-
+  const [file, setFiles] = useState(null);
+  const inputRef = useRef();
   function handleUpload(e) {
+    setImage(URL.createObjectURL(e.target.files[0]));
+    console.log(e.target.files[0]);
+
     setCurrentProducts({
       ...currentProducts,
-      imgURL: e.target.value,
+      imgURL: URL.createObjectURL(e.target.files[0]),
     });
   }
 
@@ -148,6 +151,7 @@ export default function NewUser({
               <Typography variant="h6" gutterBottom sx={{ width: "190px" }}>
                 Image
               </Typography>
+              <img src={image} alt="" />
               <Button variant="contained" component="label">
                 Upload
                 <input
