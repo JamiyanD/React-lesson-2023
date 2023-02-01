@@ -16,21 +16,39 @@ import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Home from "./Home";
+import Typography from "@mui/material/Typography";
+const productsData = [
+  {
+    id: 1,
+    imgURL: "image",
+    Title: "Boots",
+    Subtitle: "Trainers in Blue",
+    Price: "45",
+    Rating: "4.6",
+    Actions: "",
+  },
+];
 
-export default function Users({ setIsUpdate, currentUser, setCurrentUser }) {
-  const URL = "http://localhost:8080/new";
+export default function Products({
+  currentProducts,
+  setCurrentProducts,
+  productUpdate,
+  setProductUpdate,
+}) {
+  const URL = "http://localhost:8080/newProducts";
   const [users, setUsers] = useState([]);
   async function fetchScreen() {
     const FETCHED_DATA = await fetch(URL);
     const FETCHED_JSON = await FETCHED_DATA.json();
 
     setUsers(FETCHED_JSON.data);
+
     return FETCHED_JSON;
   }
   useEffect(() => {
     fetchScreen();
   }, []);
-
+  console.log(users);
   async function handleDelete(userId) {
     console.log(userId);
     const options = {
@@ -48,23 +66,24 @@ export default function Users({ setIsUpdate, currentUser, setCurrentUser }) {
   }
 
   async function handleEdit(userId) {
-    setIsUpdate(true);
+    setProductUpdate(true);
     const filteredUser = users.filter((user) => user.id === userId)[0];
     console.log(filteredUser);
     if (filteredUser) {
-      setCurrentUser({
-        ...currentUser,
-        id: filteredUser.id,
-        firstname: filteredUser.firstname,
-        lastname: filteredUser.lastname,
-        phoneNumber: filteredUser.phoneNumber,
-        email: filteredUser.email,
-        password: filteredUser.password,
-        checkbox: filteredUser.checkbox,
-        radio: filteredUser.radio,
-        imgURL: filteredUser.imgURL,
+      setCurrentProducts({
+        ...currentProducts,
+        image: filteredUser.image,
+        title: filteredUser.title,
+        subtitle: filteredUser.subtitle,
+        price: filteredUser.price,
+        discount: filteredUser.discount,
+        description1: filteredUser.description1,
+        description2: filteredUser.description2,
+        code: filteredUser.code,
+        hashtag: filteredUser.hashtag,
+        technology: filteredUser.technology,
+        rating: filteredUser.rating,
       });
-      console.log(currentUser);
     }
   }
 
@@ -73,33 +92,34 @@ export default function Users({ setIsUpdate, currentUser, setCurrentUser }) {
       <Home />
       <Box sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
-        <Link to={"/new"}>
+        <Typography variant="h6" sx={{ marginBottom: "10px" }}>
+          Products
+        </Typography>
+        <Link to={"/newProducts"}>
           <Button
             variant="contained"
             sx={{ margin: "10px" }}
-            onClick={() => {
-              setCurrentUser("");
-              setIsUpdate(false);
-            }}
+            onClick={() => {}}
           >
-            New
+            CREATE PRODUCT
           </Button>
         </Link>
-        <Button variant="contained" sx={{ marginLeft: "590px" }}>
-          ADD FILTER
-        </Button>
+        <Typography variant="h6" sx={{ margin: "10px" }}>
+          Products
+        </Typography>
 
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
                 <Checkbox />
-                <TableCell>First Name</TableCell>
-                <TableCell align="right">Last Name</TableCell>
-                <TableCell align="right">Phone Number</TableCell>
-                <TableCell align="center">Email</TableCell>
-                <TableCell align="right">Role</TableCell>
-                <TableCell align="right">Disabled</TableCell>
+                <TableCell>ID</TableCell>
+                <TableCell>Image</TableCell>
+                <TableCell>Title</TableCell>
+                <TableCell>Subtitle</TableCell>
+                <TableCell>Price</TableCell>
+                <TableCell>Rating</TableCell>
+                <TableCell>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -110,15 +130,14 @@ export default function Users({ setIsUpdate, currentUser, setCurrentUser }) {
                 >
                   <Checkbox />
                   <TableCell component="th" scope="row">
-                    {parametr.firstname}
+                    {parametr.id}
                   </TableCell>
-                  <TableCell align="right">{parametr.lastname}</TableCell>
-                  <TableCell align="right">{parametr.phoneNumber}</TableCell>
-                  <TableCell align="right">{parametr.email}</TableCell>
-                  <TableCell align="right">{parametr.radio}</TableCell>
-                  <TableCell align="right">
-                    {parametr.checkbox ? "Yes" : "No"}
-                  </TableCell>
+                  <TableCell>{parametr.image}</TableCell>
+                  <TableCell>{parametr.title}</TableCell>
+                  <TableCell>{parametr.subtitle}</TableCell>
+                  <TableCell>{parametr.price}</TableCell>
+                  <TableCell>{parametr.rating}</TableCell>
+
                   <IconButton
                     aria-label="delete"
                     onClick={() => handleDelete(parametr.id)}
@@ -126,7 +145,7 @@ export default function Users({ setIsUpdate, currentUser, setCurrentUser }) {
                   >
                     <DeleteIcon />
                   </IconButton>
-                  <Link to={"/new"}>
+                  <Link to={"/newProducts"}>
                     <IconButton
                       aria-label="edit"
                       color="primary"

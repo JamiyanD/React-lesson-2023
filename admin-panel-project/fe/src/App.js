@@ -5,8 +5,13 @@ import Navbar from "./components/Navbar";
 import Aside from "./components/Aside";
 import NewUser from "./pages/NewUser";
 import { useState } from "react";
+import Box from "@mui/material/Box";
+import Home from "./pages/Home";
+import Products from "./pages/Products";
+import NewProducts from "./pages/NewProducts";
 function App() {
   const [isUpdate, setIsUpdate] = useState(false);
+  const [productUpdate, setProductUpdate] = useState(false);
   const [currentUser, setCurrentUser] = useState({
     firstname: "",
     lastname: "",
@@ -17,37 +22,74 @@ function App() {
     radio: "",
     imgURL: "",
   });
+  const [currentProducts, setCurrentProducts] = useState({
+    image: "",
+    title: "",
+    subtitle: "",
+    price: "",
+    discount: "",
+    description1: "",
+    description2: "",
+    code: "",
+    hashtag: "",
+    technology: "",
+    rating: "",
+  });
 
   return (
     <div className="App">
-      <Navbar />
-      <div style={{ display: "flex", border: "2px solid black" }}>
-        <Aside />
-        <Routes>
-          <Route
-            path="/users"
-            element={
-              <Users
-                isUpdate={isUpdate}
-                setIsUpdate={setIsUpdate}
-                currentUser={currentUser}
-                setCurrentUser={setCurrentUser}
-              />
-            }
-          />
-          <Route
-            path="/new"
-            element={
-              <NewUser
-                isUpdate={isUpdate}
-                setIsUpdate={setIsUpdate}
-                currentUser={currentUser}
-                setCurrentUser={setCurrentUser}
-              />
-            }
-          />
-        </Routes>
-      </div>
+      {/* <Navbar /> */}
+
+      {/* <Box style={{ display: "flex" }}>
+        <Aside /> */}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route
+          path="/users"
+          element={
+            <Users
+              isUpdate={isUpdate}
+              setIsUpdate={setIsUpdate}
+              currentUser={currentUser}
+              setCurrentUser={setCurrentUser}
+            />
+          }
+        />
+        <Route
+          path="/new"
+          element={
+            <NewUser
+              isUpdate={isUpdate}
+              setIsUpdate={setIsUpdate}
+              currentUser={currentUser}
+              setCurrentUser={setCurrentUser}
+            />
+          }
+        />
+        <Route
+          path="/products"
+          element={
+            <Products
+              currentProducts={currentProducts}
+              setCurrentProducts={setCurrentProducts}
+              productUpdate={productUpdate}
+              setProductUpdate={setProductUpdate}
+            />
+          }
+        />
+        <Route
+          path="/newProducts"
+          element={
+            <NewProducts
+              currentProducts={currentProducts}
+              setCurrentProducts={setCurrentProducts}
+              productUpdate={productUpdate}
+              setProductUpdate={setProductUpdate}
+            />
+          }
+        />
+      </Routes>
+      {/* </Box> */}
     </div>
   );
 }

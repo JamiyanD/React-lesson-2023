@@ -145,6 +145,144 @@ app.put("/new", (request, response) => {
   });
 });
 
+app.post("/newProducts", (request, response) => {
+  const newUser = {
+    id: Date.now(),
+    image: request.body.image,
+    title: request.body.title,
+    subtitle: request.body.subtitle,
+    price: request.body.price,
+    discount: request.body.discount,
+    description1: request.body.description1,
+    description2: request.body.description2,
+    code: request.body.code,
+    hashtag: request.body.hashtag,
+    technology: request.body.technology,
+    rating: request.body.rating,
+  };
+  fs.readFile("./data/products.json", "utf-8", (readError, readData) => {
+    if (readError) {
+      response.json({
+        status: "file does not exist",
+        data: [],
+      });
+    }
+    const dataObject = JSON.parse(readData);
+    dataObject.push(newUser);
+    fs.writeFile(
+      "./data/products.json",
+      JSON.stringify(dataObject),
+      (writeError) => {
+        if (writeError) {
+          response.json({
+            status: `Error during file write`,
+            data: [],
+          });
+        }
+        response.json({
+          status: "success",
+          data: dataObject,
+        });
+      }
+    );
+  });
+});
+
+app.get("/newProducts", (request, response) => {
+  fs.readFile("./data/products.json", "utf-8", (readError, readData) => {
+    // utf-8 n ymr formataar avhig zana
+    if (readError) {
+      response.json({
+        status: "file does not exist",
+        data: [],
+      });
+    }
+    const objectData = JSON.parse(readData);
+    response.json({
+      status: "success",
+      data: objectData,
+    });
+  });
+});
+
+app.delete("/newProducts", (request, response) => {
+  const body = request.body;
+  fs.readFile("./data/products.json", "utf-8", (readError, readData) => {
+    if (readError) {
+      response.json({
+        status: "file reader error",
+        data: [],
+      });
+    }
+
+    const readObject = JSON.parse(readData);
+    const filteredObject = readObject.filter((o) => o.id !== body.userId);
+    fs.writeFile(
+      "./data/products.json",
+      JSON.stringify(filteredObject),
+      (writeError) => {
+        if (writeError) {
+          response.json({
+            status: "write file error",
+            data: [],
+          });
+        }
+        response.json({
+          status: "success",
+          data: filteredObject,
+        });
+      }
+    );
+  });
+});
+
+app.put("/newProducts", (request, response) => {
+  console.log(request.body);
+  fs.readFile("./data/products.json", "utf-8", (readError, readData) => {
+    if (readError) {
+      response.json({
+        status: "file read error",
+        data: [],
+      });
+    }
+    const savedData = JSON.parse(readData);
+    console.log(request.body);
+    const changedData = savedData.map((d) => {
+      if (d.id === request.body.id) {
+        (d.image = request.body.image),
+          (d.title = request.body.title),
+          (d.subtitle = request.body.subtitle),
+          (d.price = request.body.price),
+          (d.discount = request.body.discount),
+          (d.description1 = request.body.description1),
+          (d.description2 = request.body.description2),
+          (d.code = request.body.code);
+        d.hashtag = request.body.hashtag;
+        d.technology = request.body.technology;
+        d.rating = request.body.rating;
+      }
+      return d;
+    });
+
+    fs.writeFile(
+      "./data/products.json",
+      JSON.stringify(changedData),
+      (writeError) => {
+        if (writeError) {
+          response.json({
+            status: "file write error",
+            data: [],
+          });
+        }
+        response.json({
+          status: "success",
+          data: changedData,
+        });
+      }
+    );
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

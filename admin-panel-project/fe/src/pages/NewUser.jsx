@@ -11,6 +11,9 @@ import Stack from "@mui/joy/Stack";
 import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import { Link } from "react-router-dom";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Home from "./Home";
 export default function NewUser({
   isUpdate,
   editUser,
@@ -122,98 +125,104 @@ export default function NewUser({
     });
   }
   return (
-    <form onSubmit={handleSubmit} style={{ marginTop: "70px" }}>
-      <Stack spacing={2} sx={{ width: "800px" }}>
-        <Typography variant="h5" sx={{ color: "#9e9e9e" }}>
-          Add Users
-        </Typography>
-        <TextField
-          value={currentUser.firstname}
-          name="firstname"
-          onChange={handleFirstName}
-          label="First Name"
-        />
-        <TextField
-          value={currentUser.lastname}
-          name="lastname"
-          label="Last Name"
-          onChange={handleLastName}
-        />
-        <TextField
-          label="Phone Number"
-          value={currentUser.phoneNumber}
-          name="phoneNumber"
-          onChange={handlePhoneNumber}
-        />
-        <TextField
-          label="Email"
-          value={currentUser.email}
-          name="email"
-          onChange={handleEmail}
-        />
-        <div>
-          <Typography sx={{ color: "#9e9e9e" }}>Role</Typography>
-          <RadioGroup row>
-            <FormControlLabel
-              onChange={handleRadioAdmin}
-              value="Admin"
-              control={<Radio />}
-              label="Admin"
+    <Box sx={{ display: "flex" }}>
+      <Home />
+      <Box sx={{ flexGrow: 1, p: 3 }}>
+        <Toolbar />
+        <form onSubmit={handleSubmit} style={{ marginTop: "70px" }}>
+          <Stack spacing={2} sx={{ width: "800px" }}>
+            <Typography variant="h5" sx={{ color: "#9e9e9e" }}>
+              Add Users
+            </Typography>
+            <TextField
+              value={currentUser.firstname}
+              name="firstname"
+              onChange={handleFirstName}
+              label="First Name"
             />
-            <FormControlLabel
-              onChange={handleRadioUser}
-              value="User"
-              control={<Radio />}
-              label="User"
+            <TextField
+              value={currentUser.lastname}
+              name="lastname"
+              label="Last Name"
+              onChange={handleLastName}
             />
-          </RadioGroup>
-        </div>
-        <div>
-          <Typography sx={{ color: "#9e9e9e" }}>Disabled</Typography>
-          <Checkbox onChange={handleCheckbox} />
-        </div>
-        <Typography sx={{ color: "#9e9e9e" }}>Avatar</Typography>
-        <Stack direction="row" alignItems="center" spacing={2}>
-          <Button variant="contained" component="label">
-            Upload
-            <input
-              hidden
-              accept="image/*"
-              multiple
-              type="file"
-              onChange={handleUpload}
+            <TextField
+              label="Phone Number"
+              value={currentUser.phoneNumber}
+              name="phoneNumber"
+              onChange={handlePhoneNumber}
             />
-          </Button>
-          <IconButton
-            color="primary"
-            aria-label="upload picture"
-            component="label"
-          >
-            <input hidden accept="image/*" type="file" />
-            <PhotoCamera />
-          </IconButton>
-        </Stack>
-        <TextField
-          value={currentUser.password}
-          name="password"
-          label="Password"
-          onChange={handlePassword}
-        />
-        <Stack direction="row" spacing={2}>
-          {isUpdate ? (
-            <Button variant="contained" type="submit">
-              UPDATE
-            </Button>
-          ) : (
-            <Button variant="contained" type="submit">
-              SAVE
-            </Button>
-          )}
+            <TextField
+              label="Email"
+              value={currentUser.email}
+              name="email"
+              onChange={handleEmail}
+            />
+            <div>
+              <Typography sx={{ color: "#9e9e9e" }}>Role</Typography>
+              <RadioGroup row>
+                <FormControlLabel
+                  onChange={handleRadioAdmin}
+                  value="Admin"
+                  control={<Radio />}
+                  label="Admin"
+                />
+                <FormControlLabel
+                  onChange={handleRadioUser}
+                  value="User"
+                  control={<Radio />}
+                  label="User"
+                />
+              </RadioGroup>
+            </div>
+            <div>
+              <Typography sx={{ color: "#9e9e9e" }}>Disabled</Typography>
+              <Checkbox onChange={handleCheckbox} />
+            </div>
+            <Typography sx={{ color: "#9e9e9e" }}>Avatar</Typography>
+            <Stack direction="row" alignItems="center" spacing={2}>
+              <Button variant="contained" component="label">
+                Upload
+                <input
+                  hidden
+                  accept="image/*"
+                  multiple
+                  type="file"
+                  onChange={handleUpload}
+                />
+              </Button>
+              <IconButton
+                color="primary"
+                aria-label="upload picture"
+                component="label"
+              >
+                <input hidden accept="image/*" type="file" />
+                <PhotoCamera />
+              </IconButton>
+            </Stack>
+            <TextField
+              value={currentUser.password}
+              name="password"
+              label="Password"
+              onChange={handlePassword}
+            />
+            <Stack direction="row" spacing={2}>
+              {isUpdate ? (
+                <Button variant="contained" type="submit">
+                  UPDATE
+                </Button>
+              ) : (
+                <Button variant="contained" type="submit">
+                  SAVE
+                </Button>
+              )}
 
-          <Button variant="outlined">RESET</Button>
-          <Button variant="outlined">CANCEL</Button>
-        </Stack>
-      </Stack>
-    </form>
+              <Button variant="outlined">RESET</Button>
+              <Button variant="outlined">CANCEL</Button>
+            </Stack>
+          </Stack>
+        </form>
+      </Box>
+    </Box>
   );
 }
