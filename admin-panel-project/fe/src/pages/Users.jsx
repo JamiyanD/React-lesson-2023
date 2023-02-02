@@ -16,6 +16,7 @@ import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Home from "./Home";
+import Stack from "@mui/joy/Stack";
 
 export default function Users({ setIsUpdate, currentUser, setCurrentUser }) {
   const URL = "http://localhost:8080/new";
@@ -73,33 +74,41 @@ export default function Users({ setIsUpdate, currentUser, setCurrentUser }) {
       <Home />
       <Box sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
-        <Link to={"/new"} style={{ textDecoration: "none" }}>
-          <Button
-            variant="contained"
-            sx={{ margin: "10px" }}
-            onClick={() => {
-              setCurrentUser("");
-              setIsUpdate(false);
-            }}
-          >
-            New
-          </Button>
-        </Link>
-        <Button variant="contained" sx={{ marginLeft: "590px" }}>
-          ADD FILTER
-        </Button>
-
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Link to={"/new"} style={{ textDecoration: "none" }}>
+            <Button
+              variant="contained"
+              sx={{ margin: "10px" }}
+              onClick={() => {
+                setCurrentUser("");
+                setIsUpdate(false);
+              }}
+            >
+              New
+            </Button>
+          </Link>
+          <Button variant="contained">ADD FILTER</Button>
+        </Stack>
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                <Checkbox />
-                <TableCell>First Name</TableCell>
-                <TableCell align="right">Last Name</TableCell>
-                <TableCell align="right">Phone Number</TableCell>
-                <TableCell align="center">Email</TableCell>
-                <TableCell align="right">Role</TableCell>
-                <TableCell align="right">Disabled</TableCell>
+                <TableCell sx={{ padding: 0 }}>
+                  <Checkbox />
+                </TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>First Name</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Last Name</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Phone Number</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Email</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Role</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Disabled</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }} align="center">
+                  Actions
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -108,33 +117,42 @@ export default function Users({ setIsUpdate, currentUser, setCurrentUser }) {
                   key={index}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <Checkbox />
+                  <TableCell sx={{ padding: 0 }}>
+                    <Checkbox />
+                  </TableCell>
                   <TableCell component="th" scope="row">
                     {parametr.firstname}
                   </TableCell>
-                  <TableCell align="right">{parametr.lastname}</TableCell>
-                  <TableCell align="right">{parametr.phoneNumber}</TableCell>
-                  <TableCell align="right">{parametr.email}</TableCell>
-                  <TableCell align="right">{parametr.radio}</TableCell>
-                  <TableCell align="right">
-                    {parametr.checkbox ? "Yes" : "No"}
+                  <TableCell>{parametr.lastname}</TableCell>
+                  <TableCell>{parametr.phoneNumber}</TableCell>
+                  <TableCell>{parametr.email}</TableCell>
+                  <TableCell>{parametr.radio}</TableCell>
+                  <TableCell>{parametr.checkbox ? "Yes" : "No"}</TableCell>
+                  <TableCell sx={{ padding: 0 }}>
+                    <Stack direction="row">
+                      <Link
+                        to={"/newProducts"}
+                        style={{ textDecoration: "none" }}
+                      >
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          onClick={() => handleEdit(parametr.id)}
+                        >
+                          Edit
+                        </Button>
+                      </Link>
+                      <Button
+                        variant="outlined"
+                        color="error"
+                        size="small"
+                        onClick={() => handleDelete(parametr.id)}
+                        sx={{ marginX: 1 }}
+                      >
+                        Delete
+                      </Button>
+                    </Stack>
                   </TableCell>
-                  <IconButton
-                    aria-label="delete"
-                    onClick={() => handleDelete(parametr.id)}
-                    color="primary"
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                  <Link to={"/new"}>
-                    <IconButton
-                      aria-label="edit"
-                      color="primary"
-                      onClick={() => handleEdit(parametr.id)}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                  </Link>
                 </TableRow>
               ))}
             </TableBody>

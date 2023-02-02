@@ -131,10 +131,12 @@ export default function NewUser({
     });
   }
   function handleRating(e) {
-    setCurrentProducts({
-      ...currentProducts,
-      rating: e.target.value,
-    });
+    if (e.target.value <= 5 && e.target.value >= 0) {
+      setCurrentProducts({
+        ...currentProducts,
+        rating: e.target.value,
+      });
+    }
   }
 
   return (
@@ -142,17 +144,17 @@ export default function NewUser({
       <Home />
       <Box sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
-        <form onSubmit={handleSubmit} style={{ marginTop: "70px" }}>
-          <Stack spacing={2} sx={{ width: "800px" }}>
+        <form onSubmit={handleSubmit}>
+          <Stack spacing={2}>
             <Typography variant="h5" sx={{ color: "#9e9e9e" }}>
               New Product
             </Typography>
-            <Stack direction="row" alignItems="center" spacing={7.5}>
-              <Typography variant="h6" gutterBottom sx={{ width: "190px" }}>
+
+            <Stack direction="row" alignItems="center">
+              <Typography variant="h6" sx={{ width: "200px", marginRight: 5 }}>
                 Image
               </Typography>
-              <img src={image} alt="" style={{ width: 100 }} />
-              <Button variant="contained" component="label">
+              <Button variant="outlined" component="label">
                 Upload
                 <input
                   hidden
@@ -163,8 +165,12 @@ export default function NewUser({
                 />
               </Button>
             </Stack>
-            <Stack direction="row" alignItems="center" spacing={15}>
-              <Typography variant="h6" gutterBottom sx={{ width: "190px" }}>
+            <Stack direction="row" alignItems="center">
+              <Typography
+                variant="h6"
+                gutterBottom
+                sx={{ width: "200px", marginRight: 5 }}
+              >
                 Title
               </Typography>
               <TextField
@@ -172,12 +178,11 @@ export default function NewUser({
                 name="title"
                 label="Title"
                 onChange={handleTitle}
-                id="fullWidth"
                 fullWidth
               />
             </Stack>
-            <Stack direction="row" alignItems="center" spacing={15}>
-              <Typography variant="h6" gutterBottom sx={{ width: "190px" }}>
+            <Stack direction="row" alignItems="center">
+              <Typography variant="h6" sx={{ width: "200px", marginRight: 5 }}>
                 Subtitle
               </Typography>
               <TextField
@@ -185,12 +190,11 @@ export default function NewUser({
                 value={currentProducts.subtitle}
                 name="subtitle"
                 onChange={handleSubtitle}
-                id="fullWidth"
                 fullWidth
               />
             </Stack>
-            <Stack direction="row" alignItems="center" spacing={15}>
-              <Typography variant="h6" gutterBottom sx={{ width: "190px" }}>
+            <Stack direction="row" alignItems="center">
+              <Typography variant="h6" sx={{ width: "200px", marginRight: 5 }}>
                 Price
               </Typography>
               <TextField
@@ -198,12 +202,11 @@ export default function NewUser({
                 value={currentProducts.price}
                 name="price"
                 onChange={Price}
-                id="fullWidth"
                 fullWidth
               />
             </Stack>
-            <Stack direction="row" alignItems="center" spacing={15}>
-              <Typography variant="h6" gutterBottom sx={{ width: "190px" }}>
+            <Stack direction="row" alignItems="center">
+              <Typography variant="h6" sx={{ width: "200px", marginRight: 5 }}>
                 Discount
               </Typography>
               <TextField
@@ -211,79 +214,78 @@ export default function NewUser({
                 name="discount"
                 label="Discount"
                 onChange={handleDiscount}
-                id="fullWidth"
                 fullWidth
               />
             </Stack>
-            <Stack direction="row" alignItems="center" spacing={15}>
-              <Typography variant="h6" gutterBottom sx={{ width: "190px" }}>
+            <Stack direction="row" alignItems="center">
+              <Typography variant="h6" sx={{ width: "200px", marginRight: 5 }}>
                 Description 1
               </Typography>
               <TextField
                 value={currentProducts.description1}
                 name="description1"
                 onChange={handleDescription1}
-                id="fullWidth"
+                label="Description 1"
                 fullWidth
               />
             </Stack>
-            <Stack direction="row" alignItems="center" spacing={15}>
-              <Typography variant="h6" gutterBottom sx={{ width: "190px" }}>
+            <Stack direction="row" alignItems="center">
+              <Typography variant="h6" sx={{ width: "200px", marginRight: 5 }}>
                 Description 2
               </Typography>
               <TextField
                 value={currentProducts.discription2}
                 name="description2"
                 onChange={handleDiscription2}
-                id="fullWidth"
+                label="Description 2"
                 fullWidth
               />
             </Stack>
-            <Stack direction="row" alignItems="center" spacing={15}>
-              <Typography variant="h6" gutterBottom sx={{ width: "190px" }}>
+            <Stack direction="row" alignItems="center">
+              <Typography variant="h6" sx={{ width: "200px", marginRight: 5 }}>
                 Code
               </Typography>
               <TextField
                 value={currentProducts.code}
                 name="code"
                 onChange={handleCode}
-                id="fullWidth"
+                label="Code"
                 fullWidth
               />
             </Stack>
-            <Stack direction="row" alignItems="center" spacing={15}>
-              <Typography variant="h6" gutterBottom sx={{ width: "190px" }}>
+            <Stack direction="row" alignItems="center">
+              <Typography variant="h6" sx={{ width: "200px", marginRight: 5 }}>
                 Hashtag
               </Typography>
               <TextField
                 value={currentProducts.hashtag}
                 name="hashtag"
                 onChange={handleHashtag}
-                id="fullWidth"
+                label="Hashtag"
                 fullWidth
               />
             </Stack>
-            <Stack direction="row" alignItems="center" spacing={15}>
-              <Typography variant="h6" gutterBottom sx={{ width: "190px" }}>
+            <Stack direction="row" alignItems="center">
+              <Typography variant="h6" sx={{ width: "200px", marginRight: 5 }}>
                 Technology
               </Typography>
               <TextField
                 value={currentProducts.technology}
                 name="technology"
                 onChange={handleTechnology}
-                id="fullWidth"
+                label="Technology"
                 fullWidth
               />
             </Stack>
-            <Stack direction="row" alignItems="center" spacing={15}>
-              <Typography variant="h6" gutterBottom sx={{ width: "190px" }}>
+            <Stack direction="row" alignItems="center">
+              <Typography variant="h6" sx={{ width: "200px", marginRight: 5 }}>
                 Rating
               </Typography>
               <TextField
                 value={currentProducts.rating}
                 name="rating"
                 onChange={handleRating}
-                id="fullWidth"
+                label="Rating"
                 fullWidth
               />
             </Stack>

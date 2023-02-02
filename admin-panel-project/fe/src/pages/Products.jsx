@@ -105,7 +105,7 @@ export default function Products({
       <Home />
       <Box sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <Stack direction="row" justifyContent="space-between">
           <div>
             <Typography
               variant="h6"
@@ -124,7 +124,7 @@ export default function Products({
           </div>
           <form onSubmit={handleSearch}>
             <IconButton type="submit" aria-label="search">
-              <SearchIcon style={{ fill: "blue" }} />
+              <SearchIcon />
             </IconButton>
             <TextField
               name="search"
@@ -138,7 +138,7 @@ export default function Products({
               size="small"
             />
           </form>
-        </div>
+        </Stack>
         <Link to={"/newProducts"} style={{ textDecoration: "none" }}>
           <Button
             variant="contained"
@@ -153,27 +153,29 @@ export default function Products({
         </Typography>
 
         <TableContainer component={Paper}>
-          <Table aria-label="simple table">
+          <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
                 <TableCell sx={{ padding: 0 }}>
                   <Checkbox />
                 </TableCell>
-                <TableCell>ID</TableCell>
-                <TableCell>Image</TableCell>
-                <TableCell>Title</TableCell>
-                <TableCell>Subtitle</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>ID</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Image</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Title</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Subtitle</TableCell>
                 <TableCell>
-                  <Stack direction="row">
-                    <Typography>Price</Typography>
+                  <Stack direction="row" spacing={0.5}>
+                    <strong>Price</strong>
                     <ArrowUpwardIcon></ArrowUpwardIcon>
                   </Stack>
                 </TableCell>
-                <TableCell>Rating</TableCell>
-                <TableCell>Actions</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Rating</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }} align="center">
+                  Actions
+                </TableCell>
               </TableRow>
             </TableHead>
-            <TableBody sx={{ padding: 0 }}>
+            <TableBody>
               {users.map((parametr, index) => (
                 <TableRow
                   key={index}
@@ -187,42 +189,48 @@ export default function Products({
                   <TableCell component="th" scope="row">
                     {parametr.id % 100}
                   </TableCell>
-                  <TableCell>
-                    <img src={parametr.imgURL} alt="" />
-                  </TableCell>
+                  <TableCell>Not Yet</TableCell>
                   <TableCell>{parametr.title}</TableCell>
+                  <TableCell>{parametr.subtitle}</TableCell>
                   <TableCell>
-                    {" "}
-                    <img src={parametr.subtitle} alt="" />
+                    {`${parametr.price}` && `$${parametr.price}`}
                   </TableCell>
-                  <TableCell>${parametr.price}</TableCell>
                   <TableCell>
-                    <Stack direction="row">
-                      <Typography>{parametr.rating}</Typography>
-                      <img
-                        src="https://freesvg.org/img/1289679474.png"
-                        alt=""
-                        style={{ width: 16, height: 20, marginLeft: "4px" }}
-                      />
-                    </Stack>
+                    {`${parametr.rating}` && (
+                      <Stack direction="row">
+                        <Typography>{parametr.rating}</Typography>
+                        <img
+                          src="https://freesvg.org/img/1289679474.png"
+                          alt=""
+                          style={{ width: 16, height: 20, marginLeft: "4px" }}
+                        />
+                      </Stack>
+                    )}
                   </TableCell>
                   <TableCell sx={{ padding: 0 }}>
-                    <IconButton
-                      aria-label="delete"
-                      onClick={() => handleDelete(parametr.id)}
-                      color="primary"
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                    <Link to={"/newProducts"}>
-                      <IconButton
-                        aria-label="edit"
-                        color="primary"
-                        onClick={() => handleEdit(parametr.id)}
+                    <Stack direction="row" spacing={1}>
+                      <Link
+                        to={"/newProducts"}
+                        style={{ textDecoration: "none" }}
                       >
-                        <EditIcon />
-                      </IconButton>
-                    </Link>
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          onClick={() => handleEdit(parametr.id)}
+                        >
+                          Edit
+                        </Button>
+                      </Link>
+
+                      <Button
+                        variant="outlined"
+                        color="error"
+                        size="small"
+                        onClick={() => handleDelete(parametr.id)}
+                      >
+                        Delete
+                      </Button>
+                    </Stack>
                   </TableCell>
                 </TableRow>
               ))}

@@ -13,6 +13,17 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import LocalGroceryStoreIcon from "@mui/icons-material/LocalGroceryStore";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuIcon from "@mui/icons-material/Menu";
+import Container from "@mui/material/Container";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Tooltip from "@mui/material/Tooltip";
+import MenuItem from "@mui/material/MenuItem";
+import AdbIcon from "@mui/icons-material/Adb";
 
 const drawerWidth = 240;
 
@@ -24,10 +35,13 @@ export default function ClippedDrawer() {
         position="fixed"
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
-        <Toolbar>
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography variant="h6" noWrap component="div">
-            Clipped drawer
+            React Material Admin Full
           </Typography>
+          <IconButton sx={{ p: 0 }}>
+            <Avatar alt="Remy Sharp" src="" />
+          </IconButton>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -46,13 +60,18 @@ export default function ClippedDrawer() {
           <List>
             <ListItem key={"Users"} disablePadding>
               <ListItemButton to={"/users"}>
-                <ListItemIcon></ListItemIcon>
+                <ListItemIcon>
+                  <AccountCircleIcon color="action" />
+                </ListItemIcon>
+
                 <ListItemText primary={"Users"} />
               </ListItemButton>
             </ListItem>
             <ListItem key={"Products"} disablePadding>
               <ListItemButton to={"/products"}>
-                <ListItemIcon></ListItemIcon>
+                <ListItemIcon>
+                  <LocalGroceryStoreIcon />
+                </ListItemIcon>
                 <ListItemText primary={"Products"} />
               </ListItemButton>
             </ListItem>

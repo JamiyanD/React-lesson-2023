@@ -9,6 +9,7 @@ import Box from "@mui/material/Box";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
 import NewProducts from "./pages/NewProducts";
+
 function App() {
   const [isUpdate, setIsUpdate] = useState(false);
   const [productUpdate, setProductUpdate] = useState(false);

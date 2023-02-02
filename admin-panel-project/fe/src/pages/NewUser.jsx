@@ -128,8 +128,8 @@ export default function NewUser({
       <Home />
       <Box sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
-        <form onSubmit={handleSubmit} style={{ marginTop: "70px" }}>
-          <Stack spacing={2} sx={{ width: "800px" }}>
+        <form onSubmit={handleSubmit}>
+          <Stack spacing={2} sx={{}}>
             <Typography variant="h5" sx={{ color: "#9e9e9e" }}>
               Add Users
             </Typography>
