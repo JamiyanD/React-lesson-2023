@@ -3,6 +3,7 @@ console.log("it is my app.js");
 const express = require("express");
 const cors = require("cors");
 const fs = require("fs");
+const multer = require("multer");
 
 ///configuration of modules
 const app = express();
@@ -111,7 +112,7 @@ app.put("/new", (request, response) => {
       });
     }
     const savedData = JSON.parse(readData);
-    console.log(request.body);
+
     const changedData = savedData.map((d) => {
       if (d.id === request.body.id) {
         (d.firstname = request.body.firstname),
@@ -148,7 +149,7 @@ app.put("/new", (request, response) => {
 app.post("/newProducts", (request, response) => {
   const newUser = {
     id: Date.now(),
-    image: request.body.image,
+    imgURL: request.body.imgURL,
     title: request.body.title,
     subtitle: request.body.subtitle,
     price: request.body.price,
@@ -198,6 +199,7 @@ app.get("/newProducts", (request, response) => {
       });
     }
     const objectData = JSON.parse(readData);
+    console.log(objectData);
     response.json({
       status: "success",
       data: objectData,
@@ -237,7 +239,6 @@ app.delete("/newProducts", (request, response) => {
 });
 
 app.put("/newProducts", (request, response) => {
-  console.log(request.body);
   fs.readFile("./data/products.json", "utf-8", (readError, readData) => {
     if (readError) {
       response.json({
@@ -246,10 +247,10 @@ app.put("/newProducts", (request, response) => {
       });
     }
     const savedData = JSON.parse(readData);
-    console.log(request.body);
+
     const changedData = savedData.map((d) => {
       if (d.id === request.body.id) {
-        (d.image = request.body.image),
+        (d.imgURL = request.body.imgURL),
           (d.title = request.body.title),
           (d.subtitle = request.body.subtitle),
           (d.price = request.body.price),
@@ -280,6 +281,15 @@ app.put("/newProducts", (request, response) => {
         });
       }
     );
+  });
+});
+
+const upload = multer();
+app.post("/upload", upload.single("file"), function (request, response) {
+  console.log(request.body);
+  response.json({
+    status: "success",
+    data: [],
   });
 });
 

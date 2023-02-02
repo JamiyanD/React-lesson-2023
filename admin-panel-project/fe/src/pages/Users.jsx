@@ -73,7 +73,7 @@ export default function Users({ setIsUpdate, currentUser, setCurrentUser }) {
       <Home />
       <Box sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
-        <Link to={"/new"}>
+        <Link to={"/new"} style={{ textDecoration: "none" }}>
           <Button
             variant="contained"
             sx={{ margin: "10px" }}

@@ -12,11 +12,14 @@ import Checkbox from "@mui/material/Checkbox";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Home from "./Home";
 import Typography from "@mui/material/Typography";
+import SearchIcon from "@mui/icons-material/Search";
+import TextField from "@mui/material/TextField";
+import Stack from "@mui/joy/Stack";
 const productsData = [
   {
     id: 1,
@@ -35,10 +38,11 @@ export default function Products({
   productUpdate,
   setProductUpdate,
 }) {
-  const URL = "http://localhost:8080/newProducts";
+  const [imageUrl, setImageUrl] = useState(null);
+  const url = "http://localhost:8080/newProducts";
   const [users, setUsers] = useState([]);
   async function fetchScreen() {
-    const FETCHED_DATA = await fetch(URL);
+    const FETCHED_DATA = await fetch(url);
     const FETCHED_JSON = await FETCHED_DATA.json();
 
     setUsers(FETCHED_JSON.data);
@@ -48,9 +52,8 @@ export default function Products({
   useEffect(() => {
     fetchScreen();
   }, []);
-  console.log(users);
+
   async function handleDelete(userId) {
-    console.log(userId);
     const options = {
       method: "DELETE",
       headers: {
@@ -60,7 +63,7 @@ export default function Products({
         userId: userId,
       }),
     };
-    const FETCHED_DATA = await fetch(URL, options);
+    const FETCHED_DATA = await fetch(url, options);
     const FETCHED_JSON = await FETCHED_DATA.json();
     setUsers(FETCHED_JSON.data);
   }
@@ -68,11 +71,11 @@ export default function Products({
   async function handleEdit(userId) {
     setProductUpdate(true);
     const filteredUser = users.filter((user) => user.id === userId)[0];
-    console.log(filteredUser);
     if (filteredUser) {
       setCurrentProducts({
         ...currentProducts,
-        image: filteredUser.image,
+        id: filteredUser.id,
+        imgURL: filteredUser.imgURL,
         title: filteredUser.title,
         subtitle: filteredUser.subtitle,
         price: filteredUser.price,
@@ -87,15 +90,50 @@ export default function Products({
     }
   }
 
+  function uploadImg(e) {
+    console.log(e.target.files[0]);
+  }
+
   return (
     <Box sx={{ display: "flex" }}>
       <Home />
       <Box sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
-        <Typography variant="h6" sx={{ marginBottom: "10px" }}>
-          Products
-        </Typography>
-        <Link to={"/newProducts"}>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div>
+            <Typography
+              variant="h6"
+              sx={{ margin: "5px", display: "inline-block" }}
+            >
+              Products
+            </Typography>
+
+            <Typography
+              variant="caption"
+              gutterBottom
+              sx={{ color: "#9e9e9e" }}
+            >
+              {users.length} total
+            </Typography>
+          </div>
+          <form>
+            <IconButton type="submit" aria-label="search">
+              <SearchIcon style={{ fill: "blue" }} />
+            </IconButton>
+            <TextField
+              id="search-bar"
+              className="text"
+              // onInput={(e) => {
+              //   setSearchQuery(e.target.value);
+              // }}
+              label="Search"
+              variant="outlined"
+              placeholder="Search..."
+              size="small"
+            />
+          </form>
+        </div>
+        <Link to={"/newProducts"} style={{ textDecoration: "none" }}>
           <Button
             variant="contained"
             sx={{ margin: "10px" }}
@@ -104,7 +142,7 @@ export default function Products({
             CREATE PRODUCT
           </Button>
         </Link>
-        <Typography variant="h6" sx={{ margin: "10px" }}>
+        <Typography variant="h6" sx={{ margin: "15px" }}>
           Products
         </Typography>
 
@@ -112,7 +150,9 @@ export default function Products({
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <Checkbox />
+                <TableCell sx={{ padding: 0 }}>
+                  <Checkbox />
+                </TableCell>
                 <TableCell>ID</TableCell>
                 <TableCell>Image</TableCell>
                 <TableCell>Title</TableCell>
@@ -128,14 +168,20 @@ export default function Products({
                   key={index}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <Checkbox />
-                  <TableCell component="th" scope="row">
-                    {parametr.id}
+                  <TableCell sx={{ padding: 0 }}>
+                    <Checkbox />
                   </TableCell>
-                  <TableCell>{parametr.image}</TableCell>
+                  <TableCell component="th" scope="row">
+                    {parametr.id % 100}
+                  </TableCell>
+                  <TableCell>
+                    {parametr.imgURL}
+                    {console.log(URL.revokeObjectURL(parametr.imgURL))}
+                    <img src={parametr.imgURL} alt="" />
+                  </TableCell>
                   <TableCell>{parametr.title}</TableCell>
                   <TableCell>{parametr.subtitle}</TableCell>
-                  <TableCell>{parametr.price}</TableCell>
+                  <TableCell>${parametr.price}</TableCell>
                   <TableCell>{parametr.rating}</TableCell>
 
                   <IconButton
