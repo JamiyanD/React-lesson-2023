@@ -58,7 +58,7 @@ export default function NewUser({
         },
         body: JSON.stringify(putData),
       };
-      const FETCHED_DATA = await fetch(URL, options); // hervee options bhq bol default oor get method yvuuldag
+      const FETCHED_DATA = await fetch(url, options); // hervee options bhq bol default oor get method yvuuldag
       const FETCHED_JSON = await FETCHED_DATA.json();
       console.log(FETCHED_JSON.data);
       setProductUpdate(false);
@@ -68,11 +68,11 @@ export default function NewUser({
   const inputRef = useRef();
   function handleUpload(e) {
     setImage(URL.createObjectURL(e.target.files[0]));
-    console.log(e.target.files[0]);
+    console.log(URL.createObjectURL(e.target.files[0]));
 
     setCurrentProducts({
       ...currentProducts,
-      imgURL: URL.createObjectURL(e.target.files[0]),
+      imgURL: "Not Yet",
     });
   }
 
@@ -151,7 +151,7 @@ export default function NewUser({
               <Typography variant="h6" gutterBottom sx={{ width: "190px" }}>
                 Image
               </Typography>
-              <img src={image} alt="" />
+              <img src={image} alt="" style={{ width: 100 }} />
               <Button variant="contained" component="label">
                 Upload
                 <input

@@ -20,6 +20,7 @@ import Typography from "@mui/material/Typography";
 import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/joy/Stack";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 const productsData = [
   {
     id: 1,
@@ -90,8 +91,13 @@ export default function Products({
     }
   }
 
-  function uploadImg(e) {
-    console.log(e.target.files[0]);
+  function handleSearch(e) {
+    e.preventDefault();
+
+    const filteredUser = users.filter(
+      (user) => user.title === e.target.search.value
+    );
+    setUsers(filteredUser);
   }
 
   return (
@@ -116,12 +122,12 @@ export default function Products({
               {users.length} total
             </Typography>
           </div>
-          <form>
+          <form onSubmit={handleSearch}>
             <IconButton type="submit" aria-label="search">
               <SearchIcon style={{ fill: "blue" }} />
             </IconButton>
             <TextField
-              id="search-bar"
+              name="search"
               className="text"
               // onInput={(e) => {
               //   setSearchQuery(e.target.value);
@@ -147,7 +153,7 @@ export default function Products({
         </Typography>
 
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <Table aria-label="simple table">
             <TableHead>
               <TableRow>
                 <TableCell sx={{ padding: 0 }}>
@@ -157,16 +163,23 @@ export default function Products({
                 <TableCell>Image</TableCell>
                 <TableCell>Title</TableCell>
                 <TableCell>Subtitle</TableCell>
-                <TableCell>Price</TableCell>
+                <TableCell>
+                  <Stack direction="row">
+                    <Typography>Price</Typography>
+                    <ArrowUpwardIcon></ArrowUpwardIcon>
+                  </Stack>
+                </TableCell>
                 <TableCell>Rating</TableCell>
                 <TableCell>Actions</TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
+            <TableBody sx={{ padding: 0 }}>
               {users.map((parametr, index) => (
                 <TableRow
                   key={index}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  sx={{
+                    "&:last-child td, &:last-child th": { border: 0 },
+                  }}
                 >
                   <TableCell sx={{ padding: 0 }}>
                     <Checkbox />
@@ -175,31 +188,42 @@ export default function Products({
                     {parametr.id % 100}
                   </TableCell>
                   <TableCell>
-                    {parametr.imgURL}
-                    {console.log(URL.revokeObjectURL(parametr.imgURL))}
                     <img src={parametr.imgURL} alt="" />
                   </TableCell>
                   <TableCell>{parametr.title}</TableCell>
-                  <TableCell>{parametr.subtitle}</TableCell>
+                  <TableCell>
+                    {" "}
+                    <img src={parametr.subtitle} alt="" />
+                  </TableCell>
                   <TableCell>${parametr.price}</TableCell>
-                  <TableCell>{parametr.rating}</TableCell>
-
-                  <IconButton
-                    aria-label="delete"
-                    onClick={() => handleDelete(parametr.id)}
-                    color="primary"
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                  <Link to={"/newProducts"}>
+                  <TableCell>
+                    <Stack direction="row">
+                      <Typography>{parametr.rating}</Typography>
+                      <img
+                        src="https://freesvg.org/img/1289679474.png"
+                        alt=""
+                        style={{ width: 16, height: 20, marginLeft: "4px" }}
+                      />
+                    </Stack>
+                  </TableCell>
+                  <TableCell sx={{ padding: 0 }}>
                     <IconButton
-                      aria-label="edit"
+                      aria-label="delete"
+                      onClick={() => handleDelete(parametr.id)}
                       color="primary"
-                      onClick={() => handleEdit(parametr.id)}
                     >
-                      <EditIcon />
+                      <DeleteIcon />
                     </IconButton>
-                  </Link>
+                    <Link to={"/newProducts"}>
+                      <IconButton
+                        aria-label="edit"
+                        color="primary"
+                        onClick={() => handleEdit(parametr.id)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </Link>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

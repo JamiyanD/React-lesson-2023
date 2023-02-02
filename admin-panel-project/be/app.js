@@ -286,7 +286,6 @@ app.put("/newProducts", (request, response) => {
 
 const upload = multer();
 app.post("/upload", upload.single("file"), function (request, response) {
-  console.log(request.body);
   response.json({
     status: "success",
     data: [],
