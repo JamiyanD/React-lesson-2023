@@ -130,10 +130,7 @@ export default function Users({ setIsUpdate, currentUser, setCurrentUser }) {
                   <TableCell>{parametr.checkbox ? "Yes" : "No"}</TableCell>
                   <TableCell sx={{ padding: 0 }}>
                     <Stack direction="row">
-                      <Link
-                        to={"/newProducts"}
-                        style={{ textDecoration: "none" }}
-                      >
+                      <Link to={"/new"} style={{ textDecoration: "none" }}>
                         <Button
                           variant="outlined"
                           size="small"
