@@ -21,6 +21,10 @@ import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/joy/Stack";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+
 const productsData = [
   {
     id: 1,
@@ -55,6 +59,7 @@ export default function Products({
   }, []);
 
   async function handleDelete(userId) {
+    console.log(userId);
     const options = {
       method: "DELETE",
       headers: {
@@ -100,11 +105,20 @@ export default function Products({
     setUsers(filteredUser);
   }
 
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  console.log(anchorEl);
   return (
-    <Box sx={{ display: "flex" }}>
-      <Home />
-      <Box sx={{ flexGrow: 1, p: 3 }}>
-        <Toolbar />
+    <Box sx={{ display: "flex", backgroundColor: "white" }}>
+      <Box sx={{ flexGrow: 1, p: 2 }}>
         <Stack direction="row" justifyContent="space-between">
           <div>
             <Typography
@@ -143,7 +157,9 @@ export default function Products({
           <Button
             variant="contained"
             sx={{ margin: "10px" }}
-            onClick={() => {}}
+            onClick={() => {
+              setCurrentProducts("");
+            }}
           >
             CREATE PRODUCT
           </Button>
@@ -207,30 +223,40 @@ export default function Products({
                       </Stack>
                     )}
                   </TableCell>
-                  <TableCell sx={{ padding: 0 }}>
-                    <Stack direction="row" spacing={1}>
+                  <TableCell>
+                    {" "}
+                    <IconButton
+                      aria-label="more"
+                      id="long-button"
+                      aria-controls={open ? "long-menu" : undefined}
+                      aria-expanded={open ? "true" : undefined}
+                      aria-haspopup="true"
+                      onClick={handleClick}
+                    >
+                      <MoreVertIcon />
+                    </IconButton>
+                    <Menu
+                      id="long-menu"
+                      MenuListProps={{
+                        "aria-labelledby": "long-button",
+                      }}
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                      PaperProps={{}}
+                    >
                       <Link
                         to={"/newProducts"}
-                        style={{ textDecoration: "none" }}
+                        style={{ textDecoration: "none", color: "black" }}
                       >
-                        <Button
-                          variant="outlined"
-                          size="small"
-                          onClick={() => handleEdit(parametr.id)}
-                        >
+                        <MenuItem onClick={() => handleEdit(parametr.id)}>
                           Edit
-                        </Button>
+                        </MenuItem>
                       </Link>
-
-                      <Button
-                        variant="outlined"
-                        color="error"
-                        size="small"
-                        onClick={() => handleDelete(parametr.id)}
-                      >
+                      <MenuItem onClick={() => handleDelete(parametr.id)}>
                         Delete
-                      </Button>
-                    </Stack>
+                      </MenuItem>
+                    </Menu>
                   </TableCell>
                 </TableRow>
               ))}

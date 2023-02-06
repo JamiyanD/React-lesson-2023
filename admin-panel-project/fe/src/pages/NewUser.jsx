@@ -10,7 +10,7 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/joy/Stack";
 import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Home from "./Home";
@@ -21,6 +21,7 @@ export default function NewUser({
   currentUser,
   setCurrentUser,
 }) {
+  const navigate = useNavigate();
   const URL = "http://localhost:8080/new";
 
   async function handleSubmit(e) {
@@ -37,6 +38,7 @@ export default function NewUser({
       const FETCHED_DATA = await fetch(URL, options); // hervee options bhq bol default oor get method yvuuldag
       const FETCHED_JSON = await FETCHED_DATA.json();
       console.log(FETCHED_JSON);
+      navigate("/users");
     } else {
       const putData = {
         id: currentUser.id,
@@ -59,8 +61,8 @@ export default function NewUser({
       const FETCHED_DATA = await fetch(URL, options); // hervee options bhq bol default oor get method yvuuldag
       const FETCHED_JSON = await FETCHED_DATA.json();
       console.log(FETCHED_JSON.data);
-
       setIsUpdate(false);
+      navigate("/users");
     }
   }
 
@@ -124,10 +126,8 @@ export default function NewUser({
     });
   }
   return (
-    <Box sx={{ display: "flex" }}>
-      <Home />
-      <Box sx={{ flexGrow: 1, p: 3 }}>
-        <Toolbar />
+    <Box sx={{ display: "flex", backgroundColor: "white" }}>
+      <Box sx={{ flexGrow: 1, p: 2 }}>
         <form onSubmit={handleSubmit}>
           <Stack spacing={2} sx={{}}>
             <Typography variant="h5" sx={{ color: "#9e9e9e" }}>

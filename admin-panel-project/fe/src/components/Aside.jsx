@@ -1,54 +1,83 @@
 import * as React from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
+import PropTypes from "prop-types";
+import Box from "@mui/material/Box";
+import List from "@mui/material/List";
+import Link from "@mui/material/Link";
+import ListItem from "@mui/material/ListItem";
+import Collapse from "@mui/material/Collapse";
+import ListItemText from "@mui/material/ListItemText";
+import Typography from "@mui/material/Typography";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import Breadcrumbs from "@mui/material/Breadcrumbs";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import {
+  Link as RouterLink,
+  Route,
+  Routes,
+  MemoryRouter,
+  useLocation,
+} from "react-router-dom";
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
+const breadcrumbNameMap = {
+  "/users": "Users",
+  "/new": "New User",
+  "/products": "Products",
+  "/newProducts": "New Products",
+};
+
+function ListItemLink(props) {
+  const { to, open, ...other } = props;
+  const primary = breadcrumbNameMap[to];
+
+  let icon = null;
+  if (open != null) {
+    icon = open ? <ExpandLess /> : <ExpandMore />;
+  }
+
+  return (
+    <li>
+      <ListItem button component={RouterLink} to={to} {...other}>
+        <AccountCircleIcon color="action" sx={{ marginRight: 2 }} />
+        <ListItemText primary={primary} />
+        {icon}
+      </ListItem>
+    </li>
+  );
 }
 
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
+ListItemLink.propTypes = {
+  open: PropTypes.bool,
+  to: PropTypes.string.isRequired,
+};
 
-export default function BasicTable() {
+export default function RouterBreadcrumbs() {
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.name}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Box initialentries={["/users"]} initialindex={0} sx={{}}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          width: 200,
+          height: "90vh",
+          backgroundColor: "white",
+        }}
+      >
+        <Box
+          sx={{
+            bgcolor: "background.paper",
+          }}
+          component="nav"
+          aria-label="mailbox folders"
+        >
+          <List>
+            <ListItemLink to="/users" />
+            <ListItemLink to="/new" />
+            <ListItemLink to="/products" />
+            <ListItemLink to="/newProducts" />
+          </List>
+        </Box>
+      </Box>
+    </Box>
   );
 }

@@ -24,7 +24,9 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-
+import { Link } from "react-router-dom";
+import Aside from "../components/Aside";
+import Breadcrumbs from "@mui/material/Breadcrumbs";
 const drawerWidth = 240;
 
 export default function ClippedDrawer() {
@@ -36,15 +38,21 @@ export default function ClippedDrawer() {
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Typography variant="h6" noWrap component="div">
-            React Material Admin Full
-          </Typography>
+          <Link to={"/"} style={{ textDecoration: "none", color: "white" }}>
+            <Typography variant="h6" noWrap component="div">
+              React Material Admin Full
+            </Typography>
+          </Link>
           <IconButton sx={{ p: 0 }}>
             <Avatar alt="Remy Sharp" src="" />
+            <Typography sx={{ color: "white", marginLeft: 1 }}>
+              Hi, Admin
+            </Typography>
           </IconButton>
         </Toolbar>
       </AppBar>
-      <Drawer
+
+      {/* <Drawer
         variant="permanent"
         sx={{
           width: drawerWidth,
@@ -90,7 +98,7 @@ export default function ClippedDrawer() {
             ))}
           </List>
         </Box>
-      </Drawer>
+      </Drawer> */}
     </Box>
   );
 }
