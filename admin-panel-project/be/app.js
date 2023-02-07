@@ -13,6 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 app.post("/new", (request, response) => {
+  console.log(request.body);
   fs.readFile("./data/users.json", "utf-8", (readError, readData) => {
     const newUser = {
       id: Date.now(),

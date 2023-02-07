@@ -63,6 +63,7 @@ export default function Users({ setIsUpdate, currentUser, setCurrentUser }) {
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
+    console.log(event);
   };
   const handleClose = () => {
     setAnchorEl(null);

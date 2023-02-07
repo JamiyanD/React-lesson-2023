@@ -118,7 +118,12 @@ export default function UsersMap({
                         Edit
                       </MenuItem>
                     </Link>
-                    <MenuItem onClick={() => handleDelete(parametr.id)}>
+                    <MenuItem
+                      onClick={() => {
+                        handleDelete(parametr.id);
+                        handleClose();
+                      }}
+                    >
                       Delete
                     </MenuItem>
                   </Menu>
