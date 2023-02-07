@@ -2,28 +2,20 @@ import * as React from "react";
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
-import Link from "@mui/material/Link";
 import ListItem from "@mui/material/ListItem";
-import Collapse from "@mui/material/Collapse";
 import ListItemText from "@mui/material/ListItemText";
-import Typography from "@mui/material/Typography";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import Breadcrumbs from "@mui/material/Breadcrumbs";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import {
-  Link as RouterLink,
-  Route,
-  Routes,
-  MemoryRouter,
-  useLocation,
-} from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 const breadcrumbNameMap = {
   "/users": "Users",
   "/new": "New User",
+  "/editUser": "Edit User",
   "/products": "Products",
   "/newProducts": "New Products",
+  "/editProduct": "Edit Product",
 };
 
 function ListItemLink(props) {
@@ -51,33 +43,25 @@ ListItemLink.propTypes = {
   to: PropTypes.string.isRequired,
 };
 
-export default function RouterBreadcrumbs() {
+export default function RouterBreadcrumbs({ setCurrentUser }) {
   return (
-    <Box initialentries={["/users"]} initialindex={0} sx={{}}>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          width: 200,
-          height: "90vh",
-          backgroundColor: "white",
-        }}
-      >
-        <Box
-          sx={{
-            bgcolor: "background.paper",
-          }}
-          component="nav"
-          aria-label="mailbox folders"
-        >
-          <List>
-            <ListItemLink to="/users" />
-            <ListItemLink to="/new" />
-            <ListItemLink to="/products" />
-            <ListItemLink to="/newProducts" />
-          </List>
-        </Box>
-      </Box>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        width: 250,
+        height: "100vh",
+        backgroundColor: "white",
+      }}
+    >
+      <List>
+        <ListItemLink to="/users" />
+        <ListItemLink to="/new" />
+        <ListItemLink to="/editUser" />
+        <ListItemLink to="/products" />
+        <ListItemLink to="/newProducts" />
+        <ListItemLink to="/editProduct" />
+      </List>
     </Box>
   );
 }

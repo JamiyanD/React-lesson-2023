@@ -14,9 +14,8 @@ import { Link, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Home from "./Navbar";
-export default function NewUser({
+export default function EditUser({
   isUpdate,
-  editUser,
   setIsUpdate,
   currentUser,
   setCurrentUser,
@@ -27,17 +26,26 @@ export default function NewUser({
   async function handleSubmit(e) {
     e.preventDefault();
 
-    console.log(currentUser);
+    const putData = {
+      id: currentUser.id,
+      firstname: currentUser.firstname,
+      lastname: currentUser.lastname,
+      phoneNumber: currentUser.phoneNumber,
+      email: currentUser.email,
+      password: currentUser.password,
+      checkbox: currentUser.checkbox,
+      radio: currentUser.radio,
+      imgURL: currentUser.imgURL,
+    };
     const options = {
-      method: "POST",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(currentUser),
+      body: JSON.stringify(putData),
     };
     const FETCHED_DATA = await fetch(URL, options); // hervee options bhq bol default oor get method yvuuldag
     const FETCHED_JSON = await FETCHED_DATA.json();
-    console.log(FETCHED_JSON);
     navigate("/users");
   }
 
@@ -106,7 +114,7 @@ export default function NewUser({
         <form onSubmit={handleSubmit}>
           <Stack spacing={2} sx={{}}>
             <Typography variant="h5" sx={{ color: "#9e9e9e" }}>
-              Add Users
+              Edit User
             </Typography>
             <TextField
               value={currentUser.firstname}
@@ -182,7 +190,7 @@ export default function NewUser({
             />
             <Stack direction="row" spacing={2}>
               <Button variant="contained" type="submit">
-                SAVE
+                UPDATE
               </Button>
 
               <Button variant="outlined">RESET</Button>

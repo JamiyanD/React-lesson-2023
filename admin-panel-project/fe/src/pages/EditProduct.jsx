@@ -22,16 +22,30 @@ export default function NewUser({ currentProducts, setCurrentProducts }) {
   async function handleSubmit(e) {
     e.preventDefault();
 
+    const putData = {
+      id: currentProducts.id,
+      imgURL: currentProducts.imgURL,
+      title: currentProducts.title,
+      subtitle: currentProducts.subtitle,
+      price: currentProducts.price,
+      discount: currentProducts.discount,
+      description1: currentProducts.description1,
+      description2: currentProducts.description2,
+      code: currentProducts.code,
+      hashtag: currentProducts.hashtag,
+      technology: currentProducts.technology,
+      rating: currentProducts.rating,
+    };
     const options = {
-      method: "POST",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(currentProducts),
+      body: JSON.stringify(putData),
     };
     const FETCHED_DATA = await fetch(url, options); // hervee options bhq bol default oor get method yvuuldag
     const FETCHED_JSON = await FETCHED_DATA.json();
-    console.log(currentProducts);
+    console.log(FETCHED_JSON.data);
     navigate("/products");
   }
   const [file, setFiles] = useState(null);
@@ -114,7 +128,7 @@ export default function NewUser({ currentProducts, setCurrentProducts }) {
         <form onSubmit={handleSubmit}>
           <Stack spacing={2}>
             <Typography variant="h5" sx={{ color: "#9e9e9e" }}>
-              New Product
+              Edit Product
             </Typography>
 
             <Stack direction="row" alignItems="center">
@@ -258,7 +272,7 @@ export default function NewUser({ currentProducts, setCurrentProducts }) {
             </Stack>
             <Stack direction="row" spacing={2}>
               <Button variant="contained" type="submit">
-                SAVE
+                UPDATE
               </Button>
 
               <Button variant="outlined">RESET</Button>

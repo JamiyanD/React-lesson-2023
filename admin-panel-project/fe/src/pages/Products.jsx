@@ -15,7 +15,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useState, useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import Home from "./Home";
+import Home from "./Navbar";
 import Typography from "@mui/material/Typography";
 import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
@@ -25,24 +25,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
-const productsData = [
-  {
-    id: 1,
-    imgURL: "image",
-    Title: "Boots",
-    Subtitle: "Trainers in Blue",
-    Price: "45",
-    Rating: "4.6",
-    Actions: "",
-  },
-];
-
-export default function Products({
-  currentProducts,
-  setCurrentProducts,
-  productUpdate,
-  setProductUpdate,
-}) {
+export default function Products({ currentProducts, setCurrentProducts }) {
   const [imageUrl, setImageUrl] = useState(null);
   const url = "http://localhost:8080/newProducts";
   const [users, setUsers] = useState([]);
@@ -75,7 +58,6 @@ export default function Products({
   }
 
   async function handleEdit(userId) {
-    setProductUpdate(true);
     const filteredUser = users.filter((user) => user.id === userId)[0];
     if (filteredUser) {
       setCurrentProducts({
@@ -105,17 +87,19 @@ export default function Products({
     setUsers(filteredUser);
   }
 
+  const [openElem, setOpenElem] = React.useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
 
-  const handleClick = (event) => {
+  const handleClick = (parametr) => (event) => {
     setAnchorEl(event.currentTarget);
+    setOpenElem(parametr);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
+    setOpenElem(null);
   };
 
-  console.log(anchorEl);
   return (
     <Box sx={{ display: "flex", backgroundColor: "white" }}>
       <Box sx={{ flexGrow: 1, p: 2 }}>
@@ -209,10 +193,10 @@ export default function Products({
                   <TableCell>{parametr.title}</TableCell>
                   <TableCell>{parametr.subtitle}</TableCell>
                   <TableCell>
-                    {`${parametr.price}` && `$${parametr.price}`}
+                    {parametr.price !== undefined && `$${parametr.price}`}
                   </TableCell>
                   <TableCell>
-                    {`${parametr.rating}` && (
+                    {parametr.rating !== undefined && (
                       <Stack direction="row">
                         <Typography>{parametr.rating}</Typography>
                         <img
@@ -228,10 +212,8 @@ export default function Products({
                     <IconButton
                       aria-label="more"
                       id="long-button"
-                      aria-controls={open ? "long-menu" : undefined}
-                      aria-expanded={open ? "true" : undefined}
                       aria-haspopup="true"
-                      onClick={handleClick}
+                      onClick={handleClick(parametr.id)}
                     >
                       <MoreVertIcon />
                     </IconButton>
@@ -241,19 +223,28 @@ export default function Products({
                         "aria-labelledby": "long-button",
                       }}
                       anchorEl={anchorEl}
-                      open={open}
+                      open={openElem === parametr.id}
                       onClose={handleClose}
                       PaperProps={{}}
                     >
                       <Link
-                        to={"/newProducts"}
+                        to={"/editProduct"}
                         style={{ textDecoration: "none", color: "black" }}
                       >
-                        <MenuItem onClick={() => handleEdit(parametr.id)}>
+                        <MenuItem
+                          onClick={() => {
+                            handleEdit(parametr.id);
+                          }}
+                        >
                           Edit
                         </MenuItem>
                       </Link>
-                      <MenuItem onClick={() => handleDelete(parametr.id)}>
+                      <MenuItem
+                        onClick={() => {
+                          handleDelete(parametr.id);
+                          handleClose();
+                        }}
+                      >
                         Delete
                       </MenuItem>
                     </Menu>

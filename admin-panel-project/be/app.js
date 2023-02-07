@@ -162,6 +162,7 @@ app.post("/newProducts", (request, response) => {
     technology: request.body.technology,
     rating: request.body.rating,
   };
+  console.log(newUser);
   fs.readFile("./data/products.json", "utf-8", (readError, readData) => {
     if (readError) {
       response.json({
@@ -200,7 +201,7 @@ app.get("/newProducts", (request, response) => {
       });
     }
     const objectData = JSON.parse(readData);
-    console.log(objectData);
+
     response.json({
       status: "success",
       data: objectData,

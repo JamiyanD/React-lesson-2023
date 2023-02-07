@@ -1,91 +1,164 @@
-import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
-const columns = [
-  { field: "id", headerName: "ID", width: 70 },
-  { field: "firstName", headerName: "First name", width: 130 },
-  { field: "lastName", headerName: "Last name", width: 130 },
-  {
-    field: "phoneNumber",
-    headerName: "Phone Number",
-    width: 130,
-  },
-  {
-    field: "email",
-    headerName: "Email",
-    type: "email",
-    width: 130,
-  },
-  {
-    field: "role",
-    headerName: "Role",
-    width: 130,
-  },
-  {
-    field: "disabled",
-    headerName: "Disabled",
-    width: 130,
-  },
-];
-const rows = [
-  {
-    id: 1,
-    lastName: "Snow",
-    firstName: "Jon",
-    phoneNumber: 99119999,
-    email: "black@gmail.com",
-    role: "user",
-    disabled: "yes",
-  },
-  {
-    id: 2,
-    lastName: "Lannister",
-    firstName: "Cersei",
-    phoneNumber: 9911998,
-    email: "black@gmail.com",
-    role: "user",
-    disabled: "yes",
-  },
-  {
-    id: 3,
-    lastName: "Lannister",
-    firstName: "Jaime",
-    phoneNumber: 88119999,
-    email: "black@gmail.com",
-    role: "user",
-    disabled: "yes",
-  },
-  {
-    id: 4,
-    lastName: "Stark",
-    firstName: "Arya",
-    phoneNumber: 88119998,
-    email: "black@gmail.com",
-    role: "user",
-    disabled: "yes",
-  },
-];
-export default function UsersTable() {
-  return (
-    <div style={{ height: "500px", width: "800px", marginTop: "70px" }}>
-      <h2>Users</h2>
-      <Link to={"/new"}>
-        <Button variant="contained" sx={{ margin: "10px" }}>
-          New
-        </Button>
-      </Link>
-      <Button variant="contained" sx={{ marginLeft: "590px" }}>
-        ADD FILTER
-      </Button>
+import * as React from "react";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import Checkbox from "@mui/material/Checkbox";
+import DeleteIcon from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
+import { useState, useEffect } from "react";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
 
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-        checkboxSelection
-        sx={{}}
-      />
+import Stack from "@mui/joy/Stack";
+
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+
+export default function UsersTable({
+  setIsUpdate,
+  currentUser,
+  setCurrentUser,
+  users,
+  setUsers,
+
+  handleEdit,
+}) {
+  const URL = "http://localhost:8080/new";
+  async function handleDelete(userId) {
+    console.log(userId);
+    const options = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: userId,
+      }),
+    };
+    const FETCHED_DATA = await fetch(URL, options);
+    const FETCHED_JSON = await FETCHED_DATA.json();
+    setUsers(FETCHED_JSON.data);
+  }
+
+  async function handleEdit(userId) {
+    const filteredUser = users.filter((user) => user.id === userId)[0];
+
+    if (filteredUser) {
+      setCurrentUser({
+        ...currentUser,
+        id: filteredUser.id,
+        firstname: filteredUser.firstname,
+        lastname: filteredUser.lastname,
+        phoneNumber: filteredUser.phoneNumber,
+        email: filteredUser.email,
+        password: filteredUser.password,
+        checkbox: filteredUser.checkbox,
+        radio: filteredUser.radio,
+        imgURL: filteredUser.imgURL,
+      });
+    }
+  }
+  const [openElem, setOpenElem] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (parametr) => (event) => {
+    setAnchorEl(event.currentTarget);
+    setOpenElem(parametr);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+    setOpenElem(null);
+  };
+
+  return (
+    <div>
+      <TableContainer component={Paper}>
+        <Table stickyHeader aria-label="sticky table">
+          <TableHead>
+            <TableRow>
+              <TableCell sx={{ padding: 0 }}>
+                <Checkbox />
+              </TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>First Name</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>Last Name</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>Phone Number</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>Email</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>Role</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>Disabled</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }} align="center">
+                Actions
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {users.map((parametr, index) => (
+              <TableRow
+                key={index}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell sx={{ padding: 0 }}>
+                  <Checkbox />
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  {parametr.firstname}
+                </TableCell>
+                <TableCell>{parametr.lastname}</TableCell>
+                <TableCell>{parametr.phoneNumber}</TableCell>
+                <TableCell>{parametr.email}</TableCell>
+                <TableCell>{parametr.radio}</TableCell>
+                <TableCell>{parametr.checkbox ? "Yes" : "No"}</TableCell>
+                <TableCell>
+                  {" "}
+                  <IconButton
+                    aria-label="more"
+                    id="long-button"
+                    aria-haspopup="true"
+                    onClick={handleClick(parametr.id)}
+                  >
+                    <MoreVertIcon />
+                  </IconButton>
+                  <Menu
+                    id="long-menu "
+                    MenuListProps={{
+                      "aria-labelledby": "long-button",
+                    }}
+                    anchorEl={anchorEl}
+                    open={openElem === parametr.id}
+                    onClose={handleClose}
+                    PaperProps={{}}
+                  >
+                    <Link
+                      to={"/editUser"}
+                      style={{ textDecoration: "none", color: "black" }}
+                    >
+                      <MenuItem onClick={() => handleEdit(parametr.id)}>
+                        Edit
+                      </MenuItem>
+                    </Link>
+                    <MenuItem
+                      onClick={() => {
+                        handleDelete(parametr.id);
+                        handleClose();
+                      }}
+                    >
+                      Delete
+                    </MenuItem>
+                  </Menu>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 }

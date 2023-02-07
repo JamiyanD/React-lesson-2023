@@ -15,13 +15,13 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import Home from "./Home";
+import Home from "./Navbar";
 import Stack from "@mui/joy/Stack";
 
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import UsersMap from "../components/UsersMap";
+import UsersTable from "../components/UsersTable";
 export default function Users({ setIsUpdate, currentUser, setCurrentUser }) {
   const URL = "http://localhost:8080/new";
   const [users, setUsers] = useState([]);
@@ -35,39 +35,6 @@ export default function Users({ setIsUpdate, currentUser, setCurrentUser }) {
   useEffect(() => {
     fetchScreen();
   }, []);
-
-  async function handleEdit(userId) {
-    setIsUpdate(true);
-    const filteredUser = users.filter((user) => user.id === userId)[0];
-
-    if (filteredUser) {
-      setCurrentUser({
-        ...currentUser,
-        id: filteredUser.id,
-        firstname: filteredUser.firstname,
-        lastname: filteredUser.lastname,
-        phoneNumber: filteredUser.phoneNumber,
-        email: filteredUser.email,
-        password: filteredUser.password,
-        checkbox: filteredUser.checkbox,
-        radio: filteredUser.radio,
-        imgURL: filteredUser.imgURL,
-      });
-    }
-    return () => {
-      console.log(userId);
-    };
-  }
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-    console.log(event);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   return (
     <Box sx={{ display: "flex", backgroundColor: "white" }}>
@@ -92,17 +59,12 @@ export default function Users({ setIsUpdate, currentUser, setCurrentUser }) {
           <Button variant="contained">ADD FILTER</Button>
         </Stack>
 
-        <UsersMap
+        <UsersTable
           users={users}
           setUsers={setUsers}
           setIsUpdate={setIsUpdate}
           currentUser={currentUser}
           setCurrentUser={setCurrentUser}
-          anchorEl={anchorEl}
-          open={open}
-          handleClick={handleClick}
-          handleClose={handleClose}
-          handleEdit={handleEdit}
         />
       </Box>
     </Box>
