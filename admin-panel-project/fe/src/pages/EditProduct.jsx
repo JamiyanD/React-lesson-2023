@@ -1,27 +1,20 @@
 import TextField from "@mui/material/TextField";
 import * as React from "react";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
 import { useState, useRef } from "react";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/joy/Stack";
-import IconButton from "@mui/material/IconButton";
-import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import { Link, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Home from "./Navbar";
 import Rating from "@mui/material/Rating";
+import axios from "axios";
 export default function NewUser({ currentProducts, setCurrentProducts }) {
   const url = "http://localhost:8080/newProducts";
   const [image, setImage] = useState(null);
   const navigate = useNavigate();
+
   async function handleSubmit(e) {
     e.preventDefault();
-
     const putData = {
       id: currentProducts.id,
       imgURL: currentProducts.imgURL,
@@ -36,16 +29,8 @@ export default function NewUser({ currentProducts, setCurrentProducts }) {
       technology: currentProducts.technology,
       rating: currentProducts.rating,
     };
-    const options = {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(putData),
-    };
-    const FETCHED_DATA = await fetch(url, options); // hervee options bhq bol default oor get method yvuuldag
-    const FETCHED_JSON = await FETCHED_DATA.json();
-    console.log(FETCHED_JSON.data);
+
+    const FETCHED_DATA = await axios.put(url, putData);
     navigate("/products");
   }
   const [file, setFiles] = useState(null);
@@ -53,7 +38,6 @@ export default function NewUser({ currentProducts, setCurrentProducts }) {
   function handleUpload(e) {
     setImage(URL.createObjectURL(e.target.files[0]));
     console.log(URL.createObjectURL(e.target.files[0]));
-
     setCurrentProducts({
       ...currentProducts,
       imgURL: "Not Yet",
@@ -130,7 +114,6 @@ export default function NewUser({ currentProducts, setCurrentProducts }) {
             <Typography variant="h5" sx={{ color: "#9e9e9e" }}>
               Edit Product
             </Typography>
-
             <Stack direction="row" alignItems="center">
               <Typography variant="h6" sx={{ width: "200px", marginRight: 5 }}>
                 Image
@@ -262,7 +245,6 @@ export default function NewUser({ currentProducts, setCurrentProducts }) {
               <Typography variant="h6" sx={{ width: "200px", marginRight: 0 }}>
                 Rating
               </Typography>
-
               <Rating
                 name="customized-10"
                 onChange={handleRating}
@@ -274,7 +256,6 @@ export default function NewUser({ currentProducts, setCurrentProducts }) {
               <Button variant="contained" type="submit">
                 UPDATE
               </Button>
-
               <Button variant="outlined">RESET</Button>
               <Button variant="outlined">CANCEL</Button>
             </Stack>

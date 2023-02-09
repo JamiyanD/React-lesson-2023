@@ -13,9 +13,14 @@ export default function Navbar() {
     <Box sx={{ display: "flex" }}>
       <AppBar position="fixed">
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Link to={"/"} style={{ textDecoration: "none", color: "white" }}>
-            <Typography variant="h6">React Material Admin Full</Typography>
-          </Link>
+          <Typography
+            variant="h6"
+            component={Link}
+            to={"/"}
+            sx={{ textDecoration: "none", color: "white" }}
+          >
+            React Material Admin Full
+          </Typography>
           <IconButton>
             <Avatar alt="Remy Sharp" src="" />
             <Typography sx={{ color: "white", marginLeft: 1 }}>

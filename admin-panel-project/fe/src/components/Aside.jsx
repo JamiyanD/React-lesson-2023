@@ -8,15 +8,8 @@ import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { Link as RouterLink } from "react-router-dom";
-
-const breadcrumbNameMap = {
-  "/users": "Users",
-  "/new": "New User",
-  "/editUser": "Edit User",
-  "/products": "Products",
-  "/newProducts": "New Products",
-  "/editProduct": "Edit Product",
-};
+import Collapse from "@mui/material/Collapse";
+import { breadcrumbNameMap } from "./Page";
 
 function ListItemLink(props) {
   const { to, open, ...other } = props;
@@ -43,7 +36,18 @@ ListItemLink.propTypes = {
   to: PropTypes.string.isRequired,
 };
 
-export default function RouterBreadcrumbs({ setCurrentUser }) {
+export default function RouterBreadcrumbs({
+  setCurrentUser,
+  setCurrentProducts,
+}) {
+  const [open, setOpen] = React.useState(true);
+  const [open2, setOpen2] = React.useState(true);
+  const handleClick = () => {
+    setOpen((prevOpen) => !prevOpen);
+  };
+  const handleClick2 = () => {
+    setOpen2((prevOpen2) => !prevOpen2);
+  };
   return (
     <Box
       sx={{
@@ -55,12 +59,25 @@ export default function RouterBreadcrumbs({ setCurrentUser }) {
       }}
     >
       <List>
-        <ListItemLink to="/users" />
-        <ListItemLink to="/new" />
-        <ListItemLink to="/editUser" />
-        <ListItemLink to="/products" />
-        <ListItemLink to="/newProducts" />
-        <ListItemLink to="/editProduct" />
+        <ListItemLink to="/" open={open} onClick={handleClick} />
+        <Collapse component="li" in={open} timeout="auto" unmountOnExit>
+          <List disablePadding>
+            <ListItemLink sx={{ pl: 4 }} to="/userList" />
+            <ListItemLink sx={{ pl: 4 }} to="/new" />
+            <ListItemLink sx={{ pl: 4 }} to="/editUser" />
+          </List>
+        </Collapse>
+        <ListItemLink to="/product" open={open2} onClick={handleClick2} />
+        <Collapse component="li" in={open2} timeout="auto" unmountOnExit>
+          <List disablePadding>
+            <ListItemLink to="/productList" />
+            <ListItemLink
+              to="/newProducts"
+              onClick={() => setCurrentProducts("")}
+            />
+            <ListItemLink to="/editProduct" />
+          </List>
+        </Collapse>
       </List>
     </Box>
   );

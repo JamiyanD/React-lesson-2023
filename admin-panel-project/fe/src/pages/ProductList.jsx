@@ -9,13 +9,9 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
-import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
-import EditIcon from "@mui/icons-material/Edit";
 import { useState, useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Home from "./Navbar";
 import Typography from "@mui/material/Typography";
 import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
@@ -24,37 +20,28 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import axios from "axios";
 
-export default function Products({ currentProducts, setCurrentProducts }) {
-  const [imageUrl, setImageUrl] = useState(null);
+export default function ProductList({ currentProducts, setCurrentProducts }) {
   const url = "http://localhost:8080/newProducts";
   const [users, setUsers] = useState([]);
+
   async function fetchScreen() {
-    const FETCHED_DATA = await fetch(url);
-    const FETCHED_JSON = await FETCHED_DATA.json();
-
-    setUsers(FETCHED_JSON.data);
-
-    return FETCHED_JSON;
+    const FETCHED_DATA = await axios.get(url);
+    setUsers(FETCHED_DATA.data.data);
+    return FETCHED_DATA;
   }
+
   useEffect(() => {
     fetchScreen();
   }, []);
 
   async function handleDelete(userId) {
-    console.log(userId);
-    const options = {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userId: userId,
-      }),
+    const data = {
+      userId: userId,
     };
-    const FETCHED_DATA = await fetch(url, options);
-    const FETCHED_JSON = await FETCHED_DATA.json();
-    setUsers(FETCHED_JSON.data);
+    const FETCHED_DATA = await axios.delete(url, { data });
+    setUsers(FETCHED_DATA.data.data);
   }
 
   async function handleEdit(userId) {
@@ -80,15 +67,14 @@ export default function Products({ currentProducts, setCurrentProducts }) {
 
   function handleSearch(e) {
     e.preventDefault();
-
     const filteredUser = users.filter(
       (user) => user.title === e.target.search.value
     );
     setUsers(filteredUser);
   }
 
-  const [openElem, setOpenElem] = React.useState(null);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [openElem, setOpenElem] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (parametr) => (event) => {
     setAnchorEl(event.currentTarget);
@@ -104,7 +90,7 @@ export default function Products({ currentProducts, setCurrentProducts }) {
     <Box sx={{ display: "flex", backgroundColor: "white" }}>
       <Box sx={{ flexGrow: 1, p: 2 }}>
         <Stack direction="row" justifyContent="space-between">
-          <div>
+          <Box>
             <Typography
               variant="h6"
               sx={{ margin: "5px", display: "inline-block" }}
@@ -119,7 +105,7 @@ export default function Products({ currentProducts, setCurrentProducts }) {
             >
               {users.length} total
             </Typography>
-          </div>
+          </Box>
           <form onSubmit={handleSearch}>
             <IconButton type="submit" aria-label="search">
               <SearchIcon />
@@ -127,9 +113,6 @@ export default function Products({ currentProducts, setCurrentProducts }) {
             <TextField
               name="search"
               className="text"
-              // onInput={(e) => {
-              //   setSearchQuery(e.target.value);
-              // }}
               label="Search"
               variant="outlined"
               placeholder="Search..."
@@ -137,21 +120,19 @@ export default function Products({ currentProducts, setCurrentProducts }) {
             />
           </form>
         </Stack>
-        <Link to={"/newProducts"} style={{ textDecoration: "none" }}>
-          <Button
-            variant="contained"
-            sx={{ margin: "10px" }}
-            onClick={() => {
-              setCurrentProducts("");
-            }}
-          >
-            CREATE PRODUCT
-          </Button>
-        </Link>
+        <Button
+          href="/newProducts"
+          variant="contained"
+          sx={{ margin: "10px" }}
+          onClick={() => {
+            setCurrentProducts("");
+          }}
+        >
+          CREATE PRODUCT
+        </Button>
         <Typography variant="h6" sx={{ margin: "15px" }}>
           Products
         </Typography>
-
         <TableContainer component={Paper}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -159,20 +140,18 @@ export default function Products({ currentProducts, setCurrentProducts }) {
                 <TableCell sx={{ padding: 0 }}>
                   <Checkbox />
                 </TableCell>
-                <TableCell sx={{ fontWeight: "bold" }}>ID</TableCell>
-                <TableCell sx={{ fontWeight: "bold" }}>Image</TableCell>
-                <TableCell sx={{ fontWeight: "bold" }}>Title</TableCell>
-                <TableCell sx={{ fontWeight: "bold" }}>Subtitle</TableCell>
+                <TableCell>ID</TableCell>
+                <TableCell>Image</TableCell>
+                <TableCell>Title</TableCell>
+                <TableCell>Subtitle</TableCell>
                 <TableCell>
                   <Stack direction="row" spacing={0.5}>
-                    <strong>Price</strong>
+                    Price
                     <ArrowUpwardIcon></ArrowUpwardIcon>
                   </Stack>
                 </TableCell>
-                <TableCell sx={{ fontWeight: "bold" }}>Rating</TableCell>
-                <TableCell sx={{ fontWeight: "bold" }} align="center">
-                  Actions
-                </TableCell>
+                <TableCell>Rating</TableCell>
+                <TableCell>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -193,10 +172,10 @@ export default function Products({ currentProducts, setCurrentProducts }) {
                   <TableCell>{parametr.title}</TableCell>
                   <TableCell>{parametr.subtitle}</TableCell>
                   <TableCell>
-                    {parametr.price !== undefined && `$${parametr.price}`}
+                    {parametr.price && `$${parametr.price}`}
                   </TableCell>
                   <TableCell>
-                    {parametr.rating !== undefined && (
+                    {parametr.rating && (
                       <Stack direction="row">
                         <Typography>{parametr.rating}</Typography>
                         <img
@@ -227,18 +206,15 @@ export default function Products({ currentProducts, setCurrentProducts }) {
                       onClose={handleClose}
                       PaperProps={{}}
                     >
-                      <Link
+                      <MenuItem
+                        component={Link}
                         to={"/editProduct"}
-                        style={{ textDecoration: "none", color: "black" }}
+                        onClick={() => {
+                          handleEdit(parametr.id);
+                        }}
                       >
-                        <MenuItem
-                          onClick={() => {
-                            handleEdit(parametr.id);
-                          }}
-                        >
-                          Edit
-                        </MenuItem>
-                      </Link>
+                        Edit
+                      </MenuItem>
                       <MenuItem
                         onClick={() => {
                           handleDelete(parametr.id);

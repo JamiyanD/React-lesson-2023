@@ -5,27 +5,19 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
-import { useState } from "react";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/joy/Stack";
 import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import { Link, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Home from "./Navbar";
-export default function EditUser({
-  isUpdate,
-  setIsUpdate,
-  currentUser,
-  setCurrentUser,
-}) {
+import axios from "axios";
+export default function EditUser({ currentUser, setCurrentUser }) {
   const navigate = useNavigate();
   const URL = "http://localhost:8080/new";
 
   async function handleSubmit(e) {
     e.preventDefault();
-
     const putData = {
       id: currentUser.id,
       firstname: currentUser.firstname,
@@ -37,15 +29,7 @@ export default function EditUser({
       radio: currentUser.radio,
       imgURL: currentUser.imgURL,
     };
-    const options = {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(putData),
-    };
-    const FETCHED_DATA = await fetch(URL, options); // hervee options bhq bol default oor get method yvuuldag
-    const FETCHED_JSON = await FETCHED_DATA.json();
+    const FETCHED_DATA = await axios.put(URL, putData);
     navigate("/users");
   }
 

@@ -1,14 +1,11 @@
 console.log("it is my app.js");
-// import necessary module
 const express = require("express");
 const cors = require("cors");
 const fs = require("fs");
 const multer = require("multer");
 
-///configuration of modules
 const app = express();
 const PORT = 8080;
-
 app.use(cors());
 app.use(express.json());
 
@@ -33,8 +30,8 @@ app.post("/new", (request, response) => {
         data: [],
       });
     }
-    const dataObject = JSON.parse(readData);
 
+    const dataObject = JSON.parse(readData);
     dataObject.push(newUser);
 
     fs.writeFile(
@@ -75,6 +72,7 @@ app.get("/new", (request, response) => {
 
 app.delete("/new", (request, response) => {
   const body = request.body;
+  console.log(body);
   fs.readFile("./data/users.json", "utf-8", (readError, readData) => {
     if (readError) {
       response.json({

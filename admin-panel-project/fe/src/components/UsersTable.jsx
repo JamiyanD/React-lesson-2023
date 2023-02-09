@@ -1,6 +1,5 @@
-import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
 import * as React from "react";
+import { Link } from "react-router-dom";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -9,48 +8,32 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
-import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
-import EditIcon from "@mui/icons-material/Edit";
-import { useState, useEffect } from "react";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-
-import Stack from "@mui/joy/Stack";
-
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-
+import axios from "axios";
+import { useState } from "react";
 export default function UsersTable({
-  setIsUpdate,
   currentUser,
   setCurrentUser,
   users,
   setUsers,
-
   handleEdit,
 }) {
   const URL = "http://localhost:8080/new";
   async function handleDelete(userId) {
-    console.log(userId);
-    const options = {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userId: userId,
-      }),
+    const data = {
+      userId: userId,
     };
-    const FETCHED_DATA = await fetch(URL, options);
-    const FETCHED_JSON = await FETCHED_DATA.json();
-    setUsers(FETCHED_JSON.data);
+    const FETCHED_DATA = await axios.delete(URL, {
+      data,
+    });
+    setUsers(FETCHED_DATA.data.data);
   }
 
   async function handleEdit(userId) {
     const filteredUser = users.filter((user) => user.id === userId)[0];
-
     if (filteredUser) {
       setCurrentUser({
         ...currentUser,
@@ -66,8 +49,9 @@ export default function UsersTable({
       });
     }
   }
-  const [openElem, setOpenElem] = React.useState(null);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const [openElem, setOpenElem] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (parametr) => (event) => {
     setAnchorEl(event.currentTarget);
@@ -88,15 +72,13 @@ export default function UsersTable({
               <TableCell sx={{ padding: 0 }}>
                 <Checkbox />
               </TableCell>
-              <TableCell sx={{ fontWeight: "bold" }}>First Name</TableCell>
-              <TableCell sx={{ fontWeight: "bold" }}>Last Name</TableCell>
-              <TableCell sx={{ fontWeight: "bold" }}>Phone Number</TableCell>
-              <TableCell sx={{ fontWeight: "bold" }}>Email</TableCell>
-              <TableCell sx={{ fontWeight: "bold" }}>Role</TableCell>
-              <TableCell sx={{ fontWeight: "bold" }}>Disabled</TableCell>
-              <TableCell sx={{ fontWeight: "bold" }} align="center">
-                Actions
-              </TableCell>
+              <TableCell>First Name</TableCell>
+              <TableCell>Last Name</TableCell>
+              <TableCell>Phone Number</TableCell>
+              <TableCell>Email</TableCell>
+              <TableCell>Role</TableCell>
+              <TableCell>Disabled</TableCell>
+              <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -136,14 +118,14 @@ export default function UsersTable({
                     onClose={handleClose}
                     PaperProps={{}}
                   >
-                    <Link
+                    <MenuItem
+                      onClick={() => handleEdit(parametr.id)}
+                      component={Link}
                       to={"/editUser"}
-                      style={{ textDecoration: "none", color: "black" }}
                     >
-                      <MenuItem onClick={() => handleEdit(parametr.id)}>
-                        Edit
-                      </MenuItem>
-                    </Link>
+                      Edit
+                    </MenuItem>
+
                     <MenuItem
                       onClick={() => {
                         handleDelete(parametr.id);

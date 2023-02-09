@@ -5,39 +5,20 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
-import { useState } from "react";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/joy/Stack";
 import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import { Link, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Home from "./Navbar";
-export default function NewUser({
-  isUpdate,
-  editUser,
-  setIsUpdate,
-  currentUser,
-  setCurrentUser,
-}) {
+import axios from "axios";
+export default function NewUser({ currentUser, setCurrentUser }) {
   const navigate = useNavigate();
   const URL = "http://localhost:8080/new";
 
   async function handleSubmit(e) {
     e.preventDefault();
-
-    console.log(currentUser);
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(currentUser),
-    };
-    const FETCHED_DATA = await fetch(URL, options); // hervee options bhq bol default oor get method yvuuldag
-    const FETCHED_JSON = await FETCHED_DATA.json();
-    console.log(FETCHED_JSON);
+    const FETCHED_DATA = await axios.post(URL, currentUser);
     navigate("/users");
   }
 
@@ -184,7 +165,6 @@ export default function NewUser({
               <Button variant="contained" type="submit">
                 SAVE
               </Button>
-
               <Button variant="outlined">RESET</Button>
               <Button variant="outlined">CANCEL</Button>
             </Stack>

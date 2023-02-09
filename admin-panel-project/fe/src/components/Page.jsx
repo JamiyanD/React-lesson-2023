@@ -3,11 +3,13 @@ import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import Container from "@mui/material/Container";
 import { Link as RouterLink, useLocation } from "react-router-dom";
-const breadcrumbNameMap = {
-  "/users": "Users",
+export const breadcrumbNameMap = {
+  "/": "User",
+  "/userList": "User List",
   "/new": "New User",
   "/editUser": "Edit User",
-  "/products": "Products",
+  "/product": "Product",
+  "/productList": "Product List",
   "/newProducts": "New Products",
   "/editProduct": "Edit Product",
 };
