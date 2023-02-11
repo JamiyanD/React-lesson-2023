@@ -5,12 +5,12 @@ import Container from "@mui/material/Container";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 export const breadcrumbNameMap = {
   "/": "User",
-  "/userList": "User List",
-  "/new": "New User",
+  "/usersList": "Users List",
+  "/newUser": "New User",
   "/editUser": "Edit User",
-  "/product": "Product",
-  "/productList": "Product List",
-  "/newProducts": "New Products",
+  "/products": "Product",
+  "/productsList": "Products List",
+  "/newProduct": "New Product",
   "/editProduct": "Edit Product",
 };
 function LinkRouter(props) {

@@ -15,7 +15,7 @@ export default function NewUser({ currentProducts, setCurrentProducts }) {
   async function handleSubmit(e) {
     e.preventDefault();
     const FETCHED_DATA = await axios.post(url, currentProducts);
-    navigate("/products");
+    navigate("/productsList");
   }
   function handleUpload(e) {
     setImage(URL.createObjectURL(e.target.files[0]));

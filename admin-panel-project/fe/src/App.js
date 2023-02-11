@@ -5,15 +5,15 @@ import NewUser from "./pages/NewUser";
 import { useState } from "react";
 import Box from "@mui/material/Box";
 import Home from "./pages/Navbar";
-import Products from "./pages/ProductList";
-import NewProducts from "./pages/NewProducts";
+import NewProduct from "./pages/NewProduct";
 import Container from "@mui/material/Container";
 import Page from "./components/Page";
 import EditUser from "./pages/EditUser";
 import EditProduct from "./pages/EditProduct";
 import Navbar from "./pages/Navbar";
-import ProductList from "./pages/ProductList";
-import UserList from "./pages/UserList";
+import ProductsList from "./pages/ProductsList";
+import UsersList from "./pages/UsersList";
+import Products from "./pages/Products";
 function App() {
   const [currentUser, setCurrentUser] = useState({
     firstname: "",
@@ -38,28 +38,29 @@ function App() {
     technology: "",
     rating: "",
   });
-
   return (
     <div className="App" style={{ backgroundColor: "#f5f5f5" }}>
       <Navbar />
       <Box sx={{ display: "flex", marginTop: 8 }}>
-        <Aside />
+        <Aside
+          setCurrentProducts={setCurrentProducts}
+          setCurrentUser={setCurrentUser}
+        />
         <Container>
           <Page />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/productList" element={<ProductList />} />
             <Route
-              path="/userList"
+              path="/usersList"
               element={
-                <UserList
+                <UsersList
                   currentUser={currentUser}
                   setCurrentUser={setCurrentUser}
                 />
               }
             />
             <Route
-              path="/new"
+              path="/newUser"
               element={
                 <NewUser
                   currentUser={currentUser}
@@ -77,18 +78,18 @@ function App() {
               }
             />
             <Route
-              path="/products"
+              path="/productsList"
               element={
-                <Products
+                <ProductsList
                   currentProducts={currentProducts}
                   setCurrentProducts={setCurrentProducts}
                 />
               }
             />
             <Route
-              path="/newProducts"
+              path="/newProduct"
               element={
-                <NewProducts
+                <NewProduct
                   currentProducts={currentProducts}
                   setCurrentProducts={setCurrentProducts}
                 />
@@ -103,6 +104,7 @@ function App() {
                 />
               }
             />
+            <Route path="/products" element={<Products />} />
           </Routes>
         </Container>
       </Box>

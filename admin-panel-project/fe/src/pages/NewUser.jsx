@@ -19,7 +19,7 @@ export default function NewUser({ currentUser, setCurrentUser }) {
   async function handleSubmit(e) {
     e.preventDefault();
     const FETCHED_DATA = await axios.post(URL, currentUser);
-    navigate("/users");
+    navigate("/usersList");
   }
 
   function handleFirstName(e) {

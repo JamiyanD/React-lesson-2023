@@ -62,17 +62,21 @@ export default function RouterBreadcrumbs({
         <ListItemLink to="/" open={open} onClick={handleClick} />
         <Collapse component="li" in={open} timeout="auto" unmountOnExit>
           <List disablePadding>
-            <ListItemLink sx={{ pl: 4 }} to="/userList" />
-            <ListItemLink sx={{ pl: 4 }} to="/new" />
+            <ListItemLink sx={{ pl: 4 }} to="/usersList" />
+            <ListItemLink
+              sx={{ pl: 4 }}
+              to="/newUser"
+              onClick={() => setCurrentUser("")}
+            />
             <ListItemLink sx={{ pl: 4 }} to="/editUser" />
           </List>
         </Collapse>
-        <ListItemLink to="/product" open={open2} onClick={handleClick2} />
+        <ListItemLink to="/products" open={open2} onClick={handleClick2} />
         <Collapse component="li" in={open2} timeout="auto" unmountOnExit>
           <List disablePadding>
-            <ListItemLink to="/productList" />
+            <ListItemLink to="/productsList" />
             <ListItemLink
-              to="/newProducts"
+              to="/newProduct"
               onClick={() => setCurrentProducts("")}
             />
             <ListItemLink to="/editProduct" />

@@ -31,7 +31,7 @@ export default function NewUser({ currentProducts, setCurrentProducts }) {
     };
 
     const FETCHED_DATA = await axios.put(url, putData);
-    navigate("/products");
+    navigate("/productsList");
   }
   const [file, setFiles] = useState(null);
   const inputRef = useRef();

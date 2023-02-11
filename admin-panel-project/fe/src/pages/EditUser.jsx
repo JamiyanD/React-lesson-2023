@@ -30,7 +30,7 @@ export default function EditUser({ currentUser, setCurrentUser }) {
       imgURL: currentUser.imgURL,
     };
     const FETCHED_DATA = await axios.put(URL, putData);
-    navigate("/users");
+    navigate("/usersList");
   }
 
   function handleFirstName(e) {

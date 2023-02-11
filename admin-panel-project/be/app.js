@@ -209,6 +209,7 @@ app.get("/newProducts", (request, response) => {
 
 app.delete("/newProducts", (request, response) => {
   const body = request.body;
+  console.log(body);
   fs.readFile("./data/products.json", "utf-8", (readError, readData) => {
     if (readError) {
       response.json({
