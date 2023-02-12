@@ -13,7 +13,7 @@ function App() {
       <Stopwatch />
       <InputFocus />
       <VideoPlayer />
-      {/* <input
+      <input
         type="checkbox"
         value={isLarge}
         onChange={(e) => {
@@ -23,7 +23,7 @@ function App() {
       <label>Use large Images</label>
       <hr />
 
-      <List /> */}
+      <List />
     </div>
   );
 }

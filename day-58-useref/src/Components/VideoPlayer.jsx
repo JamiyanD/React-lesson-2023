@@ -13,6 +13,7 @@ function VideoPlayer() {
       videoRef.current.pause();
     }
   };
+  console.log(videoRef)
   return (
     <>
       <button onClick={handleClick}>{isPlaying ? "Pause" : "Play"}</button>
