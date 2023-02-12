@@ -2,6 +2,7 @@ import "./App.css";
 import Heading from "./Components/Heading";
 import Layout from "./Components/Layout";
 import Section from "./Components/Section";
+import Userinfo from "./Components/Userinfo";
 import { UserProvider } from "./contexts/UserContext";
 
 function App() {
@@ -9,7 +10,7 @@ function App() {
   return (
     <div className="App">
       <h1>Day-57 React Context </h1>
-      <Section level={1}>
+      {/* <Section level={1}>
         <Heading>Title</Heading>
         <Section level={2}>
           <Heading>Heading</Heading>
@@ -26,7 +27,10 @@ function App() {
             </Section>
           </Section>
         </Section>
-      </Section>
+      </Section> */}
+      <UserProvider>
+        <Userinfo />
+      </UserProvider>
     </div>
   );
 }
