@@ -10,9 +10,7 @@ import TextField from "@mui/material/TextField";
 import Stack from "@mui/joy/Stack";
 import MenuItem from "@mui/material/MenuItem";
 import axios from "axios";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
+
 import ProductsTable from "../components/ProductsTable"
 export default function ProductsList({ currentProducts, setCurrentProducts, }) {
   const url = "http://localhost:8080/newProducts";
@@ -38,25 +36,7 @@ export default function ProductsList({ currentProducts, setCurrentProducts, }) {
     setUsers(filteredUser);
   }
 
-  const [age, setAge] = useState("");
 
-  const handleChange = async (select) => {
-    const FETCHED_DATA = await axios.get(url);
-    setUsers(FETCHED_DATA.data.data)
-    if (select.target.value == 10) {
-      const sortedData = [...FETCHED_DATA.data.data].sort((a, b) =>
-        a.price - b.price
-      );
-      setUsers(sortedData)
-    } else if (select.target.value == 20) {
-      const sortedData = [...FETCHED_DATA.data.data].sort((a, b) =>
-        b.price - a.price
-      );
-      setUsers(sortedData)
-    }
-    setAge(select.target.value);
-
-  };
 
 
 
@@ -94,22 +74,7 @@ export default function ProductsList({ currentProducts, setCurrentProducts, }) {
               size="small"
             />
           </form>
-          <FormControl sx={{ minWidth: 120 }} size="small">
-            <InputLabel id="demo-simple-select-label">Select </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={age}
-              label="Select"
-              onChange={handleChange}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value={10}>Price: Low to High</MenuItem>
-              <MenuItem value={20}>Price: High to Low</MenuItem>
-            </Select>
-          </FormControl>
+
         </Stack>
         <Button
           href="/newProduct"
@@ -121,9 +86,6 @@ export default function ProductsList({ currentProducts, setCurrentProducts, }) {
         >
           CREATE PRODUCT
         </Button>
-        <Typography variant="h6" sx={{ margin: "15px" }}>
-          Products
-        </Typography>
         <ProductsTable users={users}
           setUsers={setUsers}
           currentProducts={currentProducts} setCurrentProducts={setCurrentProducts} />

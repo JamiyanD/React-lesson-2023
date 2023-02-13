@@ -23,6 +23,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import PropTypes from "prop-types";
 import { alpha } from "@mui/material/styles";
+import TablePagination from "@mui/material/TablePagination";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import ProductsTableHead from "./ProductsTableHead";
 export default function UsersTable({
     currentProducts,
     setCurrentProducts,
@@ -32,13 +37,12 @@ export default function UsersTable({
 }) {
     const url = "http://localhost:8080/newProducts";
     async function handleDelete(userId) {
-        console.log(userId)
+        console.log(userId);
         const data = {
             userId: userId,
         };
         const FETCHED_DATA = await axios.delete(url, { data });
         setUsers(FETCHED_DATA.data.data);
-
     }
 
     async function handleEdit(userId) {
@@ -62,14 +66,13 @@ export default function UsersTable({
         }
     }
 
+    // menu
     const [openElem, setOpenElem] = useState(null);
     const [anchorEl, setAnchorEl] = useState(null);
-
-    const handleClick = (parametr) => (event) => {
+    const handleMenuClick = (parametr) => (event) => {
         setAnchorEl(event.currentTarget);
         setOpenElem(parametr);
     };
-
     const handleClose = () => {
         setAnchorEl(null);
         setOpenElem(null);
@@ -77,7 +80,23 @@ export default function UsersTable({
 
     function EnhancedTableToolbar(props) {
         const { numSelected } = props;
-
+        const [age, setAge] = useState("");
+        const handleChange = async (select) => {
+            const FETCHED_DATA = await axios.get(url);
+            setUsers(FETCHED_DATA.data.data);
+            if (select.target.value == 10) {
+                const sortedData = [...FETCHED_DATA.data.data].sort(
+                    (a, b) => a.price - b.price
+                );
+                setUsers(sortedData);
+            } else if (select.target.value == 20) {
+                const sortedData = [...FETCHED_DATA.data.data].sort(
+                    (a, b) => b.price - a.price
+                );
+                setUsers(sortedData);
+            }
+            setAge(select.target.value);
+        };
         return (
             <Toolbar
                 sx={{
@@ -88,8 +107,8 @@ export default function UsersTable({
                             alpha(
                                 theme.palette.primary.main,
                                 theme.palette.action.activatedOpacity
-                            )
-                    })
+                            ),
+                    }),
                 }}
             >
                 {numSelected > 0 ? (
@@ -108,44 +127,46 @@ export default function UsersTable({
                         id="tableTitle"
                         component="div"
                     >
-                        Nutrition
+                        Products
                     </Typography>
                 )}
 
                 {numSelected > 0 ? (
                     <Tooltip title="Delete">
-                        <IconButton>
-                            <DeleteIcon onClick={() => {
-                                console.log(selected)
-                                handleDelete(selected)
-                            }} />
-                        </IconButton>
+                        <DeleteIcon
+                            onClick={() => {
+                                console.log(selected);
+                                handleDelete(selected[0]);
+                            }}
+                        />
                     </Tooltip>
                 ) : (
-                    <Tooltip title="Filter list">
-                        <IconButton>
-                            <FilterListIcon />
-                        </IconButton>
-                    </Tooltip>
+                    <FormControl sx={{ minWidth: 120 }} size="small">
+                        <InputLabel id="demo-simple-select-label">Select </InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={age}
+                            label="Select"
+                            onChange={handleChange}
+                        >
+                            <MenuItem value="">
+                                <em>None</em>
+                            </MenuItem>
+                            <MenuItem value={10}>Price: Low to High</MenuItem>
+                            <MenuItem value={20}>Price: High to Low</MenuItem>
+                        </Select>
+                    </FormControl>
                 )}
             </Toolbar>
         );
     }
 
-    EnhancedTableToolbar.propTypes = {
-        numSelected: PropTypes.number.isRequired
-    };
+    // EnhancedTableToolbar.propTypes = {
+    //     numSelected: PropTypes.number.isRequired,
+    // };
 
     const [selected, setSelected] = React.useState([]);
-
-    const handleSelectAllClick = (event) => {
-        if (event.target.checked) {
-            const newSelected = users.map((n) => n.id);
-            setSelected(newSelected);
-            return;
-        }
-        setSelected([]);
-    };
 
     const handleCheckbox = (event, name) => {
         const selectedIndex = selected.indexOf(name);
@@ -167,118 +188,157 @@ export default function UsersTable({
     };
     const isSelected = (name) => selected.indexOf(name) !== -1;
 
+    // pagination
+    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [page, setPage] = React.useState(0);
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
+
+    // order
+    const [order, setOrder] = React.useState("asc");
+    const [orderBy, setOrderBy] = React.useState("subtitle");
+    function stableSort(array, comparator) {
+        const stabilizedThis = array.map((el, index) => [el, index]);
+        stabilizedThis.sort((a, b) => {
+            const order = comparator(a[0], b[0]);
+            if (order !== 0) {
+                return order;
+            }
+            return a[1] - b[1];
+        });
+
+        return stabilizedThis.map((el) => el[0]);
+    }
+    function getComparator(order, orderBy) {
+        return order === "desc"
+            ? (a, b) => descendingComparator(a, b, orderBy)
+            : (a, b) => -descendingComparator(a, b, orderBy);
+    }
+    function descendingComparator(a, b, orderBy) {
+
+        if (Number(b[orderBy]) < Number(a[orderBy])) {
+            return -1;
+        }
+        if (Number(b[orderBy]) > Number(a[orderBy])) {
+            return 1;
+        }
+
+        return 0;
+
+    }
+
     return (
         <div>
             <EnhancedTableToolbar numSelected={selected.length} />
             <TableContainer component={Paper}>
                 <Table stickyHeader aria-label="sticky table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell sx={{ padding: 0 }}>
-                                <Checkbox color="primary"
-                                    indeterminate={selected.length > 0 && selected.length < users.length}
-                                    checked={users.length > 0 && selected.length === users.length}
-                                    onChange={handleSelectAllClick}
-                                    inputProps={{
-                                        "aria-label": "select all desserts"
-                                    }} />
-                            </TableCell>
-                            <TableCell>ID</TableCell>
-                            <TableCell>Image</TableCell>
-                            <TableCell>Title</TableCell>
-                            <TableCell>Subtitle</TableCell>
-                            <TableCell>
-                                <Stack direction="row" spacing={0.5}>
-                                    Price
-                                    <ArrowUpwardIcon></ArrowUpwardIcon>
-                                </Stack>
-                            </TableCell>
-                            <TableCell>Rating</TableCell>
-                            <TableCell>Actions</TableCell>
-                        </TableRow>
-                    </TableHead>
+                    <ProductsTableHead
+                        setSelected={setSelected}
+                        users={users}
+                        selected={selected}
+                        order={order}
+                        setOrder={setOrder}
+                        orderBy={orderBy}
+                        setOrderBy={setOrderBy}
+                    />
                     <TableBody>
-                        {users.map((parametr, index) => (
-                            <TableRow
-
-                                hover
-                                onClick={(event) => handleCheckbox(event, parametr.id)}
-                                role="checkbox"
-                                aria-checked={isSelected(parametr.id)}
-                                tabIndex={-1}
-                                key={index}
-                                selected={isSelected(parametr.id)}
-                            >
-                                <TableCell sx={{ padding: 0 }}>
-                                    <Checkbox color="primary"
-                                        checked={isSelected(parametr.id)}
-                                    />
-                                </TableCell>
-                                <TableCell component="th" scope="row">
-                                    {parametr.id % 100}
-                                </TableCell>
-                                <TableCell>Not Yet</TableCell>
-                                <TableCell>{parametr.title}</TableCell>
-                                <TableCell>{parametr.subtitle}</TableCell>
-                                <TableCell>
-                                    {parametr.price && `$${parametr.price}`}
-                                </TableCell>
-                                <TableCell>
-                                    {parametr.rating && (
-                                        <Stack direction="row">
-                                            <Typography>{parametr.rating}</Typography>
-                                            <img
-                                                src="https://freesvg.org/img/1289679474.png"
-                                                alt=""
-                                                style={{ width: 16, height: 20, marginLeft: "4px" }}
-                                            />
-                                        </Stack>
-                                    )}
-                                </TableCell>
-                                <TableCell>
-                                    {" "}
-                                    <IconButton
-                                        aria-label="more"
-                                        id="long-button"
-                                        aria-haspopup="true"
-                                        onClick={handleClick(parametr.id)}
-                                    >
-                                        <MoreVertIcon />
-                                    </IconButton>
-                                    <Menu
-                                        id="long-menu"
-                                        MenuListProps={{
-                                            "aria-labelledby": "long-button",
-                                        }}
-                                        anchorEl={anchorEl}
-                                        open={openElem === parametr.id}
-                                        onClose={handleClose}
-                                        PaperProps={{}}
-                                    >
-                                        <MenuItem
-                                            component={Link}
-                                            to={"/editProduct"}
-                                            onClick={() => {
-                                                handleEdit(parametr.id);
-                                            }}
+                        {stableSort(users, getComparator(order, orderBy))
+                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            .map((parametr, index) => (
+                                <TableRow
+                                    hover
+                                    onClick={(event) => handleCheckbox(event, parametr.id)}
+                                    role="checkbox"
+                                    aria-checked={isSelected(parametr.id)}
+                                    tabIndex={-1}
+                                    key={index}
+                                    selected={isSelected(parametr.id)}
+                                >
+                                    <TableCell sx={{ padding: 0 }}>
+                                        <Checkbox
+                                            color="primary"
+                                            checked={isSelected(parametr.id)}
+                                        />
+                                    </TableCell>
+                                    <TableCell component="th" scope="row">
+                                        {parametr.id % 100}
+                                    </TableCell>
+                                    <TableCell>Not Yet</TableCell>
+                                    <TableCell>{parametr.title}</TableCell>
+                                    <TableCell>{parametr.subtitle}</TableCell>
+                                    <TableCell>
+                                        {parametr.price && `$${parametr.price}`}
+                                    </TableCell>
+                                    <TableCell>
+                                        {parametr.rating && (
+                                            <Stack direction="row">
+                                                <Typography>{parametr.rating}</Typography>
+                                                <img
+                                                    src="https://freesvg.org/img/1289679474.png"
+                                                    alt=""
+                                                    style={{ width: 16, height: 20, marginLeft: "4px" }}
+                                                />
+                                            </Stack>
+                                        )}
+                                    </TableCell>
+                                    <TableCell>
+                                        {" "}
+                                        <IconButton
+                                            aria-label="more"
+                                            id="long-button"
+                                            aria-haspopup="true"
+                                            onClick={handleMenuClick(parametr.id)}
                                         >
-                                            Edit
-                                        </MenuItem>
-                                        <MenuItem
-                                            onClick={() => {
-                                                handleDelete(parametr.id);
-                                                handleClose();
+                                            <MoreVertIcon />
+                                        </IconButton>
+                                        <Menu
+                                            id="long-menu"
+                                            MenuListProps={{
+                                                "aria-labelledby": "long-button",
                                             }}
+                                            anchorEl={anchorEl}
+                                            open={openElem === parametr.id}
+                                            onClose={handleClose}
+                                            PaperProps={{}}
                                         >
-                                            Delete
-                                        </MenuItem>
-                                    </Menu>
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                                            <MenuItem
+                                                component={Link}
+                                                to={"/editProduct"}
+                                                onClick={() => {
+                                                    handleEdit(parametr.id);
+                                                }}
+                                            >
+                                                Edit
+                                            </MenuItem>
+                                            <MenuItem
+                                                onClick={() => {
+                                                    handleDelete(parametr.id);
+                                                    handleClose();
+                                                }}
+                                            >
+                                                Delete
+                                            </MenuItem>
+                                        </Menu>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
                     </TableBody>
                 </Table>
             </TableContainer>
+            <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={users.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+            />
         </div>
     );
 }
