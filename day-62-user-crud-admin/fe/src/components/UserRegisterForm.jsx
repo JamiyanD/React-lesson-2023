@@ -57,7 +57,7 @@ export default function UserRegisterForm() {
           <Grid item xs={12}>
             <TextField
               id="firstname"
-              name="firsname"
+              name="firstname"
               variant="filled"
               size="small"
               defaultValue=""
