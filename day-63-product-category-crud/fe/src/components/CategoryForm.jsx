@@ -11,7 +11,10 @@ export default function CategoryForm() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ catName: e.target.catName.value }),
+      body: JSON.stringify({
+        categoryName: e.target.categoryName.value,
+        isEdit: false,
+      }),
     };
     const FETCHED_DATA = await fetch(URL, options);
     const FETCHED_JSON = await FETCHED_DATA.json();
@@ -24,7 +27,7 @@ export default function CategoryForm() {
     <div>
       <h1>Category Form</h1>
       <form onSubmit={handleCategorySubmit}>
-        <input name="catName" type="text" />
+        <input name="categoryName" type="text" />
         <br />
         <button>Save</button>
       </form>
