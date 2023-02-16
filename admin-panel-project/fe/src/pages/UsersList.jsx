@@ -13,7 +13,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 export default function UsersList({ currentUser, setCurrentUser }) {
-  const URL = "http://localhost:8080/new";
+  const URL = "http://localhost:8080/user";
   const [users, setUsers] = useState([]);
 
   async function fetchScreen() {

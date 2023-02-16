@@ -1,17 +1,34 @@
 import TextField from "@mui/material/TextField";
 import * as React from "react";
 import Button from "@mui/material/Button";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/joy/Stack";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import axios from "axios";
 export default function NewUser({ currentProducts, setCurrentProducts }) {
-  const url = "http://localhost:8080/newProducts";
+  const url = "http://localhost:8080/product";
   const [image, setImage] = useState(null);
   const navigate = useNavigate();
+  const { id } = useParams();
+  async function fetchProduct() {
+    const options = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ productId: id }),
+    };
+    const FETCHED_DATA = await fetch(url, options);
+    const FETCHED_JSON = await FETCHED_DATA.json();
+    console.log("hhi");
+    if (FETCHED_JSON.status === "success") {
+      setCurrentProducts(FETCHED_JSON.data);
+    }
+  }
+  useEffect(() => {
+    fetchProduct();
+  }, []);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -35,14 +52,6 @@ export default function NewUser({ currentProducts, setCurrentProducts }) {
   }
   const [file, setFiles] = useState(null);
   const inputRef = useRef();
-  function handleUpload(e) {
-    setImage(URL.createObjectURL(e.target.files[0]));
-    console.log(URL.createObjectURL(e.target.files[0]));
-    setCurrentProducts({
-      ...currentProducts,
-      imgURL: "Not Yet",
-    });
-  }
 
   function handleTitle(e) {
     setCurrentProducts({
@@ -120,13 +129,7 @@ export default function NewUser({ currentProducts, setCurrentProducts }) {
               </Typography>
               <Button variant="outlined" component="label">
                 Upload
-                <input
-                  hidden
-                  accept="image/*"
-                  multiple
-                  type="file"
-                  onChange={handleUpload}
-                />
+                <input hidden accept="image/*" multiple type="file" />
               </Button>
             </Stack>
             <Stack direction="row" alignItems="center">

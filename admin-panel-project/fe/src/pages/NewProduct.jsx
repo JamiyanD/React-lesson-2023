@@ -9,7 +9,7 @@ import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import axios from "axios";
 export default function NewUser({ currentProducts, setCurrentProducts }) {
-  const url = "http://localhost:8080/newProducts";
+  const url = "http://localhost:8080/product";
   const [image, setImage] = useState(null);
   const navigate = useNavigate();
   async function handleSubmit(e) {

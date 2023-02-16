@@ -11,9 +11,9 @@ import Stack from "@mui/joy/Stack";
 import MenuItem from "@mui/material/MenuItem";
 import axios from "axios";
 
-import ProductsTable from "../components/ProductsTable"
-export default function ProductsList({ currentProducts, setCurrentProducts, }) {
-  const url = "http://localhost:8080/newProducts";
+import ProductsTable from "../components/ProductsTable";
+export default function ProductsList({ currentProducts, setCurrentProducts }) {
+  const url = "http://localhost:8080/product";
   const [users, setUsers] = useState([]);
 
   async function fetchScreen() {
@@ -26,20 +26,13 @@ export default function ProductsList({ currentProducts, setCurrentProducts, }) {
     fetchScreen();
   }, []);
 
-
   async function handleSearch(e) {
     e.preventDefault();
-    const FETCHED_DATA = await axios.get(url);
-    const filteredUser = FETCHED_DATA.data.data.filter((user) =>
-      user.title.toLowerCase().includes(e.target.search.value.toLowerCase())
-    );
-    setUsers(filteredUser);
+    const searchInput = e.target.search.value;
+    const SEARCH_URL = `http://localhost:8080/search?value=${searchInput}`;
+    const AXIOS_DATA = await axios.get(SEARCH_URL);
+    setUsers(AXIOS_DATA.data.data);
   }
-
-
-
-
-
 
   return (
     <Box sx={{ display: "flex", backgroundColor: "white" }}>
@@ -74,7 +67,6 @@ export default function ProductsList({ currentProducts, setCurrentProducts, }) {
               size="small"
             />
           </form>
-
         </Stack>
         <Button
           href="/newProduct"
@@ -86,9 +78,12 @@ export default function ProductsList({ currentProducts, setCurrentProducts, }) {
         >
           CREATE PRODUCT
         </Button>
-        <ProductsTable users={users}
+        <ProductsTable
+          users={users}
           setUsers={setUsers}
-          currentProducts={currentProducts} setCurrentProducts={setCurrentProducts} />
+          currentProducts={currentProducts}
+          setCurrentProducts={setCurrentProducts}
+        />
       </Box>
     </Box>
   );

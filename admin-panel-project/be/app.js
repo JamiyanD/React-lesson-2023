@@ -9,7 +9,7 @@ const PORT = 8080;
 app.use(cors());
 app.use(express.json());
 
-app.post("/new", (request, response) => {
+app.post("/user", (request, response) => {
   console.log(request.body);
   fs.readFile("./data/users.json", "utf-8", (readError, readData) => {
     const newUser = {
@@ -53,7 +53,7 @@ app.post("/new", (request, response) => {
   });
 });
 
-app.get("/new", (request, response) => {
+app.get("/user", (request, response) => {
   fs.readFile("./data/users.json", "utf-8", (readError, readData) => {
     // utf-8 n ymr formataar avhig zana
     if (readError) {
@@ -70,7 +70,7 @@ app.get("/new", (request, response) => {
   });
 });
 
-app.delete("/new", (request, response) => {
+app.delete("/user", (request, response) => {
   const body = request.body;
   console.log(body);
   fs.readFile("./data/users.json", "utf-8", (readError, readData) => {
@@ -102,7 +102,7 @@ app.delete("/new", (request, response) => {
   });
 });
 
-app.put("/new", (request, response) => {
+app.put("/user", (request, response) => {
   fs.readFile("./data/users.json", "utf-8", (readError, readData) => {
     if (readError) {
       response.json({
@@ -145,7 +145,7 @@ app.put("/new", (request, response) => {
   });
 });
 
-app.post("/newProducts", (request, response) => {
+app.post("/product", (request, response) => {
   const newUser = {
     id: Date.now(),
     imgURL: request.body.imgURL,
@@ -189,7 +189,7 @@ app.post("/newProducts", (request, response) => {
   });
 });
 
-app.get("/newProducts", (request, response) => {
+app.get("/product", (request, response) => {
   fs.readFile("./data/products.json", "utf-8", (readError, readData) => {
     // utf-8 n ymr formataar avhig zana
     if (readError) {
@@ -207,7 +207,7 @@ app.get("/newProducts", (request, response) => {
   });
 });
 
-app.delete("/newProducts", (request, response) => {
+app.delete("/product", (request, response) => {
   const body = request.body;
   console.log(body);
   fs.readFile("./data/products.json", "utf-8", (readError, readData) => {
@@ -239,57 +239,53 @@ app.delete("/newProducts", (request, response) => {
   });
 });
 
-app.put("/newProducts", (request, response) => {
-  fs.readFile("./data/products.json", "utf-8", (readError, readData) => {
-    if (readError) {
-      response.json({
-        status: "file read error",
-        data: [],
-      });
-    }
-    const savedData = JSON.parse(readData);
-
-    const changedData = savedData.map((d) => {
-      if (d.id === request.body.id) {
-        (d.imgURL = request.body.imgURL),
-          (d.title = request.body.title),
-          (d.subtitle = request.body.subtitle),
-          (d.price = request.body.price),
-          (d.discount = request.body.discount),
-          (d.description1 = request.body.description1),
-          (d.description2 = request.body.description2),
-          (d.code = request.body.code);
-        d.hashtag = request.body.hashtag;
-        d.technology = request.body.technology;
-        d.rating = request.body.rating;
-      }
-      return d;
-    });
-
-    fs.writeFile(
-      "./data/products.json",
-      JSON.stringify(changedData),
-      (writeError) => {
-        if (writeError) {
-          response.json({
-            status: "file write error",
-            data: [],
-          });
-        }
-        response.json({
-          status: "success",
-          data: changedData,
-        });
-      }
-    );
+app.put("/product", (request, response) => {
+  console.log(request.body);
+  const savedProducts = fs.readFileSync("./data/products.json", {
+    encoding: "utf-8",
+    flag: "r",
   });
-});
-
-const upload = multer();
-app.post("/upload", upload.single("file"), function (request, response) {
+  const savedProductsObjectArray = JSON.parse(savedProducts);
+  const foundProduct = savedProductsObjectArray.filter(
+    (product) => product.id == request.body.productId
+  )[0];
   response.json({
     status: "success",
-    data: [],
+    data: foundProduct,
+  });
+
+  // const changedData = savedData.map((d) => {
+  //   if (d.id === request.body.id) {
+  //     (d.imgURL = request.body.imgURL),
+  //       (d.title = request.body.title),
+  //       (d.subtitle = request.body.subtitle),
+  //       (d.price = request.body.price),
+  //       (d.discount = request.body.discount),
+  //       (d.description1 = request.body.description1),
+  //       (d.description2 = request.body.description2),
+  //       (d.code = request.body.code);
+  //     d.hashtag = request.body.hashtag;
+  //     d.technology = request.body.technology;
+  //     d.rating = request.body.rating;
+  //   }
+  //   return d;
+  // });
+});
+
+app.get("/search", (request, response) => {
+  console.log(request.query);
+  const savedCategories = fs.readFileSync("./data/products.json", {
+    encoding: "utf-8",
+    flag: "r",
+  });
+  const savedCategoriesArrayObject = JSON.parse(savedCategories);
+  console.log(savedCategoriesArrayObject);
+  const foundCategory = savedCategoriesArrayObject.filter((product) =>
+    product.title.includes(request.query.value)
+  );
+  response.json({
+    status: "success",
+    data: foundCategory,
   });
 });
 

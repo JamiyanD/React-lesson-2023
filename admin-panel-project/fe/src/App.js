@@ -96,7 +96,7 @@ function App() {
               }
             />
             <Route
-              path="/editProduct"
+              path="/product/edit/:id"
               element={
                 <EditProduct
                   currentProducts={currentProducts}

@@ -14,7 +14,7 @@ import Box from "@mui/material/Box";
 import axios from "axios";
 export default function EditUser({ currentUser, setCurrentUser }) {
   const navigate = useNavigate();
-  const URL = "http://localhost:8080/new";
+  const URL = "http://localhost:8080/user";
 
   async function handleSubmit(e) {
     e.preventDefault();

@@ -21,7 +21,7 @@ export default function UsersTable({
   setUsers,
   handleEdit,
 }) {
-  const URL = "http://localhost:8080/new";
+  const URL = "http://localhost:8080/user";
   async function handleDelete(userId) {
     const data = {
       userId: userId,
