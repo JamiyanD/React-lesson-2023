@@ -8,11 +8,11 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import axios from "axios";
-export default function NewUser({ currentProducts, setCurrentProducts }) {
+export default function EditProduct() {
   const url = "http://localhost:8080/product";
-  const [image, setImage] = useState(null);
   const navigate = useNavigate();
   const { id } = useParams();
+  const [currentProducts, setCurrentProducts] = useState("");
   async function fetchProduct() {
     const options = {
       method: "PUT",
@@ -21,7 +21,7 @@ export default function NewUser({ currentProducts, setCurrentProducts }) {
     };
     const FETCHED_DATA = await fetch(url, options);
     const FETCHED_JSON = await FETCHED_DATA.json();
-    console.log("hhi");
+    console.log(FETCHED_JSON);
     if (FETCHED_JSON.status === "success") {
       setCurrentProducts(FETCHED_JSON.data);
     }
@@ -32,27 +32,24 @@ export default function NewUser({ currentProducts, setCurrentProducts }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const putData = {
-      id: currentProducts.id,
-      imgURL: currentProducts.imgURL,
-      title: currentProducts.title,
-      subtitle: currentProducts.subtitle,
-      price: currentProducts.price,
-      discount: currentProducts.discount,
-      description1: currentProducts.description1,
-      description2: currentProducts.description2,
-      code: currentProducts.code,
-      hashtag: currentProducts.hashtag,
-      technology: currentProducts.technology,
-      rating: currentProducts.rating,
-    };
+    // const putData = {
+    //   id: currentProducts.id,
+    //   imgURL: currentProducts.imgURL,
+    //   title: currentProducts.title,
+    //   subtitle: currentProducts.subtitle,
+    //   price: currentProducts.price,
+    //   discount: currentProducts.discount,
+    //   description1: currentProducts.description1,
+    //   description2: currentProducts.description2,
+    //   code: currentProducts.code,
+    //   hashtag: currentProducts.hashtag,
+    //   technology: currentProducts.technology,
+    //   rating: currentProducts.rating,
+    // };
 
-    const FETCHED_DATA = await axios.put(url, putData);
-    navigate("/productsList");
+    // const FETCHED_DATA = await axios.put(url, putData);
+    // navigate("/productsList");
   }
-  const [file, setFiles] = useState(null);
-  const inputRef = useRef();
-
   function handleTitle(e) {
     setCurrentProducts({
       ...currentProducts,
@@ -249,6 +246,7 @@ export default function NewUser({ currentProducts, setCurrentProducts }) {
                 Rating
               </Typography>
               <Rating
+                value={currentProducts.rating}
                 name="customized-10"
                 onChange={handleRating}
                 max={10}

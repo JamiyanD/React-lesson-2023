@@ -99,8 +99,8 @@ function App() {
               path="/product/edit/:id"
               element={
                 <EditProduct
-                  currentProducts={currentProducts}
-                  setCurrentProducts={setCurrentProducts}
+                // currentProducts={currentProducts}
+                // setCurrentProducts={setCurrentProducts}
                 />
               }
             />
