@@ -22,9 +22,8 @@ export default function UserRegisterForm() {
   }
   useEffect(() => {
     fetchRoles();
-  });
+  }, []);
   function handleSelectChange(e) {
-    console.log(e.target.value);
     setCurrentRole(e.target.value);
   }
   const navigate = useNavigate();

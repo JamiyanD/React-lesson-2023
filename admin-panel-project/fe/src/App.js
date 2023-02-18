@@ -4,111 +4,34 @@ import Aside from "./components/Aside";
 import NewUser from "./pages/NewUser";
 import { useState } from "react";
 import Box from "@mui/material/Box";
-import Home from "./pages/Navbar";
+import Home from "./components/Navbar";
 import NewProduct from "./pages/NewProduct";
 import Container from "@mui/material/Container";
 import Page from "./components/Page";
 import EditUser from "./pages/EditUser";
 import EditProduct from "./pages/EditProduct";
-import Navbar from "./pages/Navbar";
+import Navbar from "./components/Navbar";
 import ProductsList from "./pages/ProductsList";
 import UsersList from "./pages/UsersList";
-import Products from "./pages/Products";
+import Login from "./pages/Login";
+
 function App() {
-  const [currentUser, setCurrentUser] = useState({
-    firstname: "",
-    lastname: "",
-    phoneNumber: "",
-    email: "",
-    password: "",
-    checkbox: false,
-    radio: "",
-    imgURL: "",
-  });
-  const [currentProducts, setCurrentProducts] = useState({
-    imgURL: "",
-    title: "",
-    subtitle: "",
-    price: "",
-    discount: "",
-    description1: "",
-    description2: "",
-    code: "",
-    hashtag: "",
-    technology: "",
-    rating: "",
-  });
   return (
-    <div className="App" style={{ backgroundColor: "#f5f5f5" }}>
+    <Container className="App">
       <Navbar />
-      <Box sx={{ display: "flex", marginTop: 8 }}>
-        <Aside
-          setCurrentProducts={setCurrentProducts}
-          setCurrentUser={setCurrentUser}
-        />
-        <Container>
-          <Page />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route
-              path="/usersList"
-              element={
-                <UsersList
-                  currentUser={currentUser}
-                  setCurrentUser={setCurrentUser}
-                />
-              }
-            />
-            <Route
-              path="/newUser"
-              element={
-                <NewUser
-                  currentUser={currentUser}
-                  setCurrentUser={setCurrentUser}
-                />
-              }
-            />
-            <Route
-              path="/editUser"
-              element={
-                <EditUser
-                  currentUser={currentUser}
-                  setCurrentUser={setCurrentUser}
-                />
-              }
-            />
-            <Route
-              path="/productsList"
-              element={
-                <ProductsList
-                  currentProducts={currentProducts}
-                  setCurrentProducts={setCurrentProducts}
-                />
-              }
-            />
-            <Route
-              path="/newProduct"
-              element={
-                <NewProduct
-                  currentProducts={currentProducts}
-                  setCurrentProducts={setCurrentProducts}
-                />
-              }
-            />
-            <Route
-              path="/product/edit/:id"
-              element={
-                <EditProduct
-                // currentProducts={currentProducts}
-                // setCurrentProducts={setCurrentProducts}
-                />
-              }
-            />
-            <Route path="/products" element={<Products />} />
-          </Routes>
-        </Container>
-      </Box>
-    </div>
+      <Page />
+      <Routes>
+        <Route path="/user-management" element={<Home />} />
+        <Route path="/usersList" element={<UsersList />} />
+        <Route path="/newUser" element={<NewUser />} />
+        <Route path="/user/edit/:id" element={<EditUser />} />
+        <Route path="/productsList" element={<ProductsList />} />
+        <Route path="/newProduct" element={<NewProduct />} />
+        <Route path="/product/edit/:id" element={<EditProduct />} />
+        <Route path="/eCommerce" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </Container>
   );
 }
 

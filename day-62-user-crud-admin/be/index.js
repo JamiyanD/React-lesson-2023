@@ -32,7 +32,7 @@ app.post("/register", (request, response) => {
 
       const roleData = JSON.parse(readData);
       const roleName = roleData.filter((role) => role.id === body.role)[0];
-
+      console.log(roleName);
       const userPassword = body.password;
       bcrypt.genSalt(SALT_ROUNDS, (err, salt) => {
         if (err) {
@@ -78,7 +78,6 @@ app.post("/register", (request, response) => {
       });
 
       const userData = { ...body, role: roleName };
-      console.log(body);
     });
   });
 });
@@ -139,13 +138,6 @@ app.post("/login", (request, response) => {
           }
         }
       );
-
-      // if (foundUserObj.password !== body.password) {
-      //   response.json({
-      //     status: "Username or Password do not match!!",
-      //   });
-      // } else {
-      // }
     }
   });
 });

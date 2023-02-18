@@ -10,7 +10,7 @@ import TextField from "@mui/material/TextField";
 import Stack from "@mui/joy/Stack";
 import MenuItem from "@mui/material/MenuItem";
 import axios from "axios";
-
+import InputAdornment from "@mui/material/InputAdornment";
 import ProductsTable from "../components/ProductsTable";
 export default function ProductsList({ currentProducts, setCurrentProducts }) {
   const url = "http://localhost:8080/product";
@@ -31,7 +31,9 @@ export default function ProductsList({ currentProducts, setCurrentProducts }) {
     const searchInput = e.target.search.value;
     const SEARCH_URL = `http://localhost:8080/search?value=${searchInput}`;
     const AXIOS_DATA = await axios.get(SEARCH_URL);
-    setUsers(AXIOS_DATA.data.data);
+    if (AXIOS_DATA.data.status === "success") {
+      setUsers(AXIOS_DATA.data.data);
+    }
   }
 
   return (
@@ -55,35 +57,32 @@ export default function ProductsList({ currentProducts, setCurrentProducts }) {
             </Typography>
           </Box>
           <form onSubmit={handleSearch}>
-            <IconButton type="submit" aria-label="search">
-              <SearchIcon />
-            </IconButton>
             <TextField
               name="search"
-              className="text"
               label="Search"
               variant="outlined"
               placeholder="Search..."
               size="small"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <IconButton
+                      type="submit"
+                      aria-label="search"
+                      sx={{ padding: 0 }}
+                    >
+                      <SearchIcon />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
           </form>
         </Stack>
-        <Button
-          href="/newProduct"
-          variant="contained"
-          sx={{ margin: "10px" }}
-          onClick={() => {
-            setCurrentProducts("");
-          }}
-        >
+        <Button href="/newProduct" variant="contained" sx={{ margin: "10px" }}>
           CREATE PRODUCT
         </Button>
-        <ProductsTable
-          users={users}
-          setUsers={setUsers}
-          currentProducts={currentProducts}
-          setCurrentProducts={setCurrentProducts}
-        />
+        <ProductsTable users={users} setUsers={setUsers} />
       </Box>
     </Box>
   );

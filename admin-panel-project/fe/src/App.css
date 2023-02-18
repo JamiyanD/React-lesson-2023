@@ -1,3 +1,21 @@
 .App{
   font-family: 'Roboto', sans-serif;
+
+}
+a{
+  text-decoration: none;
+}
+.dropdown-toggle::after{
+  display: none;
+}
+.navbar-toggler:focus,
+.navbar-toggler:active{
+    box-shadow: none;
+}
+.MuiBreadcrumbs-separator{
+  color: white;
+}
+.color-blue{
+  background-color: #2C9AFF;
+
 }

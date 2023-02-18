@@ -28,13 +28,7 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import ProductsTableHead from "./ProductsTableHead";
-export default function UsersTable({
-  currentProducts,
-  setCurrentProducts,
-  users,
-  setUsers,
-  handleEdit,
-}) {
+export default function UsersTable({ users, setUsers, handleEdit }) {
   const url = "http://localhost:8080/product";
   async function handleDelete(userId) {
     console.log(userId);
@@ -44,27 +38,6 @@ export default function UsersTable({
     const FETCHED_DATA = await axios.delete(url, { data });
     setUsers(FETCHED_DATA.data.data);
   }
-
-  //   async function handleEdit(userId) {
-  //     const filteredUser = users.filter((user) => user.id === userId)[0];
-  //     if (filteredUser) {
-  //       setCurrentProducts({
-  //         ...currentProducts,
-  //         id: filteredUser.id,
-  //         imgURL: filteredUser.imgURL,
-  //         title: filteredUser.title,
-  //         subtitle: filteredUser.subtitle,
-  //         price: filteredUser.price,
-  //         discount: filteredUser.discount,
-  //         description1: filteredUser.description1,
-  //         description2: filteredUser.description2,
-  //         code: filteredUser.code,
-  //         hashtag: filteredUser.hashtag,
-  //         technology: filteredUser.technology,
-  //         rating: filteredUser.rating,
-  //       });
-  //     }
-  //   }
 
   // menu
   const [openElem, setOpenElem] = useState(null);

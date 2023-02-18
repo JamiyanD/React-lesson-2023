@@ -12,43 +12,52 @@ export default function EditProduct() {
   const url = "http://localhost:8080/product";
   const navigate = useNavigate();
   const { id } = useParams();
-  const [currentProducts, setCurrentProducts] = useState("");
-  async function fetchProduct() {
-    const options = {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ productId: id }),
-    };
-    const FETCHED_DATA = await fetch(url, options);
-    const FETCHED_JSON = await FETCHED_DATA.json();
-    console.log(FETCHED_JSON);
-    if (FETCHED_JSON.status === "success") {
-      setCurrentProducts(FETCHED_JSON.data);
-    }
-  }
+  const [currentProducts, setCurrentProducts] = useState({
+    imgURL: "",
+    title: "",
+    subtitle: "",
+    price: "",
+    discount: "",
+    description1: "",
+    description2: "",
+    code: "",
+    hashtag: "",
+    technology: "",
+    rating: 0,
+  });
   useEffect(() => {
     fetchProduct();
   }, []);
+  async function fetchProduct() {
+    const AXIOS_DATA = await axios.put(url, { productId: id });
+    console.log(AXIOS_DATA);
+    if (AXIOS_DATA.data.status === "success") {
+      setCurrentProducts(AXIOS_DATA.data.data);
+    }
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
-    // const putData = {
-    //   id: currentProducts.id,
-    //   imgURL: currentProducts.imgURL,
-    //   title: currentProducts.title,
-    //   subtitle: currentProducts.subtitle,
-    //   price: currentProducts.price,
-    //   discount: currentProducts.discount,
-    //   description1: currentProducts.description1,
-    //   description2: currentProducts.description2,
-    //   code: currentProducts.code,
-    //   hashtag: currentProducts.hashtag,
-    //   technology: currentProducts.technology,
-    //   rating: currentProducts.rating,
-    // };
-
-    // const FETCHED_DATA = await axios.put(url, putData);
-    // navigate("/productsList");
+    const putData = {
+      ProductId: id,
+      id: currentProducts.id,
+      imgURL: currentProducts.imgURL,
+      title: currentProducts.title,
+      subtitle: currentProducts.subtitle,
+      price: currentProducts.price,
+      discount: currentProducts.discount,
+      description1: currentProducts.description1,
+      description2: currentProducts.description2,
+      code: currentProducts.code,
+      hashtag: currentProducts.hashtag,
+      technology: currentProducts.technology,
+      rating: currentProducts.rating,
+      isEdit: true,
+    };
+    const AXIOS_DATA = await axios.post(url, putData);
+    if (AXIOS_DATA.data.status === "success") {
+      navigate("/productsList");
+    }
   }
   function handleTitle(e) {
     setCurrentProducts({
@@ -246,7 +255,7 @@ export default function EditProduct() {
                 Rating
               </Typography>
               <Rating
-                value={currentProducts.rating}
+                value={Number(currentProducts.rating)}
                 name="customized-10"
                 onChange={handleRating}
                 max={10}

@@ -29,6 +29,10 @@ export default function LoginForm() {
   return (
     <div>
       <h1>LoginForm</h1>
+      <a href="/users">users</a>
+      <a href="/register">register</a>
+      <p></p>
+
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12}>

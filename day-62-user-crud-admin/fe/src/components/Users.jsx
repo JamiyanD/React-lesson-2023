@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Grid } from "@mui/material";
+import { Link } from "react-router-dom";
 export default function Users() {
   const URL = "http://localhost:8080/users";
   const [users, setUsers] = useState([]);
@@ -16,6 +17,9 @@ export default function Users() {
   return (
     <div>
       <h1>Users list</h1>
+      <a href="/register">register</a>
+      <a href="/login">login</a>
+      <p></p>
       <Grid
         container
         spacing={2}
@@ -43,6 +47,7 @@ export default function Users() {
                       <td>{user.lastname}</td>
                       <td>{user.email}</td>
                       <td>{user.address}</td>
+
                       <td>{user.role.name}</td>
                     </tr>
                   );

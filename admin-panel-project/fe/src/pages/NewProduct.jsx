@@ -8,14 +8,31 @@ import { Link, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import axios from "axios";
-export default function NewUser({ currentProducts, setCurrentProducts }) {
+export default function NewUser() {
   const url = "http://localhost:8080/product";
   const [image, setImage] = useState(null);
   const navigate = useNavigate();
+  const [currentProducts, setCurrentProducts] = useState({
+    imgURL: "",
+    title: "",
+    subtitle: "",
+    price: "",
+    discount: "",
+    description1: "",
+    description2: "",
+    code: "",
+    hashtag: "",
+    technology: "",
+    rating: "",
+    isEdit: false,
+  });
+
   async function handleSubmit(e) {
     e.preventDefault();
-    const FETCHED_DATA = await axios.post(url, currentProducts);
-    navigate("/productsList");
+    const AXIOS_DATA = await axios.post(url, currentProducts);
+    if (AXIOS_DATA.data.status === "success") {
+      navigate("/productsList");
+    }
   }
   function handleUpload(e) {
     setImage(URL.createObjectURL(e.target.files[0]));

@@ -31,25 +31,6 @@ export default function UsersTable({
     });
     setUsers(FETCHED_DATA.data.data);
   }
-
-  async function handleEdit(userId) {
-    const filteredUser = users.filter((user) => user.id === userId)[0];
-    if (filteredUser) {
-      setCurrentUser({
-        ...currentUser,
-        id: filteredUser.id,
-        firstname: filteredUser.firstname,
-        lastname: filteredUser.lastname,
-        phoneNumber: filteredUser.phoneNumber,
-        email: filteredUser.email,
-        password: filteredUser.password,
-        checkbox: filteredUser.checkbox,
-        radio: filteredUser.radio,
-        imgURL: filteredUser.imgURL,
-      });
-    }
-  }
-
   const [openElem, setOpenElem] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -118,11 +99,7 @@ export default function UsersTable({
                     onClose={handleClose}
                     PaperProps={{}}
                   >
-                    <MenuItem
-                      onClick={() => handleEdit(parametr.id)}
-                      component={Link}
-                      to={"/editUser"}
-                    >
+                    <MenuItem to={`/user/edit/${parametr.id}`} component={Link}>
                       Edit
                     </MenuItem>
 

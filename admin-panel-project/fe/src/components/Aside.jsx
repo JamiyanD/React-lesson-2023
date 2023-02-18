@@ -36,10 +36,7 @@ ListItemLink.propTypes = {
   to: PropTypes.string.isRequired,
 };
 
-export default function RouterBreadcrumbs({
-  setCurrentUser,
-  setCurrentProducts,
-}) {
+export default function RouterBreadcrumbs() {
   const [open, setOpen] = React.useState(true);
   const [open2, setOpen2] = React.useState(true);
   const handleClick = () => {
@@ -59,27 +56,18 @@ export default function RouterBreadcrumbs({
       }}
     >
       <List>
-        <ListItemLink to="/" open={open} onClick={handleClick} />
+        <ListItemLink to="/user-management" open={open} onClick={handleClick} />
         <Collapse component="li" in={open} timeout="auto" unmountOnExit>
           <List disablePadding>
             <ListItemLink sx={{ pl: 4 }} to="/usersList" />
-            <ListItemLink
-              sx={{ pl: 4 }}
-              to="/newUser"
-              onClick={() => setCurrentUser("")}
-            />
-            <ListItemLink sx={{ pl: 4 }} to="/editUser" />
+            <ListItemLink sx={{ pl: 4 }} to="/newUser" />
           </List>
         </Collapse>
-        <ListItemLink to="/products" open={open2} onClick={handleClick2} />
+        <ListItemLink to="/eCommerce" open={open2} onClick={handleClick2} />
         <Collapse component="li" in={open2} timeout="auto" unmountOnExit>
           <List disablePadding>
             <ListItemLink to="/productsList" />
-            <ListItemLink
-              to="/newProduct"
-              onClick={() => setCurrentProducts("")}
-            />
-            <ListItemLink to="/editProduct" />
+            <ListItemLink to="/newProduct" />
           </List>
         </Collapse>
       </List>

@@ -9,16 +9,38 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/joy/Stack";
 import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
+import { useState, useEffect } from "react";
 import axios from "axios";
-export default function EditUser({ currentUser, setCurrentUser }) {
+export default function EditUser() {
   const navigate = useNavigate();
-  const URL = "http://localhost:8080/user";
+  const { id } = useParams();
+  const url = "http://localhost:8080/user";
+  const [currentUser, setCurrentUser] = useState({
+    firstname: "",
+    lastname: "",
+    phoneNumber: "",
+    email: "",
+    password: "",
+    checkbox: false,
+    radio: "",
+    imgURL: "",
+  });
+  useEffect(() => {
+    fetchProduct();
+  }, []);
+  async function fetchProduct() {
+    const AXIOS_DATA = await axios.put(url, { userId: id });
+    if (AXIOS_DATA.data.status === "success") {
+      setCurrentUser(AXIOS_DATA.data.data);
+    }
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
     const putData = {
+      userId: id,
       id: currentUser.id,
       firstname: currentUser.firstname,
       lastname: currentUser.lastname,
@@ -28,9 +50,13 @@ export default function EditUser({ currentUser, setCurrentUser }) {
       checkbox: currentUser.checkbox,
       radio: currentUser.radio,
       imgURL: currentUser.imgURL,
+      isEdit: true,
     };
-    const FETCHED_DATA = await axios.put(URL, putData);
-    navigate("/usersList");
+    const AXIOS_DATA = await axios.post(url, putData);
+    console.log(AXIOS_DATA);
+    if (AXIOS_DATA.data.status === "success") {
+      navigate("/usersList");
+    }
   }
 
   function handleFirstName(e) {

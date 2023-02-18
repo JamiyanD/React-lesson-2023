@@ -6,5 +6,45 @@
     "password": "$2b$10$gEEp2.sMrexe5BIrBxpM/OSuiMHb/zURIQup6W3hO6m4WG4fLENHa",
     "address": "1",
     "role": { "id": 2, "name": "User" }
+  },
+  {
+    "firstname": "q",
+    "lastname": "q",
+    "email": "q",
+    "password": "$2b$10$JoarWcOaGgxNHpTBAQEfXen3ExeRavO7JEBF0gliAfCelGqKXF4Rm",
+    "address": "q",
+    "role": { "id": 2, "name": "User" }
+  },
+  {
+    "firstname": "2",
+    "lastname": "2",
+    "email": "2",
+    "password": "$2b$10$ICXtYFs2HS6wDhWoxYAHPezjiAN.aEdVvUdaB0z289KGxRGdVdinC",
+    "address": "2",
+    "role": { "id": 3, "name": "Customer" }
+  },
+  {
+    "firstname": "3",
+    "lastname": "3",
+    "email": "3",
+    "password": "$2b$10$9w02VVuxe8CAifnHXkJBVOzUao8IBvVZ3lIZx/io66Ly7eczhRc9K",
+    "address": "3",
+    "role": { "id": 2, "name": "User" }
+  },
+  {
+    "firstname": "g",
+    "lastname": "g",
+    "email": "g",
+    "password": "$2b$10$xOlYEW9gT0ENGdFP8Y/9feVRHMf1OJofH8kl11OKQgMljTTaomHq6",
+    "address": "g",
+    "role": { "id": 1, "name": "Admin" }
+  },
+  {
+    "firstname": "dsf",
+    "lastname": "",
+    "email": "",
+    "password": "$2b$10$YEvIEJhaBYaeivKpRxTbKOXf9nO8rCPzy5/y.nKibafQgjHjU/wWq",
+    "address": "",
+    "role": { "id": 3, "name": "Customer" }
   }
 ]

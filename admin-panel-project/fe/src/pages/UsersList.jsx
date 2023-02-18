@@ -12,7 +12,7 @@ import Select from "@mui/material/Select";
 import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
-export default function UsersList({ currentUser, setCurrentUser }) {
+export default function UsersList() {
   const URL = "http://localhost:8080/user";
   const [users, setUsers] = useState([]);
 
@@ -32,14 +32,14 @@ export default function UsersList({ currentUser, setCurrentUser }) {
     const filteredUser = FETCHED_DATA.data.data.filter((user) =>
       user.firstname.toLowerCase().includes(e.target.search.value.toLowerCase())
     );
-    console.log(filteredUser)
+    console.log(filteredUser);
     setUsers(filteredUser);
   }
 
   const [age, setAge] = React.useState("");
   const handleChange = async (select) => {
     const FETCHED_DATA = await axios.get(URL);
-    setUsers(FETCHED_DATA.data.data)
+    setUsers(FETCHED_DATA.data.data);
     if (select.target.value) {
       const filteredUser = FETCHED_DATA.data.data.filter(
         (user) => user.radio == select.target.value
@@ -56,15 +56,8 @@ export default function UsersList({ currentUser, setCurrentUser }) {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Button
-            href="/newUser"
-            variant="contained"
-            sx={{ margin: "10px" }}
-            onClick={() => {
-              setCurrentUser("");
-            }}
-          >
-            New
+          <Button href="/newUser" variant="contained" sx={{ margin: "10px" }}>
+            New User
           </Button>
           <form onSubmit={handleSearch}>
             <IconButton type="submit" aria-label="search">
@@ -97,12 +90,7 @@ export default function UsersList({ currentUser, setCurrentUser }) {
           </FormControl>
         </Stack>
 
-        <UsersTable
-          users={users}
-          setUsers={setUsers}
-          currentUser={currentUser}
-          setCurrentUser={setCurrentUser}
-        />
+        <UsersTable users={users} setUsers={setUsers} />
       </Box>
     </Box>
   );

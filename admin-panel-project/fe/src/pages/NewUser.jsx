@@ -12,14 +12,28 @@ import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import { Link, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import axios from "axios";
-export default function NewUser({ currentUser, setCurrentUser }) {
+import { useState } from "react";
+export default function NewUser() {
+  const [currentUser, setCurrentUser] = useState({
+    firstname: "",
+    lastname: "",
+    phoneNumber: "",
+    email: "",
+    password: "",
+    checkbox: false,
+    radio: "",
+    imgURL: "",
+    isEdit: false,
+  });
   const navigate = useNavigate();
   const URL = "http://localhost:8080/user";
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const FETCHED_DATA = await axios.post(URL, currentUser);
-    navigate("/usersList");
+    const AXIOS_DATA = await axios.post(URL, currentUser);
+    if (AXIOS_DATA.data.status === "success") {
+      navigate("/usersList");
+    }
   }
 
   function handleFirstName(e) {
