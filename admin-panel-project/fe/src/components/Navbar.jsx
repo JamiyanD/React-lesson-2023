@@ -158,7 +158,7 @@ function OffcanvasNavbar() {
                 </li>
 
                 <li>
-                  <a class="dropdown-item" href="/login">
+                  <a class="dropdown-item" href="/sign-in">
                     Sign Out
                   </a>
                 </li>

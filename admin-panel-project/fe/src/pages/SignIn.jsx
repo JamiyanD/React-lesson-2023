@@ -1,7 +1,6 @@
 import React from "react";
-import { Button, Grid, TextField } from "@mui/material";
 import { Navigate, useNavigate } from "react-router-dom";
-export default function LoginForm() {
+export default function SignIn() {
   const URL = "http://localhost:8080/login";
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
@@ -80,7 +79,7 @@ export default function LoginForm() {
         </button>
       </form>
       <p className="form-text my-4">
-        Not a Member yet? <a href="#">Sign Up</a>
+        Not a Member yet? <a href="/sign-up">Sign Up</a>
       </p>
     </div>
   );

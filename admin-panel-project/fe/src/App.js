@@ -13,7 +13,8 @@ import EditProduct from "./pages/EditProduct";
 import Navbar from "./components/Navbar";
 import ProductsList from "./pages/ProductsList";
 import UsersList from "./pages/UsersList";
-import Login from "./pages/Login";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
 
 function App() {
   return (
@@ -29,7 +30,8 @@ function App() {
         <Route path="/newProduct" element={<NewProduct />} />
         <Route path="/product/edit/:id" element={<EditProduct />} />
         <Route path="/eCommerce" element={<Home />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/sign-up" element={<SignUp />} />
       </Routes>
     </Container>
   );
