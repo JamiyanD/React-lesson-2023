@@ -28,8 +28,8 @@ function OffcanvasNavbar() {
   const [moreIcon2, setMoreIcon2] = useState(true);
   return (
     <nav class="navbar navbar-expand-lg bg-white ">
-      <Container className="px-0 d-flex justify-content-between">
-        <Stack direction="row" alignItems="center">
+      <Container className=" d-flex justify-content-between">
+        <div className="hstack">
           <button
             class="navbar-toggler"
             type="button"
@@ -146,8 +146,8 @@ function OffcanvasNavbar() {
               </ul>
             </div>
           </div>
-        </Stack>
-        <Stack direction="row" alignItems="center">
+        </div>
+        <div className="hstack">
           <div class="dropdown d-lg-none">
             <button
               class=" dropdown-toggle p-2 m-2 border-0 text-black-50 bg-light"
@@ -192,6 +192,7 @@ function OffcanvasNavbar() {
               name="search"
               label="Search"
               variant="outlined"
+              id="outlined-basic"
               placeholder="Search..."
               size="small"
               InputProps={{
@@ -234,7 +235,7 @@ function OffcanvasNavbar() {
               </li>
             </ul>
           </div>
-        </Stack>
+        </div>
       </Container>
     </nav>
   );

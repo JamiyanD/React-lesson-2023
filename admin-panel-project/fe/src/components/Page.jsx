@@ -20,7 +20,7 @@ export default function Page() {
   const pathnames = location.pathname.split("/").filter((x) => x);
 
   return (
-    <div style={{ backgroundColor: "#2C9AFF" }}>
+    <div style={{ backgroundColor: "#217AFF" }}>
       <Container
         sx={{
           paddingY: "15px",

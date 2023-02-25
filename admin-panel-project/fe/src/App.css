@@ -56,3 +56,16 @@ a{
 .offcanvas{
   width: 25% !important;
 }
+
+.toolbar{
+  height: 300px;
+}
+
+.content{
+  position: relative;
+  bottom: 190px;
+}
+.sign-in{
+  position: relative;
+  top: 200px;
+}

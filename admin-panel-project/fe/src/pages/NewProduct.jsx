@@ -107,7 +107,10 @@ export default function NewUser() {
   }
 
   return (
-    <Container sx={{ display: "flex", backgroundColor: "white" }}>
+    <Box
+      sx={{ display: "flex", backgroundColor: "white" }}
+      className="rounded-5"
+    >
       <Box sx={{ flexGrow: 1, p: 2 }}>
         <form onSubmit={handleSubmit}>
           <Stack spacing={2}>
@@ -258,6 +261,6 @@ export default function NewUser() {
           </Stack>
         </form>
       </Box>
-    </Container>
+    </Box>
   );
 }

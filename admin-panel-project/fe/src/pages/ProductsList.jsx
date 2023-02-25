@@ -38,7 +38,10 @@ export default function ProductsList({ currentProducts, setCurrentProducts }) {
   }
 
   return (
-    <Container sx={{ display: "flex", backgroundColor: "white" }}>
+    <Box
+      sx={{ display: "flex", backgroundColor: "white" }}
+      className="rounded-5"
+    >
       <Box sx={{ flexGrow: 1, p: 2 }}>
         <Stack direction="row" justifyContent="space-between">
           <Box>
@@ -85,6 +88,6 @@ export default function ProductsList({ currentProducts, setCurrentProducts }) {
         </Button>
         <ProductsTable users={users} setUsers={setUsers} />
       </Box>
-    </Container>
+    </Box>
   );
 }

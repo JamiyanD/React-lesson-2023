@@ -1,6 +1,6 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
-import Aside from "./components/Aside";
+import Toolbar from "./components/Toolbar";
 import NewUser from "./pages/NewUser";
 import { useState } from "react";
 import Box from "@mui/material/Box";
@@ -22,15 +22,21 @@ function App() {
     <div className="App bg-light">
       {showNavbar && <Navbar />}
       {showNavbar && <Page />}
+      {showNavbar && <Toolbar />}
+      <Container className="content ">
+        <Routes>
+          <Route path="/user-management" element={<Home />} />
+          <Route path="/usersList" element={<UsersList />} />
+          <Route path="/newUser" element={<NewUser />} />
+          <Route path="/user/edit/:id" element={<EditUser />} />
+          <Route path="/productsList" element={<ProductsList />} />
+          <Route path="/newProduct" element={<NewProduct />} />
+          <Route path="/product/edit/:id" element={<EditProduct />} />
+          <Route path="/eCommerce" element={<Home />} />
+          <Route path="/" element={<Home />} />
+        </Routes>
+      </Container>
       <Routes>
-        <Route path="/user-management" element={<Home />} />
-        <Route path="/usersList" element={<UsersList />} />
-        <Route path="/newUser" element={<NewUser />} />
-        <Route path="/user/edit/:id" element={<EditUser />} />
-        <Route path="/productsList" element={<ProductsList />} />
-        <Route path="/newProduct" element={<NewProduct />} />
-        <Route path="/product/edit/:id" element={<EditProduct />} />
-        <Route path="/eCommerce" element={<Home />} />
         <Route
           path="/sign-in"
           element={<SignIn setShowNavbar={setShowNavbar} />}
@@ -39,7 +45,6 @@ function App() {
           path="/sign-up"
           element={<SignUp setShowNavbar={setShowNavbar} />}
         />
-        <Route path="/" element={<Home />} />
       </Routes>
     </div>
   );
