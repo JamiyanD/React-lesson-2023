@@ -1,10 +1,10 @@
 .App{
-  font-family: 'Roboto', sans-serif;
-
+  font-family: 'Inter', Helvetica, sans-serif;
 }
 a{
   text-decoration: none;
 }
+
 .dropdown-toggle::after{
   display: none;
 }
@@ -12,10 +12,47 @@ a{
 .navbar-toggler:active{
     box-shadow: none;
 }
+.navbar-toggler{
+  border: none;
+}
+.dropdown-menu{
+  border: none;
+  padding: 0;
+}
+.dropdown-item:hover{
+  color: #2C9AFF ;
+}
+.dropdown-title:hover{
+  color: #2C9AFF ;
+}
+
 .MuiBreadcrumbs-separator{
   color: white;
 }
 .color-blue{
   background-color: #2C9AFF;
 
+}
+.sign-logo{
+  height: 70px;
+  width: 100px;
+}
+.sign-button{
+  width: 380px;
+}
+
+.swal-button{
+  background-color:#2C9AFF ;
+  font-weight: normal;
+}
+.swal-text{
+  text-align: center;
+  width: 70%;
+}
+.swal-footer{
+  text-align: center;
+}
+
+.offcanvas{
+  width: 25% !important;
 }

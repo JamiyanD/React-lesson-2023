@@ -4,7 +4,7 @@ import Aside from "./components/Aside";
 import NewUser from "./pages/NewUser";
 import { useState } from "react";
 import Box from "@mui/material/Box";
-import Home from "./components/Navbar";
+import Home from "./pages/Home";
 import NewProduct from "./pages/NewProduct";
 import Container from "@mui/material/Container";
 import Page from "./components/Page";
@@ -15,12 +15,13 @@ import ProductsList from "./pages/ProductsList";
 import UsersList from "./pages/UsersList";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
-
+import "bootstrap-icons/font/bootstrap-icons.css";
 function App() {
+  const [showNavbar, setShowNavbar] = useState(true);
   return (
-    <Container className="App">
-      <Navbar />
-      <Page />
+    <div className="App bg-light">
+      {showNavbar && <Navbar />}
+      {showNavbar && <Page />}
       <Routes>
         <Route path="/user-management" element={<Home />} />
         <Route path="/usersList" element={<UsersList />} />
@@ -30,10 +31,17 @@ function App() {
         <Route path="/newProduct" element={<NewProduct />} />
         <Route path="/product/edit/:id" element={<EditProduct />} />
         <Route path="/eCommerce" element={<Home />} />
-        <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/sign-up" element={<SignUp />} />
+        <Route
+          path="/sign-in"
+          element={<SignIn setShowNavbar={setShowNavbar} />}
+        />
+        <Route
+          path="/sign-up"
+          element={<SignUp setShowNavbar={setShowNavbar} />}
+        />
+        <Route path="/" element={<Home />} />
       </Routes>
-    </Container>
+    </div>
   );
 }
 

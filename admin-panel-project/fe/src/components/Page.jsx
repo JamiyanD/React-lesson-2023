@@ -20,32 +20,33 @@ export default function Page() {
   const pathnames = location.pathname.split("/").filter((x) => x);
 
   return (
-    <Container
-      sx={{
-        backgroundColor: "#2C9AFF",
-        paddingY: "15px",
-        color: "white",
-      }}
-    >
-      <Breadcrumbs aria-label="breadcrumb">
-        <LinkRouter underline="hover" color="white" to="/">
-          Home
-        </LinkRouter>
-        {pathnames.map((value, index) => {
-          const last = index === pathnames.length - 1;
-          const to = `/${pathnames.slice(0, index + 1).join("/")}`;
+    <div style={{ backgroundColor: "#2C9AFF" }}>
+      <Container
+        sx={{
+          paddingY: "15px",
+          color: "white",
+        }}
+      >
+        <Breadcrumbs aria-label="breadcrumb">
+          <LinkRouter underline="hover" color="white" to="/">
+            <i class="bi bi-house-door me-2"></i>
+          </LinkRouter>
+          {pathnames.map((value, index) => {
+            const last = index === pathnames.length - 1;
+            const to = `/${pathnames.slice(0, index + 1).join("/")}`;
 
-          return last ? (
-            <Typography color="white" key={to}>
-              {breadcrumbNameMap[to]}
-            </Typography>
-          ) : (
-            <LinkRouter underline="hover" color="white" to={to} key={to}>
-              {breadcrumbNameMap[to]}
-            </LinkRouter>
-          );
-        })}
-      </Breadcrumbs>
-    </Container>
+            return last ? (
+              <Typography color="white" key={to}>
+                {breadcrumbNameMap[to]}
+              </Typography>
+            ) : (
+              <LinkRouter underline="hover" color="white" to={to} key={to}>
+                {breadcrumbNameMap[to]}
+              </LinkRouter>
+            );
+          })}
+        </Breadcrumbs>
+      </Container>
+    </div>
   );
 }

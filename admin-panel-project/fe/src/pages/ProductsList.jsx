@@ -9,6 +9,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/joy/Stack";
 import MenuItem from "@mui/material/MenuItem";
+import Container from "@mui/material/Container";
 import axios from "axios";
 import InputAdornment from "@mui/material/InputAdornment";
 import ProductsTable from "../components/ProductsTable";
@@ -37,7 +38,7 @@ export default function ProductsList({ currentProducts, setCurrentProducts }) {
   }
 
   return (
-    <Box sx={{ display: "flex", backgroundColor: "white" }}>
+    <Container sx={{ display: "flex", backgroundColor: "white" }}>
       <Box sx={{ flexGrow: 1, p: 2 }}>
         <Stack direction="row" justifyContent="space-between">
           <Box>
@@ -84,6 +85,6 @@ export default function ProductsList({ currentProducts, setCurrentProducts }) {
         </Button>
         <ProductsTable users={users} setUsers={setUsers} />
       </Box>
-    </Box>
+    </Container>
   );
 }

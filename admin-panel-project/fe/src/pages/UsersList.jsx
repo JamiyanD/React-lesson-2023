@@ -12,6 +12,8 @@ import Select from "@mui/material/Select";
 import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
+import toast, { Toaster } from "react-hot-toast";
+import Container from "@mui/material/Container";
 export default function UsersList() {
   const URL = "http://localhost:8080/user";
   const [users, setUsers] = useState([]);
@@ -48,8 +50,9 @@ export default function UsersList() {
     }
     setAge(select.target.value);
   };
+
   return (
-    <Box sx={{ display: "flex", backgroundColor: "white" }}>
+    <Container sx={{ display: "flex", backgroundColor: "white" }}>
       <Box sx={{ flexGrow: 1, p: 2 }}>
         <Stack
           direction="row"
@@ -92,6 +95,6 @@ export default function UsersList() {
 
         <UsersTable users={users} setUsers={setUsers} />
       </Box>
-    </Box>
+    </Container>
   );
 }

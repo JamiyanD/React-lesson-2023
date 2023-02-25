@@ -13,6 +13,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import axios from "axios";
 import { useState } from "react";
+import Container from "@mui/material/Container";
 export default function NewUser() {
   const [currentUser, setCurrentUser] = useState({
     firstname: "",
@@ -96,7 +97,7 @@ export default function NewUser() {
     });
   }
   return (
-    <Box sx={{ display: "flex", backgroundColor: "white" }}>
+    <Container sx={{ display: "flex", backgroundColor: "white" }}>
       <Box sx={{ flexGrow: 1, p: 2 }}>
         <form onSubmit={handleSubmit}>
           <Stack spacing={2} sx={{}}>
@@ -185,6 +186,6 @@ export default function NewUser() {
           </Stack>
         </form>
       </Box>
-    </Box>
+    </Container>
   );
 }

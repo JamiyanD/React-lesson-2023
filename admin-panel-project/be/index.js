@@ -316,12 +316,12 @@ app.post("/login", (request, response) => {
         plainPassword,
         savedPassword,
         (compareError, compareResult) => {
-          // if (compareError) {
-          //   response.json({
-          //     status: "User name or password do not match",
-          //     data: [],
-          //   });
-          // }
+          if (compareError) {
+            response.json({
+              status: "User name or password do not match",
+              data: [],
+            });
+          }
 
           if (compareResult) {
             response.json({
