@@ -277,7 +277,6 @@ app.get("/search", (request, response) => {
     flag: "r",
   });
   const savedCategoriesArrayObject = JSON.parse(savedCategories);
-  console.log(savedCategoriesArrayObject);
   const foundCategory = savedCategoriesArrayObject.filter((product) =>
     product.title.includes(request.query.value)
   );
