@@ -128,7 +128,7 @@ export default function EnhancedTableToolbar(props) {
             size="small"
             className="bg-light rounded-3"
           >
-            {/* <InputLabel id="demo-simple-select-label">Select </InputLabel> */}
+            <InputLabel id="demo-simple-select-label">Select </InputLabel>
             <Select
               value={age}
               sx={{
@@ -143,7 +143,7 @@ export default function EnhancedTableToolbar(props) {
                     border: 0,
                   },
               }}
-              // label="Select"
+              label="Select"
               onChange={handleChange}
               inputProps={{ "aria-label": "Without label" }}
             >

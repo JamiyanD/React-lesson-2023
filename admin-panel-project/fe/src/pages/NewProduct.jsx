@@ -9,8 +9,14 @@ import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import axios from "axios";
 import Container from "@mui/material/Container";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import FormHelperText from "@mui/material/FormHelperText";
 export default function NewUser() {
   const url = "http://localhost:8080/product";
+
   const [image, setImage] = useState(null);
   const navigate = useNavigate();
   const [currentProducts, setCurrentProducts] = useState({
@@ -20,16 +26,17 @@ export default function NewUser() {
     price: "",
     discount: "",
     description1: "",
-    description2: "",
+    category: 1,
     code: "",
     hashtag: "",
     technology: "",
     rating: "",
     isEdit: false,
   });
-
+  const [defaultSelect, setDefaultSelect] = useState(1);
   async function handleSubmit(e) {
     e.preventDefault();
+    console.log(currentProducts);
     const AXIOS_DATA = await axios.post(url, currentProducts);
     if (AXIOS_DATA.data.status === "success") {
       navigate("/productsList");
@@ -74,12 +81,6 @@ export default function NewUser() {
       description1: e.target.value,
     });
   }
-  function handleDiscription2(e) {
-    setCurrentProducts({
-      ...currentProducts,
-      description2: e.target.value,
-    });
-  }
   function handleCode(e) {
     setCurrentProducts({
       ...currentProducts,
@@ -105,7 +106,14 @@ export default function NewUser() {
     });
     console.log(e.target.value);
   }
-
+  function handleChange(select) {
+    setDefaultSelect(select.target.value);
+    console.log(select.target.value);
+    setCurrentProducts({
+      ...currentProducts,
+      category: select.target.value,
+    });
+  }
   return (
     <Box
       sx={{ display: "flex", backgroundColor: "white" }}
@@ -131,6 +139,38 @@ export default function NewUser() {
                   onChange={handleUpload}
                 />
               </Button>
+            </Stack>
+            <Stack>
+              <Typography variant="h6" gutterBottom sx={{ width: "300px" }}>
+                Status
+              </Typography>
+              <FormControl sx={{ minWidth: 120 }} size="small">
+                <Select
+                  value={defaultSelect}
+                  onChange={handleChange}
+                  displayEmpty
+                  inputProps={{ "aria-label": "Without label" }}
+                  className=" rounded-3"
+                  sx={{
+                    boxShadow: "none",
+
+                    "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                      {
+                        borderColor: "silver",
+                      },
+                    "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
+                      {
+                        borderColor: "lightgrey",
+                      },
+                  }}
+                >
+                  <MenuItem value={1}>Published</MenuItem>
+
+                  <MenuItem value={2}>Scheduled</MenuItem>
+                  <MenuItem value={3}>Inactive</MenuItem>
+                </Select>
+                <FormHelperText>Set the product status.</FormHelperText>
+              </FormControl>
             </Stack>
             <Stack direction="row" alignItems="center">
               <Typography variant="h6" gutterBottom sx={{ width: "300px" }}>
@@ -189,18 +229,6 @@ export default function NewUser() {
                 name="description1"
                 onChange={handleDescription1}
                 label="Description 1"
-                fullWidth
-              />
-            </Stack>
-            <Stack direction="row" alignItems="center">
-              <Typography variant="h6" sx={{ width: "300px" }}>
-                Description 2
-              </Typography>
-              <TextField
-                value={currentProducts.discription2}
-                name="description2"
-                onChange={handleDiscription2}
-                label="Description 2"
                 fullWidth
               />
             </Stack>

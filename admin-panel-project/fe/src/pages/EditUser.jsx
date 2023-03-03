@@ -3,6 +3,8 @@ import * as React from "react";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import FormLabel from "@mui/material/FormLabel";
+import FormControl from "@mui/material/FormControl";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -17,16 +19,7 @@ export default function EditUser() {
   const navigate = useNavigate();
   const { id } = useParams();
   const url = "http://localhost:8080/user";
-  const [currentUser, setCurrentUser] = useState({
-    firstname: "",
-    lastname: "",
-    phoneNumber: "",
-    email: "",
-    password: "",
-    checkbox: false,
-    radio: "",
-    imgURL: "",
-  });
+
   useEffect(() => {
     fetchProduct();
   }, []);
@@ -36,7 +29,28 @@ export default function EditUser() {
       setCurrentUser(AXIOS_DATA.data.data);
     }
   }
-
+  const [currentUser, setCurrentUser] = useState({
+    firstname: "",
+    lastname: "",
+    phoneNumber: "",
+    email: "",
+    password: "",
+    checkbox: false,
+    role: "",
+    imgURL: "",
+  });
+  const [roles, setRoles] = useState([]);
+  const ROLE_URL = "http://localhost:8080/userRoles";
+  async function fetchRoles() {
+    const FETCHED_DATA = await fetch(ROLE_URL);
+    const FETCHED_JSON = await FETCHED_DATA.json();
+    console.log(FETCHED_JSON);
+    setRoles(FETCHED_JSON);
+  }
+  useEffect(() => {
+    fetchRoles();
+  }, []);
+  console.log(currentUser.role);
   async function handleSubmit(e) {
     e.preventDefault();
     const putData = {
@@ -48,7 +62,7 @@ export default function EditUser() {
       email: currentUser.email,
       password: currentUser.password,
       checkbox: currentUser.checkbox,
-      radio: currentUser.radio,
+      role: currentUser.role,
       imgURL: currentUser.imgURL,
       isEdit: true,
     };
@@ -96,19 +110,12 @@ export default function EditUser() {
       checkbox: e.target.checked,
     });
   }
-  function handleRadioAdmin(e) {
-    if (e.target.checked) {
+  function handleRadio(e) {
+    console.log(e.target.value);
+    if (e.target.value) {
       setCurrentUser({
         ...currentUser,
-        radio: e.target.value,
-      });
-    }
-  }
-  function handleRadioUser(e) {
-    if (e.target.checked) {
-      setCurrentUser({
-        ...currentUser,
-        radio: e.target.value,
+        role: e.target.value,
       });
     }
   }
@@ -150,23 +157,30 @@ export default function EditUser() {
               name="email"
               onChange={handleEmail}
             />
-            <div>
-              <Typography sx={{ color: "#9e9e9e" }}>Role</Typography>
-              <RadioGroup row>
-                <FormControlLabel
-                  onChange={handleRadioAdmin}
-                  value="Admin"
-                  control={<Radio />}
-                  label="Admin"
-                />
-                <FormControlLabel
-                  onChange={handleRadioUser}
-                  value="User"
-                  control={<Radio />}
-                  label="User"
-                />
+            <FormControl>
+              <FormLabel id="demo-controlled-radio-buttons-group">
+                Role
+              </FormLabel>
+              <RadioGroup
+                aria-labelledby="demo-controlled-radio-buttons-group"
+                name="controlled-radio-buttons-group"
+                row
+                // value={currentUser.role.id}
+                onChange={handleRadio}
+              >
+                {roles &&
+                  roles.map((role, khuslen) => {
+                    return (
+                      <FormControlLabel
+                        key={khuslen}
+                        value={role.role_id}
+                        control={<Radio />}
+                        label={role.role_name}
+                      />
+                    );
+                  })}
               </RadioGroup>
-            </div>
+            </FormControl>
             <div>
               <Typography sx={{ color: "#9e9e9e" }}>Disabled</Typography>
               <Checkbox onChange={handleCheckbox} />

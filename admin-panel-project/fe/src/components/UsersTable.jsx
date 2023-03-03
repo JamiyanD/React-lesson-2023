@@ -77,7 +77,7 @@ export default function UsersTable({
                 <TableCell>{parametr.lastname}</TableCell>
                 <TableCell>{parametr.phoneNumber}</TableCell>
                 <TableCell>{parametr.email}</TableCell>
-                <TableCell>{parametr.radio}</TableCell>
+                <TableCell>{parametr.role.name}</TableCell>
                 <TableCell>{parametr.checkbox ? "Yes" : "No"}</TableCell>
                 <TableCell>
                   {" "}

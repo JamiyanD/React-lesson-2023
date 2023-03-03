@@ -21,91 +21,101 @@ app.post("/user", (request, response) => {
   const body = request.body;
   const isEdit = body.isEdit;
   console.log(body);
-  fs.readFile("./data/users.json", "utf-8", (readError, readData) => {
-    if (readError) {
-      response.json({
-        status: "file does not exist",
-      });
-    }
+  const savedUsers = fs.readFileSync("./data/users.json", {
+    encoding: "utf-8",
+    flag: "r",
+  });
 
-    const dataObject = JSON.parse(readData);
+  const dataObject = JSON.parse(savedUsers);
 
-    fs.readFile("./data/userRoles.json", "utf-8", (readError, readData) => {
-      if (readError) {
-        response.json({
-          status: "file does not exist",
-        });
+  const savedUserRoles = fs.readFileSync("./data/userRoles.json", {
+    encoding: "utf-8",
+    flag: "r",
+  });
+  const roleData = JSON.parse(savedUserRoles);
+  const roleName = roleData.filter((role) => role.id == body.role)[0];
+  console.log(roleName);
+
+  if (isEdit) {
+    dataObject.map((d) => {
+      if (d.id === body.id) {
+        (d.firstname = body.firstname),
+          (d.lastname = body.lastname),
+          (d.phoneNumber = body.phoneNumber),
+          (d.email = body.email),
+          (d.password = body.password),
+          (d.checkbox = body.checkbox),
+          (d.role.name = roleName.name),
+          (d.imgURL = body.imgURL);
       }
-      const roleData = JSON.parse(readData);
-      const roleName = roleData.filter((role) => role.id == body.role)[0];
-      console.log(roleName);
-
-      // if (isEdit) {
-      //   dataObject.map((d) => {
-      //     if (d.id === body.id) {
-      //       (d.firstname = body.firstname),
-      //         (d.lastname = body.lastname),
-      //         (d.phoneNumber = body.phoneNumber),
-      //         (d.email = body.email),
-      //         (d.password = body.password),
-      //         (d.checkbox = body.checkbox),
-      //         (d.radio = body.radio),
-      //         (d.imgURL = body.imgURL);
-      //     }
-      //     return d;
-      //   });
-      // } else {
-      const userPassword = body.password;
-      bcrypt.genSalt(SALT_ROUNDS, (err, salt) => {
-        if (err) {
-          response.json({
-            status: "generating salt error",
-          });
-        }
-        bcrypt.hash(userPassword, salt, (hashError, hashData) => {
-          if (hashError) {
-            response.json({
-              status: "hashing has error",
-              data: [],
-            });
-          }
-          // console.log("hashed Data :", hashData);
-          const newUser = {
-            id: Date.now(),
-            firstname: body.firstname,
-            lastname: body.lastname,
-            phoneNumber: body.phoneNumber,
-            email: body.email,
-            password: hashData,
-            checkbox: body.checkbox,
-            role: roleName,
-            imgURL: body.imgURL,
-          };
-          console.log("data", dataObject);
-          dataObject.push(newUser);
-        });
-      });
-      // }
-      console.log("hhi");
-      fs.writeFile(
-        "./data/users.json",
-        JSON.stringify(dataObject),
-        (writeError) => {
-          if (writeError) {
-            response.json({
-              status: "success",
-              data: "file write error",
-            });
-          }
-
+      return d;
+    });
+    fs.writeFile(
+      "./data/users.json",
+      JSON.stringify(dataObject),
+      (writeError) => {
+        if (writeError) {
           response.json({
             status: "success",
-            data: dataObject,
+            data: "file write error",
           });
         }
-      );
+
+        response.json({
+          status: "success",
+          data: dataObject,
+        });
+      }
+    );
+  } else {
+    const userPassword = body.password;
+    bcrypt.genSalt(SALT_ROUNDS, (err, salt) => {
+      if (err) {
+        response.json({
+          status: "generating salt error",
+        });
+      }
+      bcrypt.hash(userPassword, salt, (hashError, hashData) => {
+        if (hashError) {
+          response.json({
+            status: "hashing has error",
+            data: [],
+          });
+        }
+        console.log("hashed Data :", hashData);
+        const newUser = {
+          id: Date.now(),
+          firstname: body.firstname,
+          lastname: body.lastname,
+          phoneNumber: body.phoneNumber,
+          email: body.email,
+          password: hashData,
+          checkbox: body.checkbox,
+          role: roleName,
+          imgURL: body.imgURL,
+        };
+        console.log("data", dataObject);
+        dataObject.push(newUser);
+        fs.writeFile(
+          "./data/users.json",
+          JSON.stringify(dataObject),
+          (writeError) => {
+            if (writeError) {
+              response.json({
+                status: "success",
+                data: "file write error",
+              });
+            }
+
+            response.json({
+              status: "success",
+              data: dataObject,
+            });
+          }
+        );
+      });
     });
-  });
+  }
 });
 
 app.get("/user", (request, response) => {
@@ -170,55 +180,88 @@ app.put("/user", (request, response) => {
   });
 });
 
+// app.get("/user/roles", (request, response) => {
+//   fs.readFile("./data/userRoles.json", "utf-8", (readError, readData) => {
+//     if (readError) {
+//       response.json({
+//         status: "file does not exist",
+//       });
+//     }
+//     response.json({
+//       status: "success",
+//       data: JSON.parse(readData),
+//     });
+//   });
+// });
+
 app.get("/user/roles", (request, response) => {
-  fs.readFile("./data/userRoles.json", "utf-8", (readError, readData) => {
-    if (readError) {
+  fs.readFile(
+    "./data/productCategories.json",
+    "utf-8",
+    (readError, readData) => {
+      if (readError) {
+        response.json({
+          status: "file does not exist",
+        });
+      }
       response.json({
-        status: "file does not exist",
+        status: "success",
+        data: JSON.parse(readData),
       });
     }
-    response.json({
-      status: "success",
-      data: JSON.parse(readData),
-    });
-  });
+  );
 });
 
 app.post("/product", (request, response) => {
   const isEdit = request.body.isEdit;
-  const newProduct = {
-    id: Date.now(),
-    imgURL: request.body.imgURL,
-    title: request.body.title,
-    subtitle: request.body.subtitle,
-    price: request.body.price,
-    discount: request.body.discount,
-    description1: request.body.description1,
-    description2: request.body.description2,
-    code: request.body.code,
-    hashtag: request.body.hashtag,
-    technology: request.body.technology,
-    rating: request.body.rating,
-  };
+  const body = request.body;
   const savedProducts = fs.readFileSync("./data/products.json", {
     encoding: "utf-8",
     flag: "r",
   });
   const dataObject = JSON.parse(savedProducts);
+
+  const savedProductCategories = fs.readFileSync(
+    "./data/productCategories.json",
+    {
+      encoding: "utf-8",
+      flag: "r",
+    }
+  );
+  const categoriesData = JSON.parse(savedProductCategories);
+  const categoryName = categoriesData.filter(
+    (category) => category.id == body.category
+  )[0];
+  console.log(categoryName);
+
+  const newProduct = {
+    id: Date.now(),
+    imgURL: body.imgURL,
+    title: body.title,
+    subtitle: body.subtitle,
+    price: body.price,
+    discount: body.discount,
+    description1: body.description1,
+    category: categoryName,
+    code: body.code,
+    hashtag: body.hashtag,
+    technology: body.technology,
+    rating: body.rating,
+  };
   if (isEdit) {
     dataObject.map((d) => {
-      if (d.id === request.body.id) {
-        (d.imgURL = request.body.imgURL),
-          (d.title = request.body.title),
-          (d.subtitle = request.body.subtitle),
-          (d.price = request.body.price),
-          (d.discount = request.body.discount),
-          (d.description1 = request.body.description1),
-          (d.description2 = request.body.description2),
-          (d.code = request.body.code);
-        d.hashtag = request.body.hashtag;
-        d.technology = request.body.technology;
-        d.rating = request.body.rating;
+      if (d.id === body.id) {
+        (d.imgURL = body.imgURL),
+          (d.title = body.title),
+          (d.subtitle = body.subtitle),
+          (d.price = body.price),
+          (d.discount = body.discount),
+          (d.description1 = body.description1),
+          (d.description2 = body.description2),
+          (d.code = body.code);
+        d.hashtag = body.hashtag;
+        d.technology = body.technology;
+        d.rating = body.rating;
       }
       return d;
     });
@@ -231,7 +274,6 @@ app.post("/product", (request, response) => {
     "./data/products.json",
     JSON.stringify(dataObject),
     (writeError) => {
-      console.log("hhi");
       if (writeError) {
         response.json({
           status: `Error during file write`,

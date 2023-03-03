@@ -32,6 +32,7 @@ export default function ProductsList({ currentProducts, setCurrentProducts }) {
   async function fetchScreen() {
     const FETCHED_DATA = await axios.get(url);
     setUsers(FETCHED_DATA.data.data);
+    console.log(users);
     return FETCHED_DATA;
   }
 
@@ -167,7 +168,7 @@ export default function ProductsList({ currentProducts, setCurrentProducts }) {
                         />
                       </TableCell>
                       <TableCell component="th" scope="row">
-                        {parametr.id % 100}
+                        {parametr.category.name}
                       </TableCell>
                       <TableCell>Not Yet</TableCell>
                       <TableCell>{parametr.title}</TableCell>

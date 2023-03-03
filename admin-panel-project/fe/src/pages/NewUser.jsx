@@ -14,7 +14,9 @@ import Box from "@mui/material/Box";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import Container from "@mui/material/Container";
+import FormHelperText from "@mui/joy/FormHelperText";
 export default function NewUser() {
+  const [validation, setValidation] = useState("");
   const [currentUser, setCurrentUser] = useState({
     firstname: "",
     lastname: "",
@@ -31,11 +33,12 @@ export default function NewUser() {
   const navigate = useNavigate();
   const URL = "http://localhost:8080/user";
 
-  const ROLE_URL = "http://localhost:8080/user/roles";
+  const ROLE_URL = "http://localhost:8080/userRoles";
   async function fetchRoles() {
     const FETCHED_DATA = await fetch(ROLE_URL);
     const FETCHED_JSON = await FETCHED_DATA.json();
-    setRoles(FETCHED_JSON.data);
+    console.log(FETCHED_JSON);
+    setRoles(FETCHED_JSON);
   }
   useEffect(() => {
     fetchRoles();
@@ -43,9 +46,18 @@ export default function NewUser() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const AXIOS_DATA = await axios.post(URL, currentUser);
-    if (AXIOS_DATA.data.status === "success") {
-      navigate("/usersList");
+    console.log(currentUser.role);
+    if (
+      currentUser.role == 1 ||
+      currentUser.role == 2 ||
+      currentUser.role == 3
+    ) {
+      const AXIOS_DATA = await axios.post(URL, currentUser);
+      if (AXIOS_DATA.data.status === "success") {
+        navigate("/usersList");
+      }
+    } else {
+      setValidation("You must check radio please!");
     }
   }
 
@@ -86,16 +98,7 @@ export default function NewUser() {
       checkbox: e.target.checked,
     });
   }
-  // function handleRadioAdmin(e) {
-  //   if (e.target.checked) {
-  //     setCurrentUser({
-  //       ...currentUser,
-  //       radio: e.target.value,
-  //     });
-  //   }
-  // }
   function handleRadio(e) {
-    console.log(typeof e.target.value);
     if (e.target.value) {
       setCurrentUser({
         ...currentUser,
@@ -147,31 +150,25 @@ export default function NewUser() {
             <div>
               <Typography sx={{ color: "#9e9e9e" }}>Role</Typography>
               <RadioGroup row>
-                {/* <FormControlLabel
-                  onChange={handleRadioAdmin}
-                  value="Admin"
-                  control={<Radio />}
-                  label="Admin"
-                />
-                <FormControlLabel
-                  onChange={handleRadioUser}
-                  value="User"
-                  control={<Radio />}
-                  label="User"
-                /> */}
                 {roles &&
                   roles.map((role, khuslen) => {
                     return (
                       <FormControlLabel
                         key={khuslen}
                         onChange={handleRadio}
-                        value={role.id}
+                        value={role.role_id}
                         control={<Radio />}
-                        label={role.name}
+                        label={role.role_name}
                       />
                     );
                   })}
               </RadioGroup>
+              <FormHelperText
+                id="component-helper-text"
+                className="text-danger"
+              >
+                {validation}
+              </FormHelperText>
             </div>
             <div>
               <Typography sx={{ color: "#9e9e9e" }}>Disabled</Typography>
