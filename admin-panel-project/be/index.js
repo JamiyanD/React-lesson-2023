@@ -1,8 +1,13 @@
 console.log("it is my app.js");
-const express = require("express");
-const cors = require("cors");
-const fs = require("fs");
-const bcrypt = require("bcrypt");
+import express from "express";
+import cors from "cors";
+import fs from "fs";
+import bcrypt from "bcrypt";
+import userRoles_route from "./routes/userRoles.js";
+// const express = require("express");
+// const cors = require("cors");
+// const fs = require("fs");
+// const bcrypt = require("bcrypt");
 
 const app = express();
 const PORT = 8080;
@@ -10,77 +15,97 @@ const SALT_ROUNDS = 10;
 
 app.use(cors());
 app.use(express.json());
+app.use(userRoles_route);
 
 app.post("/user", (request, response) => {
   const body = request.body;
   const isEdit = body.isEdit;
   console.log(body);
-  const savedUsers = fs.readFileSync("./data/users.json", {
-    encoding: "utf-8",
-    flag: "r",
-  });
-  const dataObject = JSON.parse(savedUsers);
-  if (isEdit) {
-    dataObject.map((d) => {
-      if (d.id === body.id) {
-        (d.firstname = body.firstname),
-          (d.lastname = body.lastname),
-          (d.phoneNumber = body.phoneNumber),
-          (d.email = body.email),
-          (d.password = body.password),
-          (d.checkbox = body.checkbox),
-          (d.radio = body.radio),
-          (d.imgURL = body.imgURL);
-      }
-      return d;
-    });
-  } else {
-    const userPassword = body.password;
-    bcrypt.genSalt(SALT_ROUNDS, (err, salt) => {
-      if (err) {
-        response.json({
-          status: "generating salt error",
-        });
-      }
-      bcrypt.hash(userPassword, salt, (hashError, hashData) => {
-        if (hashError) {
-          response.json({
-            status: "hashing has error",
-            data: [],
-          });
-        }
-        console.log("hashed Data :", hashData);
-        const newUser = {
-          id: Date.now(),
-          firstname: body.firstname,
-          lastname: body.lastname,
-          phoneNumber: body.phoneNumber,
-          email: body.email,
-          password: hashData,
-          checkbox: body.checkbox,
-          radio: body.radio,
-          imgURL: body.imgURL,
-        };
-        dataObject.push(newUser);
-      });
-    });
-  }
-  fs.writeFile(
-    "./data/users.json",
-    JSON.stringify(dataObject),
-    (writeError) => {
-      if (writeError) {
-        response.json({
-          status: "success",
-          data: "file write error",
-        });
-      }
+  fs.readFile("./data/users.json", "utf-8", (readError, readData) => {
+    if (readError) {
       response.json({
-        status: "success",
-        data: dataObject,
+        status: "file does not exist",
       });
     }
-  );
+
+    const dataObject = JSON.parse(readData);
+
+    fs.readFile("./data/userRoles.json", "utf-8", (readError, readData) => {
+      if (readError) {
+        response.json({
+          status: "file does not exist",
+        });
+      }
+      const roleData = JSON.parse(readData);
+      const roleName = roleData.filter((role) => role.id == body.role)[0];
+      console.log(roleName);
+
+      // if (isEdit) {
+      //   dataObject.map((d) => {
+      //     if (d.id === body.id) {
+      //       (d.firstname = body.firstname),
+      //         (d.lastname = body.lastname),
+      //         (d.phoneNumber = body.phoneNumber),
+      //         (d.email = body.email),
+      //         (d.password = body.password),
+      //         (d.checkbox = body.checkbox),
+      //         (d.radio = body.radio),
+      //         (d.imgURL = body.imgURL);
+      //     }
+      //     return d;
+      //   });
+      // } else {
+      const userPassword = body.password;
+      bcrypt.genSalt(SALT_ROUNDS, (err, salt) => {
+        if (err) {
+          response.json({
+            status: "generating salt error",
+          });
+        }
+        bcrypt.hash(userPassword, salt, (hashError, hashData) => {
+          if (hashError) {
+            response.json({
+              status: "hashing has error",
+              data: [],
+            });
+          }
+          // console.log("hashed Data :", hashData);
+          const newUser = {
+            id: Date.now(),
+            firstname: body.firstname,
+            lastname: body.lastname,
+            phoneNumber: body.phoneNumber,
+            email: body.email,
+            password: hashData,
+            checkbox: body.checkbox,
+            role: roleName,
+            imgURL: body.imgURL,
+          };
+          console.log("data", dataObject);
+          dataObject.push(newUser);
+        });
+      });
+      // }
+      console.log("hhi");
+      fs.writeFile(
+        "./data/users.json",
+        JSON.stringify(dataObject),
+        (writeError) => {
+          if (writeError) {
+            response.json({
+              status: "success",
+              data: "file write error",
+            });
+          }
+
+          response.json({
+            status: "success",
+            data: dataObject,
+          });
+        }
+      );
+    });
+  });
 });
 
 app.get("/user", (request, response) => {
@@ -145,6 +170,20 @@ app.put("/user", (request, response) => {
   });
 });
 
+app.get("/user/roles", (request, response) => {
+  fs.readFile("./data/userRoles.json", "utf-8", (readError, readData) => {
+    if (readError) {
+      response.json({
+        status: "file does not exist",
+      });
+    }
+    response.json({
+      status: "success",
+      data: JSON.parse(readData),
+    });
+  });
+});
+
 app.post("/product", (request, response) => {
   const isEdit = request.body.isEdit;
   const newProduct = {
@@ -185,12 +224,14 @@ app.post("/product", (request, response) => {
     });
   } else {
     dataObject.push(newProduct);
+    console.log(newProduct);
   }
 
   fs.writeFile(
     "./data/products.json",
     JSON.stringify(dataObject),
     (writeError) => {
+      console.log("hhi");
       if (writeError) {
         response.json({
           status: `Error during file write`,

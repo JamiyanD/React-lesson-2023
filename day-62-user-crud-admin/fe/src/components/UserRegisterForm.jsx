@@ -44,7 +44,7 @@ export default function UserRegisterForm() {
     };
     const FETCHED_DATA = await fetch(URL, options);
     const FETCHED_JSON = await FETCHED_DATA.json();
-    console.log(FETCHED_JSON);
+    console.log(data);
     if (FETCHED_JSON) {
       navigate("/users");
     }

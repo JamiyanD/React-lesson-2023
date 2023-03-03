@@ -12,7 +12,7 @@ import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import { Link, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Container from "@mui/material/Container";
 export default function NewUser() {
   const [currentUser, setCurrentUser] = useState({
@@ -22,12 +22,24 @@ export default function NewUser() {
     email: "",
     password: "",
     checkbox: false,
-    radio: "",
+    role: "",
     imgURL: "",
     isEdit: false,
   });
+  const [roles, setRoles] = useState([]);
+  const [currentRole, setCurrentRole] = useState("");
   const navigate = useNavigate();
   const URL = "http://localhost:8080/user";
+
+  const ROLE_URL = "http://localhost:8080/user/roles";
+  async function fetchRoles() {
+    const FETCHED_DATA = await fetch(ROLE_URL);
+    const FETCHED_JSON = await FETCHED_DATA.json();
+    setRoles(FETCHED_JSON.data);
+  }
+  useEffect(() => {
+    fetchRoles();
+  }, []);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -74,19 +86,20 @@ export default function NewUser() {
       checkbox: e.target.checked,
     });
   }
-  function handleRadioAdmin(e) {
-    if (e.target.checked) {
+  // function handleRadioAdmin(e) {
+  //   if (e.target.checked) {
+  //     setCurrentUser({
+  //       ...currentUser,
+  //       radio: e.target.value,
+  //     });
+  //   }
+  // }
+  function handleRadio(e) {
+    console.log(typeof e.target.value);
+    if (e.target.value) {
       setCurrentUser({
         ...currentUser,
-        radio: e.target.value,
-      });
-    }
-  }
-  function handleRadioUser(e) {
-    if (e.target.checked) {
-      setCurrentUser({
-        ...currentUser,
-        radio: e.target.value,
+        role: e.target.value,
       });
     }
   }
@@ -134,7 +147,7 @@ export default function NewUser() {
             <div>
               <Typography sx={{ color: "#9e9e9e" }}>Role</Typography>
               <RadioGroup row>
-                <FormControlLabel
+                {/* <FormControlLabel
                   onChange={handleRadioAdmin}
                   value="Admin"
                   control={<Radio />}
@@ -145,7 +158,19 @@ export default function NewUser() {
                   value="User"
                   control={<Radio />}
                   label="User"
-                />
+                /> */}
+                {roles &&
+                  roles.map((role, khuslen) => {
+                    return (
+                      <FormControlLabel
+                        key={khuslen}
+                        onChange={handleRadio}
+                        value={role.id}
+                        control={<Radio />}
+                        label={role.name}
+                      />
+                    );
+                  })}
               </RadioGroup>
             </div>
             <div>
