@@ -1,7 +1,7 @@
 import TextField from "@mui/material/TextField";
 import * as React from "react";
 import Button from "@mui/material/Button";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/joy/Stack";
 import { Link, useNavigate } from "react-router-dom";
@@ -15,88 +15,77 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import FormHelperText from "@mui/material/FormHelperText";
 export default function NewUser() {
-  const url = "http://localhost:8080/product";
-
+  const URL = "http://localhost:8080/products";
+  const [categories, setCategories] = useState([]);
   const [image, setImage] = useState(null);
   const navigate = useNavigate();
   const [currentProducts, setCurrentProducts] = useState({
-    imgURL: "",
-    title: "",
-    subtitle: "",
-    price: "",
-    discount: "",
-    description1: "",
+    // imgURL: "",
+    // title: "",
+    // subtitle: "",
+    // price: "",
+    // discount: "",
+    // description1: "",
     category: 1,
-    code: "",
-    hashtag: "",
-    technology: "",
-    rating: "",
+    // code: "",
+    // hashtag: "",
+    // technology: "",
+    // rating: "",
     isEdit: false,
   });
   const [defaultSelect, setDefaultSelect] = useState(1);
+
+  const CATEGORIES_URL = "http://localhost:8080/product-categories";
+  async function fetchCategories() {
+    const FETCHED_DATA = await fetch(CATEGORIES_URL);
+    const FETCHED_JSON = await FETCHED_DATA.json();
+    setCategories(FETCHED_JSON);
+  }
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
   async function handleSubmit(e) {
     e.preventDefault();
     console.log(currentProducts);
-    const AXIOS_DATA = await axios.post(url, currentProducts);
-    if (AXIOS_DATA.data.status === "success") {
+    const AXIOS_DATA = await axios.post(URL, currentProducts);
+    if (AXIOS_DATA.status == 200) {
       navigate("/productsList");
     }
   }
-  function handleUpload(e) {
-    setImage(URL.createObjectURL(e.target.files[0]));
-    console.log(URL.createObjectURL(e.target.files[0]));
+  // function handleUpload(e) {
+  //   setImage(URL.createObjectURL(e.target.files[0]));
+  //   console.log(URL.createObjectURL(e.target.files[0]));
+  //   setCurrentProducts({
+  //     ...currentProducts,
+  //     imgURL: "Not Yet",
+  //   });
+  // }
+
+  function handleName(e) {
     setCurrentProducts({
       ...currentProducts,
-      imgURL: "Not Yet",
+      name: e.target.value,
     });
   }
 
-  function handleTitle(e) {
-    setCurrentProducts({
-      ...currentProducts,
-      title: e.target.value,
-    });
-  }
-  function handleSubtitle(e) {
-    setCurrentProducts({
-      ...currentProducts,
-      subtitle: e.target.value,
-    });
-  }
-  function Price(e) {
+  function handlePrice(e) {
     setCurrentProducts({
       ...currentProducts,
       price: e.target.value,
     });
   }
-  function handleDiscount(e) {
-    setCurrentProducts({
-      ...currentProducts,
-      discount: e.target.value,
-    });
-  }
-  function handleDescription1(e) {
-    setCurrentProducts({
-      ...currentProducts,
-      description1: e.target.value,
-    });
-  }
+
   function handleCode(e) {
     setCurrentProducts({
       ...currentProducts,
       code: e.target.value,
     });
   }
-  function handleHashtag(e) {
+  function handleQuantity(e) {
     setCurrentProducts({
       ...currentProducts,
-      hashtag: e.target.value,
-    });
-  }
-  function handleTechnology(e) {
-    setCurrentProducts({
-      ...currentProducts,
-      technology: e.target.value,
+      quantity: e.target.value,
     });
   }
   function handleRating(e) {
@@ -125,7 +114,7 @@ export default function NewUser() {
             <Typography variant="h5" sx={{ color: "#9e9e9e" }}>
               New Product
             </Typography>
-            <Stack direction="row" alignItems="center">
+            {/* <Stack direction="row" alignItems="center">
               <Typography variant="h6" sx={{ width: "300px" }}>
                 Image
               </Typography>
@@ -139,7 +128,7 @@ export default function NewUser() {
                   onChange={handleUpload}
                 />
               </Button>
-            </Stack>
+            </Stack> */}
             <Stack>
               <Typography variant="h6" gutterBottom sx={{ width: "300px" }}>
                 Status
@@ -164,38 +153,31 @@ export default function NewUser() {
                       },
                   }}
                 >
-                  <MenuItem value={1}>Published</MenuItem>
-
-                  <MenuItem value={2}>Scheduled</MenuItem>
-                  <MenuItem value={3}>Inactive</MenuItem>
+                  {categories &&
+                    categories.map((category, index) => {
+                      return (
+                        <MenuItem key={index} value={category.id}>
+                          {category.name}
+                        </MenuItem>
+                      );
+                    })}
                 </Select>
                 <FormHelperText>Set the product status.</FormHelperText>
               </FormControl>
             </Stack>
             <Stack direction="row" alignItems="center">
               <Typography variant="h6" gutterBottom sx={{ width: "300px" }}>
-                Title
+                Name
               </Typography>
               <TextField
                 value={currentProducts.title}
                 name="title"
                 label="Title"
-                onChange={handleTitle}
+                onChange={handleName}
                 fullWidth
               />
             </Stack>
-            <Stack direction="row" alignItems="center">
-              <Typography variant="h6" sx={{ width: "300px" }}>
-                Subtitle
-              </Typography>
-              <TextField
-                label="Subtitle"
-                value={currentProducts.subtitle}
-                name="subtitle"
-                onChange={handleSubtitle}
-                fullWidth
-              />
-            </Stack>
+
             <Stack direction="row" alignItems="center">
               <Typography variant="h6" sx={{ width: "300px" }}>
                 Price
@@ -204,34 +186,11 @@ export default function NewUser() {
                 label="Price"
                 value={currentProducts.price}
                 name="price"
-                onChange={Price}
+                onChange={handlePrice}
                 fullWidth
               />
             </Stack>
-            <Stack direction="row" alignItems="center">
-              <Typography variant="h6" sx={{ width: "300px" }}>
-                Discount
-              </Typography>
-              <TextField
-                value={currentProducts.discount}
-                name="discount"
-                label="Discount"
-                onChange={handleDiscount}
-                fullWidth
-              />
-            </Stack>
-            <Stack direction="row" alignItems="center">
-              <Typography variant="h6" sx={{ width: "300px" }}>
-                Description 1
-              </Typography>
-              <TextField
-                value={currentProducts.description1}
-                name="description1"
-                onChange={handleDescription1}
-                label="Description 1"
-                fullWidth
-              />
-            </Stack>
+
             <Stack direction="row" alignItems="center">
               <Typography variant="h6" sx={{ width: "300px" }}>
                 Code
@@ -246,28 +205,17 @@ export default function NewUser() {
             </Stack>
             <Stack direction="row" alignItems="center">
               <Typography variant="h6" sx={{ width: "300px" }}>
-                Hashtag
+                Quantity
               </Typography>
               <TextField
-                value={currentProducts.hashtag}
-                name="hashtag"
-                onChange={handleHashtag}
-                label="Hashtag"
+                value={currentProducts.quantity}
+                name="quantity"
+                onChange={handleQuantity}
+                label="Quantity"
                 fullWidth
               />
             </Stack>
-            <Stack direction="row" alignItems="center">
-              <Typography variant="h6" sx={{ width: "300px" }}>
-                Technology
-              </Typography>
-              <TextField
-                value={currentProducts.technology}
-                name="technology"
-                onChange={handleTechnology}
-                label="Technology"
-                fullWidth
-              />
-            </Stack>
+
             <Stack direction="row" alignItems="center">
               <Typography variant="h6" sx={{ width: "205px" }}>
                 Rating

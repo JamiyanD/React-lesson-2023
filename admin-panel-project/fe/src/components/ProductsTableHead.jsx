@@ -8,40 +8,40 @@ import { visuallyHidden } from "@mui/utils";
 import * as React from "react";
 const headCells = [
   {
-    label: "STATUS",
+    label: "PRODUCT",
     numeric: false,
     disablePadding: false,
-    id: "status",
+    id: "name",
   },
   {
-    label: "Image",
+    label: "SKU",
     numeric: false,
     disablePadding: false,
-    id: "image",
+    id: "code",
   },
   {
-    label: "Title",
+    label: "QTY",
     numeric: false,
     disablePadding: false,
-    id: "title",
+    id: "quantity",
   },
   {
-    label: "Subtitle",
-    numeric: false,
-    disablePadding: false,
-    id: "subtitle",
-  },
-  {
-    label: "Price",
+    label: "PRICE",
     numeric: false,
     disablePadding: false,
     id: "price",
   },
   {
-    label: "Rating",
+    label: "RATING",
     numeric: false,
     disablePadding: false,
     id: "rating",
+  },
+  {
+    label: "STATUS",
+    numeric: false,
+    disablePadding: false,
+    id: "status",
   },
   {
     label: "Action",

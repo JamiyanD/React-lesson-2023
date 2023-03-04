@@ -3,19 +3,20 @@ import express from "express";
 import cors from "cors";
 import fs from "fs";
 import bcrypt from "bcrypt";
-import userRoles_route from "./routes/userRoles.js";
-// const express = require("express");
-// const cors = require("cors");
-// const fs = require("fs");
-// const bcrypt = require("bcrypt");
-
+import productCategories_router from "./routes/productCategories.js";
+import userRoles_router from "./routes/userRoles.js";
+import users_router from "./routes/users.js";
+import products_router from "./routes/products.js";
 const app = express();
 const PORT = 8080;
 const SALT_ROUNDS = 10;
 
 app.use(cors());
 app.use(express.json());
-app.use(userRoles_route);
+app.use(userRoles_router);
+app.use(productCategories_router);
+app.use(users_router);
+app.use(products_router);
 
 app.post("/user", (request, response) => {
   const body = request.body;
@@ -353,21 +354,21 @@ app.put("/product", (request, response) => {
   });
 });
 
-app.get("/search", (request, response) => {
-  console.log(request.query);
-  const savedCategories = fs.readFileSync("./data/products.json", {
-    encoding: "utf-8",
-    flag: "r",
-  });
-  const savedCategoriesArrayObject = JSON.parse(savedCategories);
-  const foundCategory = savedCategoriesArrayObject.filter((product) =>
-    product.title.includes(request.query.value)
-  );
-  response.json({
-    status: "success",
-    data: foundCategory,
-  });
-});
+// app.get("/search", (request, response) => {
+//   console.log(request.query);
+//   const savedCategories = fs.readFileSync("./data/products.json", {
+//     encoding: "utf-8",
+//     flag: "r",
+//   });
+//   const savedCategoriesArrayObject = JSON.parse(savedCategories);
+//   const foundCategory = savedCategoriesArrayObject.filter((product) =>
+//     product.title.includes(request.query.value)
+//   );
+//   response.json({
+//     status: "success",
+//     data: foundCategory,
+//   });
+// });
 
 app.post("/login", (request, response) => {
   const body = request.body;

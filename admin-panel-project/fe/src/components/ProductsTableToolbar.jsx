@@ -5,7 +5,7 @@ import MenuItem from "@mui/material/MenuItem";
 import axios from "axios";
 import Stack from "@mui/joy/Stack";
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -20,38 +20,47 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import InputBase from "@mui/material/InputBase";
 import { useRef } from "react";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 export default function EnhancedTableToolbar(props) {
-  const url = "http://localhost:8080/product";
+  const [categories, setCategories] = useState([]);
+  const [searchColor, setSearchColor] = useState(false);
+  const URL = "http://localhost:8080/products";
   const { numSelected, setUsers, handleDelete, selected } = props;
-  const [age, setAge] = useState("");
-  const handleChange = async (select) => {
-    const FETCHED_DATA = await axios.get(url);
-    setUsers(FETCHED_DATA.data.data);
-    if (select.target.value == 10) {
-      const sortedData = [...FETCHED_DATA.data.data].sort(
-        (a, b) => a.price - b.price
-      );
-      setUsers(sortedData);
-    } else if (select.target.value == 20) {
-      const sortedData = [...FETCHED_DATA.data.data].sort(
-        (a, b) => b.price - a.price
-      );
-      setUsers(sortedData);
-    }
-    setAge(select.target.value);
-  };
+  const [selectValue, setSelectValue] = React.useState("");
 
   async function handleSearch(e) {
     e.preventDefault();
     const searchInput = e.target.search.value;
     const SEARCH_URL = `http://localhost:8080/search?value=${searchInput}`;
     const AXIOS_DATA = await axios.get(SEARCH_URL);
-    if (AXIOS_DATA.data.status === "success") {
-      setUsers(AXIOS_DATA.data.data);
+    if (AXIOS_DATA.status == 200) {
+      setUsers(AXIOS_DATA.data);
     }
   }
 
-  const [searchColor, setSearchColor] = useState(false);
+  const CATEGORIES_URL = "http://localhost:8080/product-categories";
+  async function fetchCategories() {
+    const FETCHED_DATA = await fetch(CATEGORIES_URL);
+    const FETCHED_JSON = await FETCHED_DATA.json();
+    setCategories(FETCHED_JSON);
+  }
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  async function handleChange(select) {
+    const AXIOS_DATA = await axios.get(URL);
+    setUsers(AXIOS_DATA.data);
+    console.log("ds");
+    if (select.target.value) {
+      const filteredUser = AXIOS_DATA.data.filter(
+        (user) => user.category_id == select.target.value
+      );
+      setUsers(filteredUser);
+    }
+    setSelectValue(select.target.value);
+  }
+
   return (
     <Toolbar
       sx={{
@@ -124,13 +133,15 @@ export default function EnhancedTableToolbar(props) {
       ) : (
         <Stack direction="row" alignItems="center" className="ms-auto" gap={2}>
           <FormControl
-            sx={{ minWidth: 120 }}
+            sx={{
+              minWidth: 140,
+            }}
             size="small"
             className="bg-light rounded-3"
           >
-            <InputLabel id="demo-simple-select-label">Select </InputLabel>
             <Select
-              value={age}
+              value={selectValue}
+              className="rounded-3"
               sx={{
                 boxShadow: "none",
                 ".MuiOutlinedInput-notchedOutline": { border: 0 },
@@ -140,22 +151,33 @@ export default function EnhancedTableToolbar(props) {
                   },
                 "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
                   {
-                    border: 0,
+                    border: "1px solid lightgrey",
                   },
               }}
-              label="Select"
               onChange={handleChange}
               inputProps={{ "aria-label": "Without label" }}
+              displayEmpty
+              IconComponent={(props) => (
+                <ExpandMoreIcon className="m-2 text-black-50" {...props} />
+              )}
             >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value={10}>Price: Low to High</MenuItem>
-              <MenuItem value={20}>Price: High to Low</MenuItem>
+              <MenuItem value="">All</MenuItem>
+              {categories &&
+                categories.map((category, index) => {
+                  return (
+                    <MenuItem key={index} value={category.id}>
+                      {category.name}
+                    </MenuItem>
+                  );
+                })}
             </Select>
           </FormControl>
-          <Button href="/newProduct" variant="contained">
-            ADD PRODUCT
+          <Button
+            href="/newProduct"
+            variant="contained"
+            className="color-blue rounded-3"
+          >
+            Add product
           </Button>
         </Stack>
       )}

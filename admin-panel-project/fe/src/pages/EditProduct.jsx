@@ -8,109 +8,85 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import axios from "axios";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import FormHelperText from "@mui/material/FormHelperText";
 export default function EditProduct() {
-  const url = "http://localhost:8080/product";
+  const URL = "http://localhost:8080/products";
   const navigate = useNavigate();
   const { id } = useParams();
+  const [categories, setCategories] = useState([]);
+  const [defaultSelect, setDefaultSelect] = useState(1);
   const [currentProducts, setCurrentProducts] = useState({
-    imgURL: "",
-    title: "",
-    subtitle: "",
+    name: "",
+    category: 1,
     price: "",
-    discount: "",
-    description1: "",
-    description2: "",
     code: "",
-    hashtag: "",
-    technology: "",
-    rating: 0,
+    quantity: "",
   });
+
+  const CATEGORIES_URL = "http://localhost:8080/product-categories";
+  async function fetchCategories() {
+    const FETCHED_DATA = await fetch(CATEGORIES_URL);
+    const FETCHED_JSON = await FETCHED_DATA.json();
+    setCategories(FETCHED_JSON);
+  }
   useEffect(() => {
-    fetchProduct();
+    fetchCategories();
   }, []);
-  async function fetchProduct() {
-    const AXIOS_DATA = await axios.put(url, { productId: id });
-    console.log(AXIOS_DATA);
-    if (AXIOS_DATA.data.status === "success") {
-      setCurrentProducts(AXIOS_DATA.data.data);
+
+  useEffect(() => {
+    axiosProduct();
+  }, []);
+  async function axiosProduct() {
+    const AXIOS_DATA = await axios.put(URL, { productId: id });
+    if (AXIOS_DATA.status == 200) {
+      setCurrentProducts(AXIOS_DATA.data[0]);
     }
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
     const putData = {
-      ProductId: id,
-      id: currentProducts.id,
-      imgURL: currentProducts.imgURL,
-      title: currentProducts.title,
-      subtitle: currentProducts.subtitle,
-      price: currentProducts.price,
-      discount: currentProducts.discount,
-      description1: currentProducts.description1,
-      description2: currentProducts.description2,
+      productId: id,
+      name: currentProducts.name,
       code: currentProducts.code,
-      hashtag: currentProducts.hashtag,
-      technology: currentProducts.technology,
+      price: currentProducts.price,
+      quantity: currentProducts.quantity,
+      category: currentProducts.category,
       rating: currentProducts.rating,
       isEdit: true,
     };
-    const AXIOS_DATA = await axios.post(url, putData);
-    if (AXIOS_DATA.data.status === "success") {
+    const AXIOS_DATA = await axios.post(URL, putData);
+    if (AXIOS_DATA.status == 200) {
       navigate("/productsList");
     }
   }
-  function handleTitle(e) {
+  function handleName(e) {
     setCurrentProducts({
       ...currentProducts,
-      title: e.target.value,
+      name: e.target.value,
     });
   }
-  function handleSubtitle(e) {
-    setCurrentProducts({
-      ...currentProducts,
-      subtitle: e.target.value,
-    });
-  }
-  function Price(e) {
+
+  function handlePrice(e) {
     setCurrentProducts({
       ...currentProducts,
       price: e.target.value,
     });
   }
-  function handleDiscount(e) {
-    setCurrentProducts({
-      ...currentProducts,
-      discount: e.target.value,
-    });
-  }
-  function handleDescription1(e) {
-    setCurrentProducts({
-      ...currentProducts,
-      description1: e.target.value,
-    });
-  }
-  function handleDiscription2(e) {
-    setCurrentProducts({
-      ...currentProducts,
-      description2: e.target.value,
-    });
-  }
+
   function handleCode(e) {
     setCurrentProducts({
       ...currentProducts,
       code: e.target.value,
     });
   }
-  function handleHashtag(e) {
+  function handleQuantity(e) {
     setCurrentProducts({
       ...currentProducts,
-      hashtag: e.target.value,
-    });
-  }
-  function handleTechnology(e) {
-    setCurrentProducts({
-      ...currentProducts,
-      technology: e.target.value,
+      quantity: e.target.value,
     });
   }
   function handleRating(e) {
@@ -120,102 +96,105 @@ export default function EditProduct() {
     });
     console.log(e.target.value);
   }
+  function handleChange(select) {
+    setDefaultSelect(select.target.value);
+    console.log(select.target.value);
+    setCurrentProducts({
+      ...currentProducts,
+      category: select.target.value,
+    });
+  }
 
   return (
-    <Box sx={{ display: "flex", backgroundColor: "white" }}>
+    <Box
+      sx={{ display: "flex", backgroundColor: "white" }}
+      className="rounded-5"
+    >
       <Box sx={{ flexGrow: 1, p: 2 }}>
         <form onSubmit={handleSubmit}>
           <Stack spacing={2}>
             <Typography variant="h5" sx={{ color: "#9e9e9e" }}>
               Edit Product
             </Typography>
-            <Stack direction="row" alignItems="center">
-              <Typography variant="h6" sx={{ width: "200px", marginRight: 5 }}>
+            {/* <Stack direction="row" alignItems="center">
+              <Typography variant="h6" sx={{ width: "300px" }}>
                 Image
               </Typography>
               <Button variant="outlined" component="label">
                 Upload
-                <input hidden accept="image/*" multiple type="file" />
+                <input
+                  hidden
+                  accept="image/*"
+                  multiple
+                  type="file"
+                  onChange={handleUpload}
+                />
               </Button>
+            </Stack> */}
+            <Stack>
+              <Typography variant="h6" gutterBottom sx={{ width: "300px" }}>
+                Status
+              </Typography>
+              <FormControl sx={{ minWidth: 120 }} size="small">
+                <Select
+                  value={defaultSelect}
+                  onChange={handleChange}
+                  displayEmpty
+                  inputProps={{ "aria-label": "Without label" }}
+                  className=" rounded-3"
+                  sx={{
+                    boxShadow: "none",
+
+                    "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                      {
+                        borderColor: "silver",
+                      },
+                    "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
+                      {
+                        borderColor: "lightgrey",
+                      },
+                  }}
+                >
+                  {categories &&
+                    categories.map((category, index) => {
+                      return (
+                        <MenuItem key={index} value={category.id}>
+                          {category.name}
+                        </MenuItem>
+                      );
+                    })}
+                </Select>
+                <FormHelperText>Set the product status.</FormHelperText>
+              </FormControl>
             </Stack>
             <Stack direction="row" alignItems="center">
-              <Typography
-                variant="h6"
-                gutterBottom
-                sx={{ width: "200px", marginRight: 5 }}
-              >
-                Title
+              <Typography variant="h6" gutterBottom sx={{ width: "300px" }}>
+                Name
               </Typography>
               <TextField
-                value={currentProducts.title}
+                value={currentProducts.name}
                 name="title"
                 label="Title"
-                onChange={handleTitle}
+                onChange={handleName}
                 fullWidth
               />
             </Stack>
+
             <Stack direction="row" alignItems="center">
-              <Typography variant="h6" sx={{ width: "200px", marginRight: 5 }}>
-                Subtitle
-              </Typography>
-              <TextField
-                label="Subtitle"
-                value={currentProducts.subtitle}
-                name="subtitle"
-                onChange={handleSubtitle}
-                fullWidth
-              />
-            </Stack>
-            <Stack direction="row" alignItems="center">
-              <Typography variant="h6" sx={{ width: "200px", marginRight: 5 }}>
+              <Typography variant="h6" sx={{ width: "300px" }}>
                 Price
               </Typography>
               <TextField
                 label="Price"
                 value={currentProducts.price}
                 name="price"
-                onChange={Price}
+                onChange={handlePrice}
                 fullWidth
               />
             </Stack>
+
             <Stack direction="row" alignItems="center">
-              <Typography variant="h6" sx={{ width: "200px", marginRight: 5 }}>
-                Discount
-              </Typography>
-              <TextField
-                value={currentProducts.discount}
-                name="discount"
-                label="Discount"
-                onChange={handleDiscount}
-                fullWidth
-              />
-            </Stack>
-            <Stack direction="row" alignItems="center">
-              <Typography variant="h6" sx={{ width: "200px", marginRight: 5 }}>
-                Description 1
-              </Typography>
-              <TextField
-                value={currentProducts.description1}
-                name="description1"
-                onChange={handleDescription1}
-                label="Description 1"
-                fullWidth
-              />
-            </Stack>
-            <Stack direction="row" alignItems="center">
-              <Typography variant="h6" sx={{ width: "200px", marginRight: 5 }}>
-                Description 2
-              </Typography>
-              <TextField
-                value={currentProducts.discription2}
-                name="description2"
-                onChange={handleDiscription2}
-                label="Description 2"
-                fullWidth
-              />
-            </Stack>
-            <Stack direction="row" alignItems="center">
-              <Typography variant="h6" sx={{ width: "200px", marginRight: 5 }}>
+              <Typography variant="h6" sx={{ width: "300px" }}>
                 Code
               </Typography>
               <TextField
@@ -227,35 +206,23 @@ export default function EditProduct() {
               />
             </Stack>
             <Stack direction="row" alignItems="center">
-              <Typography variant="h6" sx={{ width: "200px", marginRight: 5 }}>
-                Hashtag
+              <Typography variant="h6" sx={{ width: "300px" }}>
+                Quantity
               </Typography>
               <TextField
-                value={currentProducts.hashtag}
-                name="hashtag"
-                onChange={handleHashtag}
-                label="Hashtag"
+                value={currentProducts.quantity}
+                name="quantity"
+                onChange={handleQuantity}
+                label="Quantity"
                 fullWidth
               />
             </Stack>
+
             <Stack direction="row" alignItems="center">
-              <Typography variant="h6" sx={{ width: "200px", marginRight: 5 }}>
-                Technology
-              </Typography>
-              <TextField
-                value={currentProducts.technology}
-                name="technology"
-                onChange={handleTechnology}
-                label="Technology"
-                fullWidth
-              />
-            </Stack>
-            <Stack direction="row" alignItems="center">
-              <Typography variant="h6" sx={{ width: "200px", marginRight: 0 }}>
+              <Typography variant="h6" sx={{ width: "205px" }}>
                 Rating
               </Typography>
               <Rating
-                value={Number(currentProducts.rating)}
                 name="customized-10"
                 onChange={handleRating}
                 max={10}
@@ -264,7 +231,7 @@ export default function EditProduct() {
             </Stack>
             <Stack direction="row" spacing={2}>
               <Button variant="contained" type="submit">
-                UPDATE
+                SAVE
               </Button>
               <Button variant="outlined">RESET</Button>
               <Button variant="outlined">CANCEL</Button>

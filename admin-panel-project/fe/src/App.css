@@ -30,7 +30,7 @@ a{
   color: white;
 }
 .color-blue{
-  background-color: #2C9AFF;
+  background-color: #2C9AFF !important;
 
 }
 .sign-logo{
@@ -68,6 +68,17 @@ a{
 .sign-in{
   position: relative;
   top: 200px;
-  
 }
 
+.MuiButton-contained {
+  text-transform: none !important;
+}
+
+.MuiPaginationItem-page{
+  background-color: #2C9AFF !important;
+  color:white !important;
+  border-radius: 20% !important;
+}
+.MuiPaginationItem-icon{
+  color: gray;
+}

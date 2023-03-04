@@ -15,40 +15,41 @@ import IconButton from "@mui/material/IconButton";
 import toast, { Toaster } from "react-hot-toast";
 import Container from "@mui/material/Container";
 export default function UsersList() {
-  const URL = "http://localhost:8080/user";
+  const URL = "http://localhost:8080/users";
   const [users, setUsers] = useState([]);
+  const [selectValue, setSelectValue] = React.useState("");
 
-  async function fetchScreen() {
-    const FETCHED_DATA = await axios.get(URL);
-    setUsers(FETCHED_DATA.data.data);
-    return FETCHED_DATA;
+  async function axiosScreen() {
+    const AXIOS_DATA = await axios.get(URL);
+    setUsers(AXIOS_DATA.data);
+    return AXIOS_DATA;
   }
 
   useEffect(() => {
-    fetchScreen();
+    axiosScreen();
   }, []);
 
   async function handleSearch(e) {
     e.preventDefault();
-    const FETCHED_DATA = await axios.get(URL);
-    const filteredUser = FETCHED_DATA.data.data.filter((user) =>
-      user.firstname.toLowerCase().includes(e.target.search.value.toLowerCase())
-    );
-    console.log(filteredUser);
-    setUsers(filteredUser);
+    const searchInput = e.target.search.value;
+    const SEARCH_URL = `http://localhost:8080/search-user?value=${searchInput}`;
+    const AXIOS_DATA = await axios.get(SEARCH_URL);
+    if (AXIOS_DATA.status == 200) {
+      setUsers(AXIOS_DATA.data);
+    }
   }
 
-  const [age, setAge] = React.useState("");
   const handleChange = async (select) => {
-    const FETCHED_DATA = await axios.get(URL);
-    setUsers(FETCHED_DATA.data.data);
+    const AXIOS_DATA = await axios.get(URL);
+    setUsers(AXIOS_DATA.data);
+    console.log(select.target.value);
     if (select.target.value) {
-      const filteredUser = FETCHED_DATA.data.data.filter(
-        (user) => user.radio == select.target.value
+      const filteredUser = AXIOS_DATA.data.filter(
+        (user) => user.role == select.target.value
       );
       setUsers(filteredUser);
     }
-    setAge(select.target.value);
+    setSelectValue(select.target.value);
   };
 
   return (
@@ -86,15 +87,15 @@ export default function UsersList() {
             <Select
               labelId="demo-select-small"
               id="demo-select-small"
-              value={age}
+              value={selectValue}
               label="Select"
               onChange={handleChange}
             >
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
-              <MenuItem value={"User"}>User</MenuItem>
-              <MenuItem value={"Admin"}>Admin</MenuItem>
+              <MenuItem value={2}>User</MenuItem>
+              <MenuItem value={1}>Admin</MenuItem>
             </Select>
           </FormControl>
         </Stack>

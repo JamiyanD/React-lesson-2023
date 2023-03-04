@@ -25,19 +25,23 @@ import Checkbox from "@mui/material/Checkbox";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Menu from "@mui/material/Menu";
 import TablePagination from "@mui/material/TablePagination";
+import Pagination from "@mui/material/Pagination";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { height } from "@mui/system";
 export default function ProductsList({ currentProducts, setCurrentProducts }) {
-  const url = "http://localhost:8080/product";
+  const URL = "http://localhost:8080/products";
   const [users, setUsers] = useState([]);
 
-  async function fetchScreen() {
-    const FETCHED_DATA = await axios.get(url);
-    setUsers(FETCHED_DATA.data.data);
-    console.log(users);
-    return FETCHED_DATA;
+  async function axiosScreen() {
+    const AXIOS_DATA = await axios.get(URL);
+    setUsers(AXIOS_DATA.data);
+    return AXIOS_DATA;
   }
 
   useEffect(() => {
-    fetchScreen();
+    axiosScreen();
   }, []);
 
   async function handleDelete(userId) {
@@ -45,8 +49,8 @@ export default function ProductsList({ currentProducts, setCurrentProducts }) {
     const data = {
       userId: userId,
     };
-    const FETCHED_DATA = await axios.delete(url, { data });
-    setUsers(FETCHED_DATA.data.data);
+    const AXIOS_DATA = await axios.delete(URL, { data });
+    setUsers(AXIOS_DATA.data);
   }
 
   // menu
@@ -63,12 +67,12 @@ export default function ProductsList({ currentProducts, setCurrentProducts }) {
 
   const [selected, setSelected] = React.useState([]);
 
-  const handleCheckbox = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleCheckbox = (event, id) => {
+    const selectedIndex = selected.indexOf(id);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -87,9 +91,10 @@ export default function ProductsList({ currentProducts, setCurrentProducts }) {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [page, setPage] = React.useState(0);
   const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+    setPage(newPage - 1);
   };
   const handleChangeRowsPerPage = (event) => {
+    setSelectValue(event.target.value);
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
@@ -124,13 +129,15 @@ export default function ProductsList({ currentProducts, setCurrentProducts }) {
 
     return 0;
   }
+  const [selectValue, setSelectValue] = useState(5);
+
   return (
     <Box
       sx={{ display: "flex", backgroundColor: "white" }}
       className="rounded-5 p-3"
     >
       <Box sx={{ flexGrow: 1, p: 2 }} className="border border-1 rounded-5">
-        <div>
+        <Box>
           <EnhancedTableToolbar
             numSelected={selected.length}
             handleDelete={handleDelete}
@@ -154,25 +161,25 @@ export default function ProductsList({ currentProducts, setCurrentProducts }) {
                   .map((parametr, index) => (
                     <TableRow
                       hover
-                      onClick={(event) => handleCheckbox(event, parametr.id)}
                       role="checkbox"
-                      aria-checked={isSelected(parametr.id)}
+                      // aria-checked={isSelected(parametr.id)}
                       tabIndex={-1}
                       key={index}
-                      selected={isSelected(parametr.id)}
+                      // selected={isSelected(parametr.id)}
                     >
                       <TableCell sx={{ padding: 0 }}>
                         <Checkbox
+                          onClick={(event) =>
+                            handleCheckbox(event, parametr.id)
+                          }
                           color="primary"
                           checked={isSelected(parametr.id)}
                         />
                       </TableCell>
-                      <TableCell component="th" scope="row">
-                        {parametr.category.name}
-                      </TableCell>
-                      <TableCell>Not Yet</TableCell>
-                      <TableCell>{parametr.title}</TableCell>
-                      <TableCell>{parametr.subtitle}</TableCell>
+
+                      <TableCell>{parametr.name}</TableCell>
+                      <TableCell>{parametr.code}</TableCell>
+                      <TableCell>{parametr.quantity}</TableCell>
                       <TableCell>
                         {parametr.price && `$${parametr.price}`}
                       </TableCell>
@@ -191,6 +198,9 @@ export default function ProductsList({ currentProducts, setCurrentProducts }) {
                             />
                           </Stack>
                         )}
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        {parametr.category_id}
                       </TableCell>
                       <TableCell>
                         {" "}
@@ -215,9 +225,6 @@ export default function ProductsList({ currentProducts, setCurrentProducts }) {
                           <MenuItem
                             component={Link}
                             to={`/product/edit/${parametr.id}`}
-                            // onClick={() => {
-                            //     handleEdit(parametr.id);
-                            // }}
                           >
                             Edit
                           </MenuItem>
@@ -236,16 +243,50 @@ export default function ProductsList({ currentProducts, setCurrentProducts }) {
               </TableBody>
             </Table>
           </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={users.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </div>
+          <Stack direction="row" className="py-3">
+            <FormControl
+              size="small"
+              className="bg-light rounded-3 "
+              sx={{ width: "70px", height: "35px" }}
+            >
+              <Select
+                value={selectValue}
+                className="rounded-3 "
+                sx={{
+                  boxShadow: "none",
+                  ".MuiOutlinedInput-notchedOutline": { border: 0 },
+                  "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
+                    {
+                      border: 0,
+                    },
+                  "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                    {
+                      border: "1px solid lightgrey",
+                    },
+                  height: "35px",
+                }}
+                onChange={handleChangeRowsPerPage}
+                inputProps={{ "aria-label": "Without label" }}
+                displayEmpty
+                IconComponent={(props) => (
+                  <ExpandMoreIcon className=" text-black-50" {...props} />
+                )}
+              >
+                <MenuItem value={5}>5</MenuItem>
+                <MenuItem value={10}>10</MenuItem>
+                <MenuItem value={25}>25</MenuItem>
+              </Select>
+            </FormControl>
+            <Pagination
+              count={Math.ceil(users.length / 5)}
+              onChange={handleChangePage}
+              page={page + 1}
+              size="medium"
+              className="ms-auto blue-color"
+              shape="rounded"
+            />
+          </Stack>
+        </Box>
       </Box>
     </Box>
   );

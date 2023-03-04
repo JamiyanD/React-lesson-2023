@@ -18,26 +18,22 @@ import FormHelperText from "@mui/joy/FormHelperText";
 export default function NewUser() {
   const [validation, setValidation] = useState("");
   const [currentUser, setCurrentUser] = useState({
-    firstname: "",
-    lastname: "",
-    phoneNumber: "",
+    full_name: "",
     email: "",
-    password: "",
-    checkbox: false,
     role: "",
-    imgURL: "",
+    password: "",
+    phone_number: "",
     isEdit: false,
   });
   const [roles, setRoles] = useState([]);
   const [currentRole, setCurrentRole] = useState("");
   const navigate = useNavigate();
-  const URL = "http://localhost:8080/user";
+  const URL = "http://localhost:8080/users";
 
   const ROLE_URL = "http://localhost:8080/userRoles";
   async function fetchRoles() {
     const FETCHED_DATA = await fetch(ROLE_URL);
     const FETCHED_JSON = await FETCHED_DATA.json();
-    console.log(FETCHED_JSON);
     setRoles(FETCHED_JSON);
   }
   useEffect(() => {
@@ -53,7 +49,8 @@ export default function NewUser() {
       currentUser.role == 3
     ) {
       const AXIOS_DATA = await axios.post(URL, currentUser);
-      if (AXIOS_DATA.data.status === "success") {
+      console.log(AXIOS_DATA.status);
+      if (AXIOS_DATA.status == 200) {
         navigate("/usersList");
       }
     } else {
@@ -61,23 +58,17 @@ export default function NewUser() {
     }
   }
 
-  function handleFirstName(e) {
+  function handleFullName(e) {
     setCurrentUser({
       ...currentUser,
-      firstname: e.target.value,
+      full_name: e.target.value,
     });
   }
 
-  function handleLastName(e) {
-    setCurrentUser({
-      ...currentUser,
-      lastname: e.target.value,
-    });
-  }
   function handlePhoneNumber(e) {
     setCurrentUser({
       ...currentUser,
-      phoneNumber: e.target.value,
+      phone_number: e.target.value,
     });
   }
   function handleEmail(e) {
@@ -92,12 +83,7 @@ export default function NewUser() {
       password: e.target.value,
     });
   }
-  function handleCheckbox(e) {
-    setCurrentUser({
-      ...currentUser,
-      checkbox: e.target.checked,
-    });
-  }
+
   function handleRadio(e) {
     if (e.target.value) {
       setCurrentUser({
@@ -106,12 +92,12 @@ export default function NewUser() {
       });
     }
   }
-  function handleUpload(e) {
-    setCurrentUser({
-      ...currentUser,
-      imgURL: e.target.value,
-    });
-  }
+  // function handleUpload(e) {
+  //   setCurrentUser({
+  //     ...currentUser,
+  //     imgURL: e.target.value,
+  //   });
+  // }
   return (
     <Box
       sx={{ display: "flex", backgroundColor: "white" }}
@@ -125,21 +111,9 @@ export default function NewUser() {
             </Typography>
             <TextField
               value={currentUser.firstname}
-              name="firstname"
-              onChange={handleFirstName}
-              label="First Name"
-            />
-            <TextField
-              value={currentUser.lastname}
-              name="lastname"
-              label="Last Name"
-              onChange={handleLastName}
-            />
-            <TextField
-              label="Phone Number"
-              value={currentUser.phoneNumber}
-              name="phoneNumber"
-              onChange={handlePhoneNumber}
+              name="full_name"
+              onChange={handleFullName}
+              label="Full Name"
             />
             <TextField
               label="Email"
@@ -147,6 +121,19 @@ export default function NewUser() {
               name="email"
               onChange={handleEmail}
             />
+            <TextField
+              value={currentUser.password}
+              name="password"
+              label="Password"
+              onChange={handlePassword}
+            />
+            <TextField
+              label="Phone Number"
+              value={currentUser.phoneNumber}
+              name="phone_number"
+              onChange={handlePhoneNumber}
+            />
+
             <div>
               <Typography sx={{ color: "#9e9e9e" }}>Role</Typography>
               <RadioGroup row>
@@ -170,12 +157,9 @@ export default function NewUser() {
                 {validation}
               </FormHelperText>
             </div>
-            <div>
-              <Typography sx={{ color: "#9e9e9e" }}>Disabled</Typography>
-              <Checkbox onChange={handleCheckbox} />
-            </div>
-            <Typography sx={{ color: "#9e9e9e" }}>Avatar</Typography>
-            <Stack direction="row" alignItems="center" spacing={2}>
+
+            {/* <Typography sx={{ color: "#9e9e9e" }}>Avatar</Typography> */}
+            {/* <Stack direction="row" alignItems="center" spacing={2}>
               <Button variant="contained" component="label">
                 Upload
                 <input
@@ -194,13 +178,8 @@ export default function NewUser() {
                 <input hidden accept="image/*" type="file" />
                 <PhotoCamera />
               </IconButton>
-            </Stack>
-            <TextField
-              value={currentUser.password}
-              name="password"
-              label="Password"
-              onChange={handlePassword}
-            />
+            </Stack> */}
+
             <Stack direction="row" spacing={2}>
               <Button variant="contained" type="submit">
                 SAVE

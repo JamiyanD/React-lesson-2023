@@ -18,78 +18,64 @@ import axios from "axios";
 export default function EditUser() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const url = "http://localhost:8080/user";
-
-  useEffect(() => {
-    fetchProduct();
-  }, []);
-  async function fetchProduct() {
-    const AXIOS_DATA = await axios.put(url, { userId: id });
-    if (AXIOS_DATA.data.status === "success") {
-      setCurrentUser(AXIOS_DATA.data.data);
-    }
-  }
+  const url = "http://localhost:8080/users";
   const [currentUser, setCurrentUser] = useState({
-    firstname: "",
-    lastname: "",
-    phoneNumber: "",
+    full_name: "",
     email: "",
     password: "",
-    checkbox: false,
     role: "",
-    imgURL: "",
+    phone_number: "",
   });
+  useEffect(() => {
+    axiosProduct();
+  }, []);
+  async function axiosProduct() {
+    const AXIOS_DATA = await axios.put(url, { userId: id });
+    if (AXIOS_DATA.status == 200) {
+      setCurrentUser(AXIOS_DATA.data[0]);
+    }
+  }
+
   const [roles, setRoles] = useState([]);
   const ROLE_URL = "http://localhost:8080/userRoles";
   async function fetchRoles() {
     const FETCHED_DATA = await fetch(ROLE_URL);
     const FETCHED_JSON = await FETCHED_DATA.json();
-    console.log(FETCHED_JSON);
     setRoles(FETCHED_JSON);
   }
   useEffect(() => {
     fetchRoles();
   }, []);
-  console.log(currentUser.role);
   async function handleSubmit(e) {
     e.preventDefault();
     const putData = {
       userId: id,
-      id: currentUser.id,
-      firstname: currentUser.firstname,
-      lastname: currentUser.lastname,
-      phoneNumber: currentUser.phoneNumber,
+      full_name: currentUser.full_name,
+      phone_number: currentUser.phone_number,
       email: currentUser.email,
       password: currentUser.password,
-      checkbox: currentUser.checkbox,
       role: currentUser.role,
-      imgURL: currentUser.imgURL,
       isEdit: true,
     };
+    console.log(putData);
     const AXIOS_DATA = await axios.post(url, putData);
-    console.log(AXIOS_DATA);
-    if (AXIOS_DATA.data.status === "success") {
+
+    if (AXIOS_DATA.status == 200) {
       navigate("/usersList");
     }
   }
 
-  function handleFirstName(e) {
+  function handleFullName(e) {
     setCurrentUser({
       ...currentUser,
-      firstname: e.target.value,
+      full_name: e.target.value,
     });
   }
 
-  function handleLastName(e) {
-    setCurrentUser({
-      ...currentUser,
-      lastname: e.target.value,
-    });
-  }
   function handlePhoneNumber(e) {
     setCurrentUser({
       ...currentUser,
-      phoneNumber: e.target.value,
+      phone_number: e.target.value,
     });
   }
   function handleEmail(e) {
@@ -104,12 +90,7 @@ export default function EditUser() {
       password: e.target.value,
     });
   }
-  function handleCheckbox(e) {
-    setCurrentUser({
-      ...currentUser,
-      checkbox: e.target.checked,
-    });
-  }
+
   function handleRadio(e) {
     console.log(e.target.value);
     if (e.target.value) {
@@ -119,12 +100,12 @@ export default function EditUser() {
       });
     }
   }
-  function handleUpload(e) {
-    setCurrentUser({
-      ...currentUser,
-      imgURL: e.target.value,
-    });
-  }
+  // function handleUpload(e) {
+  //   setCurrentUser({
+  //     ...currentUser,
+  //     imgURL: e.target.value,
+  //   });
+  // }
   return (
     <Box sx={{ display: "flex", backgroundColor: "white" }}>
       <Box sx={{ flexGrow: 1, p: 2 }}>
@@ -134,28 +115,29 @@ export default function EditUser() {
               Edit User
             </Typography>
             <TextField
-              value={currentUser.firstname}
-              name="firstname"
-              onChange={handleFirstName}
+              value={currentUser.full_name}
+              name="full_name"
+              onChange={handleFullName}
               label="First Name"
             />
-            <TextField
-              value={currentUser.lastname}
-              name="lastname"
-              label="Last Name"
-              onChange={handleLastName}
-            />
-            <TextField
-              label="Phone Number"
-              value={currentUser.phoneNumber}
-              name="phoneNumber"
-              onChange={handlePhoneNumber}
-            />
+
             <TextField
               label="Email"
               value={currentUser.email}
               name="email"
               onChange={handleEmail}
+            />
+            <TextField
+              value={currentUser.password}
+              name="password"
+              label="Password"
+              onChange={handlePassword}
+            />
+            <TextField
+              label="Phone Number"
+              value={currentUser.phone_number}
+              name="phone_number"
+              onChange={handlePhoneNumber}
             />
             <FormControl>
               <FormLabel id="demo-controlled-radio-buttons-group">
@@ -181,11 +163,8 @@ export default function EditUser() {
                   })}
               </RadioGroup>
             </FormControl>
-            <div>
-              <Typography sx={{ color: "#9e9e9e" }}>Disabled</Typography>
-              <Checkbox onChange={handleCheckbox} />
-            </div>
-            <Typography sx={{ color: "#9e9e9e" }}>Avatar</Typography>
+
+            {/* <Typography sx={{ color: "#9e9e9e" }}>Avatar</Typography>
             <Stack direction="row" alignItems="center" spacing={2}>
               <Button variant="contained" component="label">
                 Upload
@@ -205,13 +184,8 @@ export default function EditUser() {
                 <input hidden accept="image/*" type="file" />
                 <PhotoCamera />
               </IconButton>
-            </Stack>
-            <TextField
-              value={currentUser.password}
-              name="password"
-              label="Password"
-              onChange={handlePassword}
-            />
+            </Stack> */}
+
             <Stack direction="row" spacing={2}>
               <Button variant="contained" type="submit">
                 UPDATE

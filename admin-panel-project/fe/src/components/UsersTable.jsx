@@ -21,22 +21,23 @@ export default function UsersTable({
   setUsers,
   handleEdit,
 }) {
-  const URL = "http://localhost:8080/user";
+  const URL = "http://localhost:8080/users";
   async function handleDelete(userId) {
     const data = {
       userId: userId,
     };
-    const FETCHED_DATA = await axios.delete(URL, {
+    const AXIOS_DATA = await axios.delete(URL, {
       data,
     });
-    setUsers(FETCHED_DATA.data.data);
+    console.log(AXIOS_DATA);
+    setUsers(AXIOS_DATA.data);
   }
   const [openElem, setOpenElem] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleClick = (parametr) => (event) => {
+  const handleClick = (user) => (event) => {
     setAnchorEl(event.currentTarget);
-    setOpenElem(parametr);
+    setOpenElem(user);
   };
 
   const handleClose = () => {
@@ -53,17 +54,17 @@ export default function UsersTable({
               <TableCell sx={{ padding: 0 }}>
                 <Checkbox />
               </TableCell>
-              <TableCell>First Name</TableCell>
-              <TableCell>Last Name</TableCell>
-              <TableCell>Phone Number</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Role</TableCell>
-              <TableCell>Disabled</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell>FULL NAME</TableCell>
+              <TableCell>EMAIL</TableCell>
+              <TableCell>ROLE</TableCell>
+              <TableCell>PASSWORD</TableCell>
+              <TableCell>PHONE NUMBER</TableCell>
+              <TableCell>JOINED DATE</TableCell>
+              <TableCell>ACTIONS</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.map((parametr, index) => (
+            {users.map((user, index) => (
               <TableRow
                 key={index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -72,20 +73,20 @@ export default function UsersTable({
                   <Checkbox />
                 </TableCell>
                 <TableCell component="th" scope="row">
-                  {parametr.firstname}
+                  {user.full_name}
                 </TableCell>
-                <TableCell>{parametr.lastname}</TableCell>
-                <TableCell>{parametr.phoneNumber}</TableCell>
-                <TableCell>{parametr.email}</TableCell>
-                <TableCell>{parametr.role.name}</TableCell>
-                <TableCell>{parametr.checkbox ? "Yes" : "No"}</TableCell>
+                <TableCell>{user.email}</TableCell>
+                <TableCell>{user.role}</TableCell>
+                <TableCell>{user.password}</TableCell>
+                <TableCell>{user.phone_number}</TableCell>
+                <TableCell>{user.joined_date}</TableCell>
                 <TableCell>
                   {" "}
                   <IconButton
                     aria-label="more"
                     id="long-button"
                     aria-haspopup="true"
-                    onClick={handleClick(parametr.id)}
+                    onClick={handleClick(user.id)}
                   >
                     <MoreVertIcon />
                   </IconButton>
@@ -95,17 +96,17 @@ export default function UsersTable({
                       "aria-labelledby": "long-button",
                     }}
                     anchorEl={anchorEl}
-                    open={openElem === parametr.id}
+                    open={openElem === user.id}
                     onClose={handleClose}
                     PaperProps={{}}
                   >
-                    <MenuItem to={`/user/edit/${parametr.id}`} component={Link}>
+                    <MenuItem to={`/user/edit/${user.id}`} component={Link}>
                       Edit
                     </MenuItem>
 
                     <MenuItem
                       onClick={() => {
-                        handleDelete(parametr.id);
+                        handleDelete(user.id);
                         handleClose();
                       }}
                     >
