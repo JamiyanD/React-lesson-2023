@@ -31,9 +31,12 @@ export async function updateGetProduct(productId) {
   return rows;
 }
 
-export async function deleteProduct(id) {
-  const query = `DELETE FROM product WHERE id = ${id}`;
-  const [rows] = await pool.query(query);
+export async function deleteProduct(productsArray) {
+  productsArray.map(async (id) => {
+    const query = `DELETE FROM product WHERE id = ${id}`;
+    const [rows] = await pool.query(query);
+  });
+
   const [row] = await pool.query(`select * from product `);
   return row;
 }

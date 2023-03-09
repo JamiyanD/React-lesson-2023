@@ -14,6 +14,8 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import FormHelperText from "@mui/material/FormHelperText";
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
 export default function NewUser() {
   const URL = "http://localhost:8080/products";
   const [categories, setCategories] = useState([]);
@@ -53,14 +55,14 @@ export default function NewUser() {
       navigate("/productsList");
     }
   }
-  // function handleUpload(e) {
-  //   setImage(URL.createObjectURL(e.target.files[0]));
-  //   console.log(URL.createObjectURL(e.target.files[0]));
-  //   setCurrentProducts({
-  //     ...currentProducts,
-  //     imgURL: "Not Yet",
-  //   });
-  // }
+  function handleUpload(e) {
+    // setImage(URL.createObjectURL(e.target.files[0]));
+    // console.log(URL.createObjectURL(e.target.files[0]));
+    // setCurrentProducts({
+    //   ...currentProducts,
+    //   imgURL: "Not Yet",
+    // });
+  }
 
   function handleName(e) {
     setCurrentProducts({
@@ -114,23 +116,33 @@ export default function NewUser() {
             <Typography variant="h5" sx={{ color: "#9e9e9e" }}>
               New Product
             </Typography>
-            {/* <Stack direction="row" alignItems="center">
-              <Typography variant="h6" sx={{ width: "300px" }}>
-                Image
-              </Typography>
-              <Button variant="outlined" component="label">
-                Upload
+
+            <Typography variant="h6" sx={{ width: "300px" }}>
+              Thumbnail
+            </Typography>
+            <div className="">
+              <IconButton
+                color="primary"
+                aria-label="upload picture"
+                component="label"
+                className=""
+              >
                 <input
                   hidden
                   accept="image/*"
-                  multiple
                   type="file"
                   onChange={handleUpload}
                 />
-              </Button>
-            </Stack> */}
+                <EditIcon className="text-secondary text-opacity-50" />
+              </IconButton>
+            </div>
+            <p className="form-text mx-auto">
+              Set the product thumbnail image. Only *.png, *.jpg and *.jpeg
+              image files are accepted
+            </p>
+
             <Stack>
-              <Typography variant="h6" gutterBottom sx={{ width: "300px" }}>
+              <Typography variant="h6" gutterBottom>
                 Status
               </Typography>
               <FormControl sx={{ minWidth: 120 }} size="small">
@@ -165,14 +177,14 @@ export default function NewUser() {
                 <FormHelperText>Set the product status.</FormHelperText>
               </FormControl>
             </Stack>
-            <Stack direction="row" alignItems="center">
-              <Typography variant="h6" gutterBottom sx={{ width: "300px" }}>
-                Name
+            <Stack>
+              <Typography variant="h6" gutterBottom>
+                Product Name
               </Typography>
               <TextField
-                value={currentProducts.title}
+                value={currentProducts.name}
                 name="title"
-                label="Title"
+                label="Product name"
                 onChange={handleName}
                 fullWidth
               />

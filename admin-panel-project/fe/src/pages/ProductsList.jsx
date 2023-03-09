@@ -37,6 +37,7 @@ export default function ProductsList({ currentProducts, setCurrentProducts }) {
   async function axiosScreen() {
     const AXIOS_DATA = await axios.get(URL);
     setUsers(AXIOS_DATA.data);
+    console.log(AXIOS_DATA);
     return AXIOS_DATA;
   }
 
@@ -51,6 +52,7 @@ export default function ProductsList({ currentProducts, setCurrentProducts }) {
     };
     const AXIOS_DATA = await axios.delete(URL, { data });
     setUsers(AXIOS_DATA.data);
+    setSelected([]);
   }
 
   // menu
@@ -143,6 +145,7 @@ export default function ProductsList({ currentProducts, setCurrentProducts }) {
             handleDelete={handleDelete}
             selected={selected}
             setUsers={setUsers}
+            setSelected={setSelected}
           />
           <TableContainer component={Paper}>
             <Table stickyHeader aria-label="sticky table">

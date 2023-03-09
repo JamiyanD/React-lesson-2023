@@ -155,9 +155,9 @@ export default function EditUser() {
                     return (
                       <FormControlLabel
                         key={khuslen}
-                        value={role.role_id}
+                        value={role.id}
                         control={<Radio />}
-                        label={role.role_name}
+                        label={role.name}
                       />
                     );
                   })}

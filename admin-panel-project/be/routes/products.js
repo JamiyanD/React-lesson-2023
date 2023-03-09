@@ -51,6 +51,7 @@ products_router.put("/products", async (request, response) => {
 
 products_router.delete("/products", async (request, response) => {
   const body = request.body;
+  console.log(body);
   const result = await deleteProduct(body.userId);
   response.status(200).send(result);
 });

@@ -1,7 +1,7 @@
 import { pool } from "../config/mysql-config.js";
 
 export async function getUserRoles() {
-  const [rows] = await pool.query(`select * from user_role `);
+  const [rows] = await pool.query(`select * from user_roles `);
   return rows;
 }
 

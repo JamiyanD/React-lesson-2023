@@ -143,9 +143,9 @@ export default function NewUser() {
                       <FormControlLabel
                         key={khuslen}
                         onChange={handleRadio}
-                        value={role.role_id}
+                        value={role.id}
                         control={<Radio />}
-                        label={role.role_name}
+                        label={role.name}
                       />
                     );
                   })}

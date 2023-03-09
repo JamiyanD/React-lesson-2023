@@ -14,6 +14,7 @@ import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import axios from "axios";
 import { useState } from "react";
+
 export default function UsersTable({
   currentUser,
   setCurrentUser,
@@ -49,7 +50,7 @@ export default function UsersTable({
     <div>
       <TableContainer component={Paper}>
         <Table stickyHeader aria-label="sticky table">
-          <TableHead>
+          {/* <TableHead>
             <TableRow>
               <TableCell sx={{ padding: 0 }}>
                 <Checkbox />
@@ -62,7 +63,7 @@ export default function UsersTable({
               <TableCell>JOINED DATE</TableCell>
               <TableCell>ACTIONS</TableCell>
             </TableRow>
-          </TableHead>
+          </TableHead> */}
           <TableBody>
             {users.map((user, index) => (
               <TableRow

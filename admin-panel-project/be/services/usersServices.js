@@ -32,9 +32,11 @@ export async function updateGetUser(userId) {
   return rows;
 }
 
-export async function deleteUser(id) {
-  const query = `DELETE FROM user WHERE id = ${id}`;
-  const [rows] = await pool.query(query);
+export async function deleteUser(usersArray) {
+  usersArray.map(async (id) => {
+    const query = `DELETE FROM user WHERE id = ${id}`;
+    const [rows] = await pool.query(query);
+  });
   const [row] = await pool.query(`select * from user `);
   return row;
 }
