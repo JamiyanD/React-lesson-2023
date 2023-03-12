@@ -70,7 +70,7 @@ a{
   top: 200px;
 }
 
-.MuiButton-contained {
+.MuiButton-contained,.MuiButtonBase-root {
   text-transform: none !important;
 }
 
@@ -81,4 +81,27 @@ a{
 }
 .MuiPaginationItem-icon{
   color: gray;
+}
+
+.form-control:focus{
+  box-shadow:none;
+  border-color: lightgrey;
+  
+}
+
+.css-19kzrtu{
+  padding: 0 !important;
+}
+
+.MuiFormControlLabel-root{
+  width: 250px;
+  height: 60px;
+  border: 1px solid lightgray;
+  border-radius: 10px;
+  border-style: dashed;
+  padding: 10px;
+};
+.MuiFormControlLabel-root:focus{
+  background-color: blue !important;
+  color: blue !important
 }
