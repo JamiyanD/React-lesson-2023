@@ -21,14 +21,18 @@ import Tab from "@mui/material/Tab";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import Slider from "@mui/material/Slider";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { Checkbox } from "@mui/material";
 export default function NewUser() {
   const URL = "http://localhost:8080/products";
+
   const [categories, setCategories] = useState([]);
   const [image, setImage] = useState(null);
   const navigate = useNavigate();
   const [currentProducts, setCurrentProducts] = useState({
     // imgURL: "",
-    // title: "",
+    name: "",
     // subtitle: "",
     // price: "",
     // discount: "",
@@ -53,6 +57,8 @@ export default function NewUser() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    console.log(e.target);
+    console.log(e.target.email.value);
     console.log(currentProducts);
     const AXIOS_DATA = await axios.post(URL, currentProducts);
     if (AXIOS_DATA.status == 200) {
@@ -71,7 +77,7 @@ export default function NewUser() {
   function handleName(e) {
     setCurrentProducts({
       ...currentProducts,
-      name: e.target.value,
+      name: e,
     });
   }
 
@@ -94,13 +100,7 @@ export default function NewUser() {
       quantity: e.target.value,
     });
   }
-  function handleRating(e) {
-    setCurrentProducts({
-      ...currentProducts,
-      rating: e.target.value,
-    });
-    console.log(e.target.value);
-  }
+
   function handleChange(select) {
     setDefaultSelect(select.target.value);
     console.log(select.target.value);
@@ -138,10 +138,25 @@ export default function NewUser() {
   }
 
   const [value, setValue] = React.useState(0);
-
   const handleTabs = (event, newValue) => {
     setValue(newValue);
   };
+
+  const [sliderValue, setSliderValue] = useState(0);
+  const handleSlider = (newValue) => {
+    setSliderValue(newValue.target.value);
+  };
+
+  const [showTax, setShowTax] = useState(true);
+  const [radioValue, setRadioValue] = useState(2);
+  function handleRadio(e) {
+    setRadioValue(e.target.value);
+    if (e.target.value == 1 || e.target.value == 3) {
+      setShowTax(false);
+    } else {
+      setShowTax(true);
+    }
+  }
 
   return (
     <Box
@@ -222,23 +237,27 @@ export default function NewUser() {
                 <Tab label="Advanced" {...a11yProps(1)} />
               </Tabs>
             </Box>
+
             <TabPanel value={value} index={0} className="p-0">
-              <Typography variant="h6" gutterBottom className="m-3">
-                General
-              </Typography>
-              <div class="mb-4 border border-2 border-light rounded-5 p-3">
+              <div class="my-4 border border-2 border-light rounded-5 p-3">
+                <Typography variant="h6" gutterBottom className="m-3">
+                  General
+                </Typography>
                 <Typography variant="subtitle2" gutterBottom>
                   Product Name
                 </Typography>
                 <input
-                  type="password"
-                  name="password"
+                  type=""
+                  name="name"
                   class="form-control "
-                  id="exampleInputPassword1"
                   placeholder="Product name"
-                  onChange={handleName}
+                  onChange={(e) => {
+                    console.log(e.target.value);
+                    handleName(e.target.value);
+                  }}
                   value={currentProducts.name}
                 />
+
                 <FormHelperText className="mb-4">
                   A product name is required and recommended to be unique.
                 </FormHelperText>
@@ -267,7 +286,7 @@ export default function NewUser() {
                   class="form-control rounded-3"
                   placeholder="Product price"
                   onChange={handlePrice}
-                  value={currentProducts.name}
+                  value={currentProducts.price}
                 />
                 <FormHelperText className="mb-4">
                   Set the product price.
@@ -275,97 +294,185 @@ export default function NewUser() {
                 <Typography variant="subtitle2" gutterBottom>
                   Discount Type
                 </Typography>
-                <RadioGroup row defaultValue="ff" className="hstack gap-3">
+                <RadioGroup
+                  row
+                  className="hstack gap-3 mb-4"
+                  onChange={handleRadio}
+                  value={radioValue}
+                >
                   <FormControlLabel
                     control={<Radio color="primary" />}
                     label="No Discount"
-                    value="ff"
+                    value={1}
+                    className="new-product-radio"
                   />
                   <FormControlLabel
                     control={<Radio />}
                     label="Percentage %"
-                    value="ffs"
+                    value={2}
+                    className="new-product-radio"
                   />
                   <FormControlLabel
                     control={<Radio />}
                     label="Fixed Price"
-                    value="ffss"
+                    value={3}
+                    className="new-product-radio"
                   />
                 </RadioGroup>
-              </div>
-              <FormControl sx={{ minWidth: 120 }} size="small">
-                <Select
-                  value={defaultSelect}
-                  onChange={handleChange}
-                  displayEmpty
-                  inputProps={{ "aria-label": "Without label" }}
-                  className=" rounded-3"
-                  sx={{
-                    boxShadow: "none",
+                {showTax && (
+                  <>
+                    <Typography variant="h4" className="text-center">
+                      {sliderValue}%
+                    </Typography>
+                    <Slider
+                      aria-label="Volume"
+                      value={sliderValue}
+                      onChange={handleSlider}
+                    />
+                    <FormHelperText className="mb-4">
+                      Set a percentage discount to be applied on this product.
+                    </FormHelperText>
+                  </>
+                )}
+                <Stack direction="row">
+                  <FormControl className="w-50" size="small">
+                    <Typography variant="subtitle2" gutterBottom>
+                      Tax Class
+                    </Typography>
+                    <Select
+                      value=""
+                      onChange={""}
+                      displayEmpty
+                      inputProps={{ "aria-label": "Without label" }}
+                      className=" rounded-3 text-muted"
+                      sx={{
+                        boxShadow: "none",
 
-                    "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                      {
-                        borderColor: "silver",
-                      },
-                    "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
-                      {
-                        borderColor: "lightgrey",
-                      },
-                  }}
-                >
-                  <MenuItem k value="">
-                    dasd
-                  </MenuItem>
-                </Select>
-                <FormHelperText>Set the product status.</FormHelperText>
-              </FormControl>
+                        "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                          {
+                            borderColor: "silver",
+                          },
+                        "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
+                          {
+                            borderColor: "lightgrey",
+                          },
+                      }}
+                      IconComponent={(props) => (
+                        <ExpandMoreIcon
+                          className="m-2 text-black-50"
+                          {...props}
+                        />
+                      )}
+                    >
+                      <MenuItem disabled value="">
+                        Select an option
+                      </MenuItem>
+                      <MenuItem k value="1">
+                        Tax Free
+                      </MenuItem>
+                      <MenuItem k value="2">
+                        Taxable Goods
+                      </MenuItem>
+                      <MenuItem k value="3">
+                        Downloadable Product
+                      </MenuItem>
+                    </Select>
+                    <FormHelperText>Set the product tax class.</FormHelperText>
+                  </FormControl>
+                  <div className="w-50 ms-2">
+                    <Typography variant="subtitle2" gutterBottom>
+                      VAT Amount(%)
+                    </Typography>
+                    <input type="" name="" class="form-control rounded-3" />
+                    <FormHelperText className="mb-4">
+                      Set the product VAT about.
+                    </FormHelperText>
+                  </div>
+                </Stack>
+              </div>
             </TabPanel>
             <TabPanel value={value} index={1}>
-              <Stack direction="row" alignItems="center">
-                <Typography variant="h6" sx={{ width: "300px" }}>
-                  Code
+              <div class="my-4 border border-2 border-light rounded-5 p-3">
+                <Typography variant="h6" gutterBottom className="m-3">
+                  Inventory
                 </Typography>
-                <TextField
-                  value={currentProducts.code}
+                <Typography variant="subtitle2" gutterBottom>
+                  SKU
+                </Typography>
+                <input
+                  type=""
                   name="code"
+                  class="form-control rounded-3"
+                  placeholder="SKU Number"
                   onChange={handleCode}
-                  label="Code"
-                  fullWidth
+                  value={currentProducts.code}
                 />
-              </Stack>
-              <Stack direction="row" alignItems="center">
-                <Typography variant="h6" sx={{ width: "300px" }}>
+                <FormHelperText className="mb-4">
+                  Enter the product SKU.
+                </FormHelperText>
+                <Typography variant="subtitle2" gutterBottom>
+                  Barcode
+                </Typography>
+                <input
+                  type=""
+                  name="code"
+                  class="form-control rounded-3"
+                  placeholder="Barcode Number"
+                />
+                <FormHelperText className="mb-4">
+                  Enter the product barcode number.
+                </FormHelperText>
+                <Typography variant="subtitle2" gutterBottom>
                   Quantity
                 </Typography>
-                <TextField
-                  value={currentProducts.quantity}
-                  name="quantity"
-                  onChange={handleQuantity}
-                  label="Quantity"
-                  fullWidth
-                />
-              </Stack>
-
-              <Stack direction="row" alignItems="center">
-                <Typography variant="h6" sx={{ width: "205px" }}>
-                  Rating
+                <Stack direction="row">
+                  <input
+                    type="number"
+                    name="quantity"
+                    className="form-control rounded-3 "
+                    placeholder="On shelf"
+                    onChange={handleQuantity}
+                    value={currentProducts.quantity}
+                  />
+                  <input
+                    type="number"
+                    name="warehouse"
+                    className="form-control rounded-3 ms-2"
+                    placeholder="In warehouse"
+                  />
+                </Stack>
+                <FormHelperText className="mb-4">
+                  Enter the product quantity.
+                </FormHelperText>
+                <Typography variant="subtitle2" gutterBottom>
+                  Allow Backorders
                 </Typography>
-                <Rating
-                  name="customized-10"
-                  onChange={handleRating}
-                  max={10}
-                  precision={0.5}
+                <FormControlLabel
+                  control={<Checkbox defaultChecked />}
+                  label="Yes"
+                  className="text-muted"
                 />
-              </Stack>
+                <FormHelperText className="mb-4">
+                  Allow customers to purchase products that are out of stock.
+                </FormHelperText>
+              </div>
             </TabPanel>
           </Box>
 
-          <Stack direction="row" spacing={2}>
-            <Button variant="contained" type="submit">
-              SAVE
+          <Stack direction="row" spacing={2} justifyContent="end">
+            <Button
+              variant="contained"
+              className="bg-light text-muted rounded-3"
+            >
+              Cancel
             </Button>
-            <Button variant="outlined">RESET</Button>
-            <Button variant="outlined">CANCEL</Button>
+            <Button
+              type="submit"
+              variant="contained"
+              className="color-blue rounded-3"
+            >
+              Save Changes
+            </Button>
           </Stack>
         </form>
       </Box>
