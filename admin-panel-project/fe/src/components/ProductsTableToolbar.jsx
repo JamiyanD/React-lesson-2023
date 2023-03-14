@@ -153,7 +153,7 @@ export default function EnhancedTableToolbar(props) {
               {categories &&
                 categories.map((category, index) => {
                   return (
-                    <MenuItem key={index} value={category.id}>
+                    <MenuItem key={index} value={category.name}>
                       {category.name}
                     </MenuItem>
                   );

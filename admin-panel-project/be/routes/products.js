@@ -16,7 +16,7 @@ products_router.get("/products", async (request, response) => {
 });
 
 products_router.post("/products", async (request, response) => {
-  const { name, code, quantity, price, rating, category, isEdit, productId } =
+  const { name, code, quantity, price, category_id, isEdit, productId } =
     request.body;
 
   if (isEdit) {
@@ -25,20 +25,12 @@ products_router.post("/products", async (request, response) => {
       code,
       quantity,
       price,
-      rating,
-      category,
+      category_id,
       productId
     );
     response.status(200).send(result);
   } else {
-    const result = await addProduct(
-      name,
-      code,
-      quantity,
-      price,
-      rating,
-      category
-    );
+    const result = await addProduct(name, code, quantity, price, category_id);
     response.status(200).send(result);
   }
 });

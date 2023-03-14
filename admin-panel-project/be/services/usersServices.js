@@ -14,7 +14,7 @@ export async function addUser(
   password
 ) {
   //   const query = ` INSERT INTO employees VALUES(@max_emp_id + 1,'1990-01-01','John','McKay','M','2010-01-01')`;
-  const query = `INSERT INTO user (full_name,email,role,phone_number,password) VALUES(?,?,?,?,?)`;
+  const query = `INSERT INTO user (full_name,email,role,phone_number,joined_date,password) VALUES(?,?,?,?,?,?)`;
   const [rows] = await pool.query(query, [
     full_name,
     email,
@@ -32,11 +32,11 @@ export async function updateGetUser(userId) {
   return rows;
 }
 
-export async function deleteUser(usersArray) {
-  usersArray.map(async (id) => {
-    const query = `DELETE FROM user WHERE id = ${id}`;
-    const [rows] = await pool.query(query);
-  });
+export async function deleteUser(id) {
+  // usersArray.map(async (id) => {
+  const query = `DELETE FROM user WHERE id = ${id}`;
+  const [rows] = await pool.query(query);
+  // });
   const [row] = await pool.query(`select * from user `);
   return row;
 }

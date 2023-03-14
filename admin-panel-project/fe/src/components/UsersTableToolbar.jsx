@@ -21,13 +21,14 @@ import Button from "@mui/material/Button";
 import InputBase from "@mui/material/InputBase";
 import { useRef } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Modal from "@mui/material/Modal";
 export default function UsersTableToolbar(props) {
   const [roles, setRoles] = useState([]);
   const [searchColor, setSearchColor] = useState(false);
   const URL = "http://localhost:8080/products";
   const { numSelected, setUsers, handleDelete, selected } = props;
   const [selectValue, setSelectValue] = React.useState("");
-
+  const [open, setOpen] = React.useState(false);
   async function handleSearch(e) {
     e.preventDefault();
     const searchInput = e.target.search.value;
@@ -62,6 +63,8 @@ export default function UsersTableToolbar(props) {
     setSelectValue(select.target.value);
   }
 
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   return (
     <Toolbar
       sx={{
@@ -161,14 +164,164 @@ export default function UsersTableToolbar(props) {
             </Select>
           </FormControl>
           <Button
-            href="/newUser"
+            // href="/newUser"
             variant="contained"
             className="color-blue rounded-3"
+            onClick={handleOpen}
           >
             Add User
           </Button>
         </Stack>
       )}
+
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box className="add-user-modal rounded-4 p-3">
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Add User Details
+          </Typography>
+          <Box sx={{ flexGrow: 1, p: 2 }} className="">
+            {/* <form onSubmit={handleSubmit}>
+              <Typography variant="h6" sx={{ width: "300px" }}>
+                User Information
+              </Typography>
+              <FormHelperText className=" mt-3">Update Avatar</FormHelperText>
+              <IconButton
+                color="primary"
+                aria-label="upload picture"
+                component="label"
+                className=""
+              >
+                <input
+                  hidden
+                  accept="image/*"
+                  type="file"
+                  // onChange={handleUpload}
+                />
+                <EditIcon className="text-secondary text-opacity-50" />
+              </IconButton>
+              <Typography variant="subtitle2" className="mt-3">
+                Name
+              </Typography>
+              <input
+                type=""
+                name="name"
+                className="form-control bg-light border-0 add-user-input"
+                onChange={handleFullName}
+                value={currentUser.full_name}
+              />
+              <Typography variant="subtitle2" className="mt-3">
+                Email
+              </Typography>
+              <input
+                type=""
+                name="name"
+                className="form-control bg-light border-0 add-user-input"
+                onChange={handleEmail}
+                value={currentUser.email}
+              />
+              <Typography variant="subtitle2" className="mt-3">
+                Password
+              </Typography>
+              <input
+                type=""
+                name="name"
+                className="form-control bg-light border-0 add-user-input"
+                onChange={handlePassword}
+                value={currentUser.password}
+              />
+              <Typography variant="subtitle2" className="mt-3">
+                Phone Number
+              </Typography>
+              <input
+                type=""
+                name="name"
+                className="form-control bg-light border-0 add-user-input"
+                onChange={handlePhoneNumber}
+                value={currentUser.phone_number}
+              />
+
+              <div>
+                <Typography variant="subtitle2" className="my-3">
+                  Role
+                </Typography>
+                <RadioGroup>
+                  {roles &&
+                    roles.map((role, khuslen) => {
+                      return (
+                        <>
+                          <Stack
+                            direction="row"
+                            alignItems="center"
+                            className="mb-3"
+                          >
+                            <input
+                              key={khuslen}
+                              onChange={handleRadio}
+                              value={role.name}
+                              className="form-check-input me-3"
+                              type="radio"
+                              size="medium"
+                              name="radioNoLabel"
+                              id="radioNoLabel1"
+                            />
+                            {/* <FormControlLabel
+                              key={khuslen}
+                              onChange={handleRadio}
+                              value={role.id}
+                              control={<Radio />}
+                              className="m-0"
+                            /> */}
+            {/* <div>
+                              <Typography variant="subtitle2" gutterBottom>
+                                {role.name}
+                              </Typography>
+                              <FormHelperText className="">
+                                A product name is required and recommended to be
+                                unique.
+                              </FormHelperText>
+                            </div>
+                          </Stack>
+                        </>
+                      );
+                    })}
+                </RadioGroup>
+                <FormHelperText
+                  id="component-helper-text"
+                  className="text-danger"
+                >
+                  {validation}
+                </FormHelperText>
+              </div>
+
+              <Stack
+                direction="row"
+                spacing={2}
+                justifyContent="center"
+                className="mt-3"
+              >
+                <Button
+                  variant="contained"
+                  className="bg-light text-muted rounded-3"
+                >
+                  Discard
+                </Button>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  className="color-blue rounded-3"
+                >
+                  Submit
+                </Button>
+              </Stack>
+            </form> */}
+          </Box>
+        </Box>
+      </Modal>
     </Toolbar>
   );
 }

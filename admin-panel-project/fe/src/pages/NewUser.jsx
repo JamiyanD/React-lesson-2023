@@ -15,6 +15,8 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import Container from "@mui/material/Container";
 import FormHelperText from "@mui/joy/FormHelperText";
+import EditIcon from "@mui/icons-material/Edit";
+import Modal from "@mui/material/Modal";
 export default function NewUser() {
   const [validation, setValidation] = useState("");
   const [currentUser, setCurrentUser] = useState({
@@ -24,6 +26,7 @@ export default function NewUser() {
     password: "",
     phone_number: "",
     isEdit: false,
+    joined_date: new Date().toString().substr(3, 21),
   });
   const [roles, setRoles] = useState([]);
   const [currentRole, setCurrentRole] = useState("");
@@ -43,18 +46,10 @@ export default function NewUser() {
   async function handleSubmit(e) {
     e.preventDefault();
     console.log(currentUser.role);
-    if (
-      currentUser.role == 1 ||
-      currentUser.role == 2 ||
-      currentUser.role == 3
-    ) {
-      const AXIOS_DATA = await axios.post(URL, currentUser);
-      console.log(AXIOS_DATA.status);
-      if (AXIOS_DATA.status == 200) {
-        navigate("/usersList");
-      }
-    } else {
-      setValidation("You must check radio please!");
+    const AXIOS_DATA = await axios.post(URL, currentUser);
+    console.log(AXIOS_DATA.status);
+    if (AXIOS_DATA.status == 200) {
+      navigate("/usersList");
     }
   }
 
@@ -98,98 +93,165 @@ export default function NewUser() {
   //     imgURL: e.target.value,
   //   });
   // }
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
     <Box
       sx={{ display: "flex", backgroundColor: "white" }}
       className="rounded-5"
     >
-      <Box sx={{ flexGrow: 1, p: 2 }}>
-        <form onSubmit={handleSubmit}>
-          <Stack spacing={2} sx={{}}>
-            <Typography variant="h5" sx={{ color: "#9e9e9e" }}>
-              Add Users
-            </Typography>
-            <TextField
-              value={currentUser.firstname}
-              name="full_name"
-              onChange={handleFullName}
-              label="Full Name"
-            />
-            <TextField
-              label="Email"
-              value={currentUser.email}
-              name="email"
-              onChange={handleEmail}
-            />
-            <TextField
-              value={currentUser.password}
-              name="password"
-              label="Password"
-              onChange={handlePassword}
-            />
-            <TextField
-              label="Phone Number"
-              value={currentUser.phoneNumber}
-              name="phone_number"
-              onChange={handlePhoneNumber}
-            />
-
-            <div>
-              <Typography sx={{ color: "#9e9e9e" }}>Role</Typography>
-              <RadioGroup row>
-                {roles &&
-                  roles.map((role, khuslen) => {
-                    return (
-                      <FormControlLabel
-                        key={khuslen}
-                        onChange={handleRadio}
-                        value={role.id}
-                        control={<Radio />}
-                        label={role.name}
-                      />
-                    );
-                  })}
-              </RadioGroup>
-              <FormHelperText
-                id="component-helper-text"
-                className="text-danger"
-              >
-                {validation}
-              </FormHelperText>
-            </div>
-
-            {/* <Typography sx={{ color: "#9e9e9e" }}>Avatar</Typography> */}
-            {/* <Stack direction="row" alignItems="center" spacing={2}>
-              <Button variant="contained" component="label">
-                Upload
-                <input
-                  hidden
-                  accept="image/*"
-                  multiple
-                  type="file"
-                  onChange={handleUpload}
-                />
-              </Button>
+      {/* <Button onClick={handleOpen}>Open modal</Button> */}
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box className="add-user-modal rounded-4 p-3">
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Add User Details
+          </Typography>
+          <Box sx={{ flexGrow: 1, p: 2 }} className="">
+            <form onSubmit={handleSubmit}>
+              <Typography variant="h6" sx={{ width: "300px" }}>
+                User Information
+              </Typography>
+              <FormHelperText className=" mt-3">Update Avatar</FormHelperText>
               <IconButton
                 color="primary"
                 aria-label="upload picture"
                 component="label"
+                className=""
               >
-                <input hidden accept="image/*" type="file" />
-                <PhotoCamera />
+                <input
+                  hidden
+                  accept="image/*"
+                  type="file"
+                  // onChange={handleUpload}
+                />
+                <EditIcon className="text-secondary text-opacity-50" />
               </IconButton>
-            </Stack> */}
+              <Typography variant="subtitle2" className="mt-3">
+                Name
+              </Typography>
+              <input
+                type=""
+                name="name"
+                className="form-control bg-light border-0 add-user-input"
+                onChange={handleFullName}
+                value={currentUser.full_name}
+              />
+              <Typography variant="subtitle2" className="mt-3">
+                Email
+              </Typography>
+              <input
+                type=""
+                name="name"
+                className="form-control bg-light border-0 add-user-input"
+                onChange={handleEmail}
+                value={currentUser.email}
+              />
+              <Typography variant="subtitle2" className="mt-3">
+                Password
+              </Typography>
+              <input
+                type=""
+                name="name"
+                className="form-control bg-light border-0 add-user-input"
+                onChange={handlePassword}
+                value={currentUser.password}
+              />
+              <Typography variant="subtitle2" className="mt-3">
+                Phone Number
+              </Typography>
+              <input
+                type=""
+                name="name"
+                className="form-control bg-light border-0 add-user-input"
+                onChange={handlePhoneNumber}
+                value={currentUser.phone_number}
+              />
 
-            <Stack direction="row" spacing={2}>
-              <Button variant="contained" type="submit">
-                SAVE
-              </Button>
-              <Button variant="outlined">RESET</Button>
-              <Button variant="outlined">CANCEL</Button>
-            </Stack>
-          </Stack>
-        </form>
-      </Box>
+              <div>
+                <Typography variant="subtitle2" className="my-3">
+                  Role
+                </Typography>
+                <RadioGroup>
+                  {roles &&
+                    roles.map((role, khuslen) => {
+                      return (
+                        <>
+                          <Stack
+                            direction="row"
+                            alignItems="center"
+                            className="mb-3"
+                          >
+                            <input
+                              key={khuslen}
+                              onChange={handleRadio}
+                              value={role.name}
+                              className="form-check-input me-3"
+                              type="radio"
+                              size="medium"
+                              name="radioNoLabel"
+                              id="radioNoLabel1"
+                            />
+                            {/* <FormControlLabel
+                              key={khuslen}
+                              onChange={handleRadio}
+                              value={role.id}
+                              control={<Radio />}
+                              className="m-0"
+                            /> */}
+                            <div>
+                              <Typography variant="subtitle2" gutterBottom>
+                                {role.name}
+                              </Typography>
+                              <FormHelperText className="">
+                                A product name is required and recommended to be
+                                unique.
+                              </FormHelperText>
+                            </div>
+                          </Stack>
+                        </>
+                      );
+                    })}
+                </RadioGroup>
+                <FormHelperText
+                  id="component-helper-text"
+                  className="text-danger"
+                >
+                  {validation}
+                </FormHelperText>
+              </div>
+
+              <Stack
+                direction="row"
+                spacing={2}
+                justifyContent="center"
+                className="mt-3"
+              >
+                <Button
+                  variant="contained"
+                  className="bg-light text-muted rounded-3"
+                >
+                  Discard
+                </Button>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  className="color-blue rounded-3"
+                >
+                  Submit
+                </Button>
+              </Stack>
+            </form>
+          </Box>
+        </Box>
+      </Modal>
     </Box>
   );
 }

@@ -30,6 +30,8 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { height } from "@mui/system";
+import Rating from "@mui/material/Rating";
+import Chip from "@mui/material/Chip";
 export default function ProductsList({ currentProducts, setCurrentProducts }) {
   const URL = "http://localhost:8080/products";
   const [users, setUsers] = useState([]);
@@ -46,12 +48,14 @@ export default function ProductsList({ currentProducts, setCurrentProducts }) {
   }, []);
 
   async function handleDelete(userId) {
-    console.log(userId);
     const data = {
       userId: userId,
     };
     const AXIOS_DATA = await axios.delete(URL, { data });
-    setUsers(AXIOS_DATA.data);
+    if (AXIOS_DATA.status == 200) {
+      setUsers(AXIOS_DATA.data);
+      console.log(AXIOS_DATA.data);
+    }
     setSelected([]);
   }
 
@@ -183,27 +187,23 @@ export default function ProductsList({ currentProducts, setCurrentProducts }) {
                       <TableCell>{parametr.name}</TableCell>
                       <TableCell>{parametr.code}</TableCell>
                       <TableCell>{parametr.quantity}</TableCell>
+                      <TableCell>{parametr.price.toFixed(2)}</TableCell>
                       <TableCell>
-                        {parametr.price && `$${parametr.price}`}
-                      </TableCell>
-                      <TableCell>
-                        {parametr.rating && (
-                          <Stack direction="row">
-                            <Typography>{parametr.rating}</Typography>
-                            <img
-                              src="https://freesvg.org/img/1289679474.png"
-                              alt=""
-                              style={{
-                                width: 16,
-                                height: 20,
-                                marginLeft: "4px",
-                              }}
-                            />
-                          </Stack>
-                        )}
+                        <Rating
+                          name="half-rating"
+                          size="small"
+                          value={parametr.rating}
+                          // onChange={(event, newValue) => {
+                          //   setValue(newValue);
+                          // }}
+                        />
                       </TableCell>
                       <TableCell component="th" scope="row">
-                        {parametr.category_id}
+                        <Chip
+                          label={parametr.category_id}
+                          size="small"
+                          className="opacity-75 "
+                        />
                       </TableCell>
                       <TableCell>
                         {" "}

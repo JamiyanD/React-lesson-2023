@@ -3,7 +3,6 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Stack from "@mui/joy/Stack";
-import UsersTable from "../components/UsersTable";
 import axios from "axios";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -237,10 +236,10 @@ export default function UsersList() {
                       <TableCell>{parametr.email}</TableCell>
                       <TableCell>{parametr.role}</TableCell>
                       <TableCell>{parametr.phone_number}</TableCell>
-                      <TableCell>{parametr.joined_date}</TableCell>
                       <TableCell component="th" scope="row">
                         {parametr.password}
                       </TableCell>
+                      <TableCell>{parametr.joined_date}</TableCell>
                       <TableCell>
                         {" "}
                         <IconButton
