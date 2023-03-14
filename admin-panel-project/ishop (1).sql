@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 13, 2023 at 05:34 PM
+-- Generation Time: Mar 14, 2023 at 04:45 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -57,45 +57,20 @@ CREATE TABLE `product` (
   `name` varchar(255) NOT NULL,
   `price` int(11) NOT NULL,
   `quantity` int(11) DEFAULT 0,
-  `category_id` int(11) NOT NULL,
-  `image_path` varchar(255) DEFAULT NULL,
-  `rating` int(11) DEFAULT NULL,
-  `code` int(11) DEFAULT NULL
+  `category_id` varchar(255) DEFAULT NULL,
+  `code` int(11) DEFAULT NULL,
+  `rating` int(11) DEFAULT 4
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`id`, `name`, `price`, `quantity`, `category_id`, `image_path`, `rating`, `code`) VALUES
-(58, 'sd', 0, NULL, 1, NULL, NULL, NULL),
-(59, 'ff', 0, NULL, 1, NULL, NULL, NULL),
-(60, 'f', 0, NULL, 2, NULL, NULL, NULL),
-(61, '', 22, NULL, 1, NULL, NULL, NULL),
-(62, '', 2, NULL, 1, NULL, NULL, NULL),
-(63, '', 2, NULL, 1, NULL, NULL, NULL),
-(64, '', 434, NULL, 1, NULL, NULL, NULL),
-(65, '', 23, NULL, 1, NULL, NULL, NULL),
-(66, '', 4, NULL, 1, NULL, NULL, NULL),
-(67, '', 2, NULL, 1, NULL, NULL, NULL),
-(68, '', 2, NULL, 1, NULL, NULL, NULL),
-(69, '', 2, NULL, 1, NULL, NULL, NULL),
-(70, '', 2, NULL, 1, NULL, NULL, NULL),
-(71, '', 2, NULL, 1, NULL, NULL, NULL),
-(72, '', 2, NULL, 1, NULL, NULL, NULL),
-(73, '', 0, NULL, 1, NULL, NULL, NULL),
-(74, '', 3, NULL, 1, NULL, NULL, NULL),
-(75, '', 2, NULL, 1, NULL, NULL, NULL),
-(76, '', 4, NULL, 1, NULL, NULL, NULL),
-(77, '', 4, NULL, 1, NULL, NULL, NULL),
-(78, '', 4, NULL, 1, NULL, NULL, NULL),
-(79, '', 2, NULL, 1, NULL, NULL, NULL),
-(80, '', 2, NULL, 1, NULL, NULL, NULL),
-(81, '', 3, NULL, 1, NULL, NULL, NULL),
-(82, '', 4, NULL, 1, NULL, NULL, NULL),
-(83, '', 4, NULL, 1, NULL, NULL, NULL),
-(84, '', 2, NULL, 1, NULL, NULL, NULL),
-(85, '', 3, NULL, 1, NULL, NULL, NULL);
+INSERT INTO `product` (`id`, `name`, `price`, `quantity`, `category_id`, `code`, `rating`) VALUES
+(135, 'dsa', 321, 0, 'Inactive', 0, 4),
+(136, '321', 3213121, 0, 'Published', 0, 4),
+(137, 'dsa', 321, 0, 'Published', 0, 4),
+(138, 'dassdaas', 312, 0, 'Inactive', 0, 4);
 
 -- --------------------------------------------------------
 
@@ -104,7 +79,7 @@ INSERT INTO `product` (`id`, `name`, `price`, `quantity`, `category_id`, `image_
 --
 
 CREATE TABLE `product_category` (
-  `id` int(11) DEFAULT NULL,
+  `id` int(11) NOT NULL,
   `name` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -113,9 +88,9 @@ CREATE TABLE `product_category` (
 --
 
 INSERT INTO `product_category` (`id`, `name`) VALUES
-(3, 'Inactive'),
+(1, 'Published'),
 (2, 'Scheduled'),
-(1, 'Published');
+(3, 'Inactive');
 
 -- --------------------------------------------------------
 
@@ -127,9 +102,9 @@ CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `full_name` varchar(50) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
-  `role` int(11) DEFAULT NULL,
+  `role` varchar(255) DEFAULT NULL,
   `phone_number` int(50) DEFAULT NULL,
-  `joined_date` int(50) DEFAULT NULL,
+  `joined_date` varchar(255) DEFAULT NULL,
   `password` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -138,7 +113,33 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `full_name`, `email`, `role`, `phone_number`, `joined_date`, `password`) VALUES
-(25, 'fd', 'fd', 3, 0, NULL, NULL);
+(30, 'dsa', 'asd', '1', 2, '2023-03-14 20:19:29', NULL),
+(31, 'das', 'asd', '2', 0, '2023-03-14 20:19:38', NULL),
+(33, 'dsa', 'das', '1', 0, '0000-00-00 00:00:00', 'ds'),
+(34, 'ds', 'ds', '2', 0, '2023-03-14 20:50:24', ''),
+(35, 'ds', 'ds', '2', 0, '2023-03-14 21:11:13', ''),
+(36, 'dsa', 'dsa', '1', 0, '2023-03-14 21:11:13', ''),
+(37, 'dsadsa', 'dsad', '1', 0, '2023-03-14 21:11:13', 'd'),
+(38, 'fsdf', 'dfsf', '2', 0, '2023-03-14 21:11:13', 'f'),
+(39, 'hhha', '', '1', 0, '2023-03-14 21:11:13', ''),
+(40, 'ds', 'ds', '1', 0, '2023-03-14 13:07:32', ''),
+(41, 'dsa', '', '2', 0, '2023-03-14 13:10:19', ''),
+(42, 'fd', 'fd', '1', 0, '2023-03-14 13:11:56', ''),
+(43, 'sd', 'da', '1', 0, '0000-00-00 00:00:00', ''),
+(44, 'fds', '', '2', 0, '0000-00-00 00:00:00', ''),
+(45, 'dasdasdas', 'ds', '1', 0, '0000-00-00 00:00:00', ''),
+(46, 'ds', 'ds', '1', 0, '2023-03-14 13:20:43', ''),
+(47, 'dsa', 'das', '1', 0, '2023-03-14 13:23:04', ''),
+(48, 'dsa', 'das', '2', 0, '2023-03-14 13:24:41', ''),
+(49, 'sda', 'sda', '1', 0, '2023-03-14 13:25:26', ''),
+(50, 'dasd', 'dsa', '2', 0, '2023-03-14T13:27:09.869Z', ''),
+(52, 'dsa', 'dsd', '2', 0, ' Mar 14 2023 21:48:08', ''),
+(53, 'hhe', '', '1', 0, ' Mar 14 2023 21:48:32', ''),
+(54, 'ml;m', '', '1', 0, ' Mar 14 2023 22:32:32', ''),
+(55, 'dsa', 'dsa', '1', 0, ' Mar 14 2023 22:37:05', 'dsa'),
+(56, 'gichi', '', '2', 0, ' Mar 14 2023 22:56:55', ''),
+(57, 'sad', '', '1', 0, ' Mar 14 2023 23:14:10', ''),
+(58, 'jya', '', 'Analyst', 0, ' Mar 14 2023 23:22:06', '');
 
 -- --------------------------------------------------------
 
@@ -176,6 +177,13 @@ ALTER TABLE `orders`
 -- Indexes for table `product`
 --
 ALTER TABLE `product`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `category_id` (`category_id`);
+
+--
+-- Indexes for table `product_category`
+--
+ALTER TABLE `product_category`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -204,13 +212,13 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=139;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT for table `user_roles`
