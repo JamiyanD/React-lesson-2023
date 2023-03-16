@@ -1,3 +1,4 @@
+const { response } = require("express");
 const express = require("express");
 const User = require("../models/Users");
 const Router = express.Router();
@@ -29,6 +30,45 @@ Router.delete("/user", async (request, response) => {
   response.json({
     data: result,
   });
+});
+
+Router.put("/updateUser", async (request, response) => {
+  const result = await User.updateOne(
+    {
+      email: "khangaikhuu@gmail.com",
+    },
+    { $set: { email: "1@gmail.com" } }
+  );
+  response.json({ data: result });
+});
+
+Router.get("/user", async (request, response) => {
+  const userId = request.query.id;
+  console.log(userId);
+  const user = await User.findOne({ _id: userId });
+  response.json({
+    data: user,
+  });
+});
+
+Router.get("/userByEmail", async (request, response) => {
+  const userEmail = request.query.email;
+  console.log(userEmail);
+  const foundUser = await User.find({ email: userEmail }, "_id name email", {
+    sort: "lastLogin",
+  }).exec();
+
+  // const user = await User.findOne({ email: userEmail });
+  response.json({
+    data: foundUser,
+  });
+});
+
+Router.get("/userGetEmail", async (request, response) => {
+  const userEmail = request.query.email;
+  const foundUser = await User.findByUserEmail(userEmail);
+
+  response.json({ data: foundUser });
 });
 
 module.exports = Router;
