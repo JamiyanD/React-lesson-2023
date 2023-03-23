@@ -30,7 +30,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Pagination from "@mui/material/Pagination";
 import { Link } from "react-router-dom";
 export default function UsersList() {
-  const URL = "http://localhost:8080/users";
+  const URL = "http://localhost:8080/users/users";
   const [users, setUsers] = useState([]);
 
   async function axiosScreen() {
@@ -155,10 +155,7 @@ export default function UsersList() {
   // };
 
   return (
-    <Box
-      sx={{ display: "flex", backgroundColor: "white" }}
-      className="rounded-5 p-3"
-    >
+    <Box sx={{ backgroundColor: "white" }} className="rounded-5 p-3">
       <Box sx={{ flexGrow: 1, p: 2 }} className="border border-1 rounded-5">
         <Box>
           <UsersTableToolbar
@@ -166,41 +163,11 @@ export default function UsersList() {
             handleDelete={handleDelete}
             selected={selected}
             setUsers={setUsers}
+            axiosScreen={axiosScreen}
           />
-          {/* <Button href="/newUser" variant="contained" sx={{ margin: "10px" }}>
-            New User
-          </Button>
-          <form onSubmit={handleSearch}>
-            <IconButton type="submit" aria-label="search">
-              <SearchIcon />
-            </IconButton>
-            <TextField
-              name="search"
-              className="text"
-              label="Search"
-              variant="outlined"
-              placeholder="Search..."
-              size="small"
-            />
-          </form>
-          <FormControl sx={{ minWidth: 120 }} size="small">
-            <InputLabel id="demo-select-small">Select </InputLabel>
-            <Select
-              labelId="demo-select-small"
-              id="demo-select-small"
-              value={selectValue}
-              label="Select"
-              onChange={handleChange}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value={2}>User</MenuItem>
-              <MenuItem value={1}>Admin</MenuItem>
-            </Select>
-          </FormControl> */}
+
           <TableContainer component={Paper}>
-            <Table stickyHeader aria-label="sticky table">
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <UsersTableHead
                 setSelected={setSelected}
                 users={users}
@@ -217,7 +184,7 @@ export default function UsersList() {
                     <TableRow
                       hover
                       role="checkbox"
-                      // aria-checked={isSelected(parametr.id)}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                       tabIndex={-1}
                       key={index}
                       // selected={isSelected(parametr.id)}
@@ -235,9 +202,9 @@ export default function UsersList() {
                       <TableCell>{parametr.full_name}</TableCell>
                       <TableCell>{parametr.email}</TableCell>
                       <TableCell>{parametr.role}</TableCell>
-                      <TableCell>{parametr.phone_number}</TableCell>
+                      <TableCell> {parametr.password}</TableCell>
                       <TableCell component="th" scope="row">
-                        {parametr.password}
+                        {parametr.phone_number}
                       </TableCell>
                       <TableCell>{parametr.joined_date}</TableCell>
                       <TableCell>

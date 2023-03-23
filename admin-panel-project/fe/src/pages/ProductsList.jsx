@@ -33,7 +33,7 @@ import { height } from "@mui/system";
 import Rating from "@mui/material/Rating";
 import Chip from "@mui/material/Chip";
 export default function ProductsList({ currentProducts, setCurrentProducts }) {
-  const URL = "http://localhost:8080/products";
+  const URL = "http://localhost:8080/products/products";
   const [users, setUsers] = useState([]);
 
   async function axiosScreen() {

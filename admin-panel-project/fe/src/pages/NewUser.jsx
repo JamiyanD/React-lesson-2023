@@ -1,24 +1,20 @@
-import TextField from "@mui/material/TextField";
 import * as React from "react";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/joy/Stack";
 import IconButton from "@mui/material/IconButton";
-import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import { Link, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import Container from "@mui/material/Container";
 import FormHelperText from "@mui/joy/FormHelperText";
 import EditIcon from "@mui/icons-material/Edit";
 import Modal from "@mui/material/Modal";
+import { useContext } from "react";
+import { TimerContext } from "../context";
 export default function NewUser() {
-  const [validation, setValidation] = useState("");
   const [currentUser, setCurrentUser] = useState({
     full_name: "",
     email: "",
@@ -29,7 +25,6 @@ export default function NewUser() {
     joined_date: new Date().toString().substr(3, 21),
   });
   const [roles, setRoles] = useState([]);
-  const [currentRole, setCurrentRole] = useState("");
   const navigate = useNavigate();
   const URL = "http://localhost:8080/users";
 
@@ -93,20 +88,21 @@ export default function NewUser() {
   //     imgURL: e.target.value,
   //   });
   // }
-
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [sda, setSda] = useContext(TimerContext);
+  const handleOpen = () => {
+    console.log(sda);
+  };
+  //   const handleClose = () => setOpen(false);
 
   return (
     <Box
       sx={{ display: "flex", backgroundColor: "white" }}
       className="rounded-5"
     >
-      {/* <Button onClick={handleOpen}>Open modal</Button> */}
+      <Button onClick={handleOpen}>Open modal</Button>
       <Modal
-        open={open}
-        onClose={handleClose}
+        // open={open}
+        // onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -220,12 +216,6 @@ export default function NewUser() {
                       );
                     })}
                 </RadioGroup>
-                <FormHelperText
-                  id="component-helper-text"
-                  className="text-danger"
-                >
-                  {validation}
-                </FormHelperText>
               </div>
 
               <Stack
