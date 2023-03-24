@@ -23,7 +23,7 @@ users_router.post("/users", async (request, response) => {
     isEdit,
     userId,
   } = request.body;
-
+  console.log(isEdit);
   if (isEdit) {
     console.log("dsaddsdA", isEdit);
     const result = await updateUser(
@@ -64,7 +64,8 @@ users_router.delete("/users", async (request, response) => {
   response.status(200).send(result);
 });
 
-users_router.get("/search-user", async (request, response) => {
+users_router.get("/search", async (request, response) => {
+  console.log("user", request.query.value);
   const result = await getUsers();
   const foundCategory = result.filter((user) =>
     user.full_name.toLowerCase().includes(request.query.value.toLowerCase())

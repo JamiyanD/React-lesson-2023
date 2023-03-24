@@ -112,7 +112,7 @@ input[type=number]::-webkit-outer-spin-button {
   top: 50%;
   left:50%;
   transform: translate(-50%, -50%);
-  width: 70%;
+  width: 60%;
   background-color: white;
   box-Shadow: 24;
   padding: 4;
@@ -124,10 +124,26 @@ input[type=number]::-webkit-outer-spin-button {
 
 .MuiRadio-colorPrimary{
   border: none !important;
-  color:lightgrey !important;
+  color:#2C9AFF !important;
 }
 .MuiRadio-colorSecondary{
   background-color: black!important;
   border: none !important;
   color: black;
+}
+
+.avatar{
+  width: 100px !important;
+  height: 100px !important;
+}
+
+.chip{
+  font-weight: bold;
+color: #2C9AFF !important;
+border: none !important;
+background-color: rgb(218, 237, 255) !important;
+}
+
+.MuiTableCell-body{
+  color: rgb(29, 25, 25) !important;
 }

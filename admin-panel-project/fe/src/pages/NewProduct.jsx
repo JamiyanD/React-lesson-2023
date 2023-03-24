@@ -23,7 +23,7 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 export default function NewUser() {
-  const URL = "http://localhost:8080/products";
+  const URL = "http://localhost:8080/products/products";
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
   const [currentProducts, setCurrentProducts] = useState({
@@ -31,7 +31,7 @@ export default function NewUser() {
     isEdit: false,
   });
   const [defaultSelect, setDefaultSelect] = useState("Published");
-  const CATEGORIES_URL = "http://localhost:8080/product-categories";
+  const CATEGORIES_URL = "http://localhost:8080/products/product-categories";
 
   async function fetchCategories() {
     const FETCHED_DATA = await fetch(CATEGORIES_URL);

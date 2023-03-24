@@ -1,16 +1,10 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import MenuItem from "@mui/material/MenuItem";
 import axios from "axios";
 import Stack from "@mui/joy/Stack";
-import Typography from "@mui/material/Typography";
 import { useState, useEffect } from "react";
 import Toolbar from "@mui/material/Toolbar";
-import Tooltip from "@mui/material/Tooltip";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { alpha } from "@mui/material/styles";
-import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import SearchIcon from "@mui/icons-material/Search";
@@ -18,32 +12,38 @@ import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import InputBase from "@mui/material/InputBase";
-import { useRef } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Modal from "@mui/material/Modal";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import Typography from "@mui/material/Typography";
+import { Link, useNavigate } from "react-router-dom";
+import FormHelperText from "@mui/joy/FormHelperText";
+import EditIcon from "@mui/icons-material/Edit";
+import { useContext } from "react";
+import { TimerContext } from "../context";
 export default function UsersTableToolbar(props) {
+  const navigate = useNavigate();
   const [roles, setRoles] = useState([]);
   const [searchColor, setSearchColor] = useState(false);
-  const URL = "http://localhost:8080/products";
-  const { numSelected, setUsers, handleDelete, selected } = props;
+  const URL = "http://localhost:8080/users/users";
+  const { numSelected, setUsers, handleDelete, selected, axiosScreen } = props;
   const [selectValue, setSelectValue] = React.useState("");
-  const [open, setOpen] = React.useState(false);
   async function handleSearch(e) {
     e.preventDefault();
     const searchInput = e.target.search.value;
-    const SEARCH_URL = `http://localhost:8080/search?value=${searchInput}`;
+    const SEARCH_URL = `http://localhost:8080/users/search?value=${searchInput}`;
     const AXIOS_DATA = await axios.get(SEARCH_URL);
+    console.log(AXIOS_DATA.data);
     if (AXIOS_DATA.status == 200) {
       setUsers(AXIOS_DATA.data);
     }
   }
 
-  const CATEGORIES_URL = "http://localhost:8080/userRoles";
+  const CATEGORIES_URL = "http://localhost:8080/users/userRoles";
   async function fetchCategories() {
     const FETCHED_DATA = await fetch(CATEGORIES_URL);
     const FETCHED_JSON = await FETCHED_DATA.json();
-    console.log(FETCHED_JSON);
     setRoles(FETCHED_JSON);
   }
   useEffect(() => {
@@ -53,18 +53,97 @@ export default function UsersTableToolbar(props) {
   async function handleChange(select) {
     const AXIOS_DATA = await axios.get(URL);
     setUsers(AXIOS_DATA.data);
-    console.log("ds");
     if (select.target.value) {
       const filteredUser = AXIOS_DATA.data.filter(
-        (user) => user.category_id == select.target.value
+        (user) => user.role == select.target.value
       );
+
       setUsers(filteredUser);
     }
+    console.log(select.target.value);
     setSelectValue(select.target.value);
   }
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [currentUser, setCurrentUser] = useState({
+    full_name: "",
+    email: "",
+    role: "",
+    password: "",
+    phone_number: "",
+    isEdit: false,
+    joined_date: new Date().toString().substr(3, 18),
+  });
+
+  const url = "http://localhost:8080/users/users";
+
+  const ROLE_URL = "http://localhost:8080/users/userRoles";
+  async function fetchRoles() {
+    const FETCHED_DATA = await fetch(ROLE_URL);
+    const FETCHED_JSON = await FETCHED_DATA.json();
+    setRoles(FETCHED_JSON);
+  }
+  useEffect(() => {
+    fetchRoles();
+  }, []);
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    console.log(currentUser);
+    const AXIOS_DATA = await axios.post(url, currentUser);
+    console.log(AXIOS_DATA);
+    if (AXIOS_DATA.status == 200) {
+      // setOpen(false);
+      axiosScreen();
+    }
+  }
+
+  function handleFullName(e) {
+    setCurrentUser({
+      ...currentUser,
+      full_name: e.target.value,
+    });
+  }
+
+  function handlePhoneNumber(e) {
+    setCurrentUser({
+      ...currentUser,
+      phone_number: e.target.value,
+    });
+  }
+  function handleEmail(e) {
+    setCurrentUser({
+      ...currentUser,
+      email: e.target.value,
+    });
+  }
+  function handlePassword(e) {
+    setCurrentUser({
+      ...currentUser,
+      password: e.target.value,
+    });
+  }
+
+  function handleRadio(e) {
+    if (e.target.value) {
+      setCurrentUser({
+        ...currentUser,
+        role: e.target.value,
+      });
+    }
+  }
+  // function handleUpload(e) {
+  //   setCurrentUser({
+  //     ...currentUser,
+  //     imgURL: e.target.value,
+  //   });
+  // }
+  const [sda, setSda] = useContext(TimerContext);
+  // const [open, setOpen] = React.useState(false);
+  const handleOpen = () => {
+    console.log(sda);
+    // setOpen(true);
+  };
+  // const handleClose = () => setOpen(false);
   return (
     <Toolbar
       sx={{
@@ -156,7 +235,7 @@ export default function UsersTableToolbar(props) {
               {roles &&
                 roles.map((role, index) => {
                   return (
-                    <MenuItem key={index} value={role.id}>
+                    <MenuItem key={index} value={role.name}>
                       {role.name}
                     </MenuItem>
                   );
@@ -174,7 +253,7 @@ export default function UsersTableToolbar(props) {
         </Stack>
       )}
 
-      <Modal
+      {/* <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
@@ -185,7 +264,7 @@ export default function UsersTableToolbar(props) {
             Add User Details
           </Typography>
           <Box sx={{ flexGrow: 1, p: 2 }} className="">
-            {/* <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit}>
               <Typography variant="h6" sx={{ width: "300px" }}>
                 User Information
               </Typography>
@@ -269,14 +348,7 @@ export default function UsersTableToolbar(props) {
                               name="radioNoLabel"
                               id="radioNoLabel1"
                             />
-                            {/* <FormControlLabel
-                              key={khuslen}
-                              onChange={handleRadio}
-                              value={role.id}
-                              control={<Radio />}
-                              className="m-0"
-                            /> */}
-            {/* <div>
+                            <div>
                               <Typography variant="subtitle2" gutterBottom>
                                 {role.name}
                               </Typography>
@@ -290,12 +362,6 @@ export default function UsersTableToolbar(props) {
                       );
                     })}
                 </RadioGroup>
-                <FormHelperText
-                  id="component-helper-text"
-                  className="text-danger"
-                >
-                  {validation}
-                </FormHelperText>
               </div>
 
               <Stack
@@ -318,10 +384,10 @@ export default function UsersTableToolbar(props) {
                   Submit
                 </Button>
               </Stack>
-            </form> */}
+            </form>
           </Box>
         </Box>
-      </Modal>
+      </Modal> */}
     </Toolbar>
   );
 }
