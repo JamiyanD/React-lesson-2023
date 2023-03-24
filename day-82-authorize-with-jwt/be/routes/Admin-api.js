@@ -1,36 +1,52 @@
 const express = require("express");
-const Users = require("../models/Users");
+
 const bcrypt = require("bcrypt");
 const adminRouter = express.Router();
 const jwt = require("jsonwebtoken");
+const UserRole = require("../models/UserRole");
+const Users = require("../models/Users");
 
 adminRouter.post("/register", async (request, response) => {
-  const { email, password } = request.body;
-  if (email && password) {
-    const oldUser = await Users.findOne({ email: email });
-    if (oldUser) {
-      return response.json({
-        message: "User already existed",
-        email: email,
-      });
-    } else {
-      const hashedPassword = await bcrypt.hash(password, 10);
+  const data = request.body;
 
-      Users.create({ email: email, password: hashedPassword })
-        .then((data) => {
-          response.status(201).json({
-            message: "Хэрэглэгч амжилттай үүслээ.",
-            email: data.email,
-          });
-          return;
-        })
-        .catch((error) => {
-          response.status(500).json({
-            success: false,
-            error,
-          });
-        });
+  if (data) {
+    const oldUser = await Users.findOne({ email: data.email });
+    if (oldUser) {
+      return response.status(400).json({
+        status: "Хэрэглэгч аль хэдийн үүссэн байна",
+        success: false,
+      });
     }
+
+    var hashedPassword = await bcrypt.hash(data.password, 10);
+    data.password = hashedPassword;
+    try {
+      console.log(data);
+      const user = await Users.create(data);
+      console.log(user);
+      const result = await user.populate("userrole");
+      response.status(201).json({
+        message: "Хэрэглэгч амжилттай үүслээ.",
+        data: result,
+      });
+    } catch (error) {
+      response.status(500).json({ success: false, error: error });
+    }
+
+    // Users.create({ email: email, password: hashedPassword })
+    //   .then((data) => {
+    //     response.status(201).json({
+    //       message: "Хэрэглэгч амжилттай үүслээ.",
+    //       email: data.email,
+    //     });
+    //     return;
+    //   })
+    //   .catch((error) => {
+    //     response.status(500).json({
+    //       success: false,
+    //       error,
+    //     });
+    //   });
   } else {
     return response.json({ error: "Input field is empty" });
   }
@@ -64,6 +80,23 @@ adminRouter.post("/login", async (request, response) => {
   } catch (error) {
     // response.status(200).json({ data: "failed", error: error });
   }
+});
+
+adminRouter.post("/role/create", async (req, res) => {
+  const { name } = req.body;
+  const result = await UserRole.create({ name });
+
+  res.status(200).json({
+    data: result,
+  });
+});
+
+adminRouter.get("/roles/list", async (req, res) => {
+  const result = await UserRole.find({});
+
+  res.status(200).json({
+    data: result,
+  });
 });
 
 module.exports = adminRouter;
