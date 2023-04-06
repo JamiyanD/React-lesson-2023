@@ -43,15 +43,35 @@
 .toolsUp {
   display: flex;
   justify-content: space-between;
-  width: 85%;
+  width: 65%;
   margin: 0 20px;
 }
 .toolsDown {
   display: flex;
-  width: 100%;
+  width: 90%;
   justify-content: space-between;
   margin: 5px 20px;
+  font-size: 18px;
 }
 .navDown {
   background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+}
+.navDownDiv1 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px;
+}
+.navDownDiv2 {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 5px;
+  margin-right: 10px;
+}
+.font {
+  font-family: "Arial Narrow";
 }
