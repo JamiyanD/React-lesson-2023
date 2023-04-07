@@ -6,7 +6,7 @@ import { SwiperUI } from "./components/SwiperUI";
 function App() {
   return (
     <div className="App">
-      <GridMUI />
+      {/* <GridMUI /> */}
       <SwiperUI />
     </div>
   );
