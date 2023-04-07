@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { useEffect, useState } from "react";
+import axios from "axios";
 interface IViewer {
   rating: number;
   numReviews: number;
@@ -62,15 +64,16 @@ interface IMovies {
   countries: ICountries;
   type: string;
   tomatoes: ITomatoes;
+  _id: number;
 }
 export default function (): JSX.Element {
   const MOVIES_URL = "http://localhost:8080/movies/list";
   const [showMovies, setShowMovies] = useState<IMovies[]>([]);
   async function fetchMovie(): Promise<void> {
-    const FETCHED_DATA = await fetch(MOVIES_URL);
-    const FETCHED_JSON = await FETCHED_DATA.json();
-    setShowMovies(FETCHED_JSON);
-    console.log(FETCHED_JSON);
+    const FETCHED_DATA = await axios.get(MOVIES_URL);
+    // const FETCHED_JSON = await FETCHED_DATA.json();
+    setShowMovies(FETCHED_DATA.data);
+    // console.log(FETCHED_JSON);
   }
   useEffect(() => {
     fetchMovie();
@@ -78,14 +81,29 @@ export default function (): JSX.Element {
   return (
     <div>
       <h1 className="font-bold">New & Upcoming Movies</h1>
-      <div className="flex ">
-        {showMovies.map((movie) => {
+      <div className=" grid grid-cols-6">
+        {showMovies.map((movie, index) => {
           return (
-            <div className="p-1 w-40">
-              <img className=" h-60 rounded-md" src={movie.poster} alt="" />
-              <h5 className="my-1">{movie.tomatoes.viewer.meter}%</h5>
-              <p>{movie.title}</p>
-            </div>
+            <Link href={`/product/${movie._id}`} key={index}>
+              <div className="p-1 w-40">
+                <img
+                  className=" h-60 rounded-md"
+                  src={
+                    movie.poster
+                      ? movie.poster
+                      : "https://i.redd.it/fuarx27s2m051.jpg"
+                  }
+                  alt=""
+                />
+                <h5 className="my-1">
+                  {movie.tomatoes?.viewer?.meter
+                    ? movie.tomatoes.viewer.meter
+                    : 0}
+                  %
+                </h5>
+                <p>{movie.title}</p>
+              </div>
+            </Link>
           );
         })}
       </div>

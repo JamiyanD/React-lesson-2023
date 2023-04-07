@@ -23,18 +23,18 @@ export default function Home(props: any): JSX.Element {
       <NavigationBar />
       <Section1 />
       {/* Welcome,!<div>You're currently on the {side}-side</div>
-      <Link href="/about">About Page</Link>
-      <Link href="/contact">Contact Page</Link>
-      <Link href="/greeting/John?age=25">Greeting Page</Link>
-      {/* <Link href="/posts/2022-08-12/firts-post">Posts Page</Link> */}
-      {/* <Link
+      <Link href="/about">About Page</Link> */}
+      {/* <Link href="/product">Contact Page</Link> */}
+      {/* <Link href="/greeting/John?age=25">Greeting Page</Link> */}
+      {/* <Link href="/posts/2022-08-12/firts-post">Posts Page</Link>*/}
+      <Link
         href={{
           pathname: "/posts/[date]/[slug]",
           query: { date: "2021-08-01", slug: "first-post" },
         }}
       >
         Posts Page
-      </Link>  */}
+      </Link>
     </div>
   );
 }
