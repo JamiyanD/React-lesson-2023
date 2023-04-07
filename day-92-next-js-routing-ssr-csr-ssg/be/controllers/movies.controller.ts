@@ -6,11 +6,11 @@ export const getMovies = async (req: Request, res : Response) => {
     const moviesPerPage : number = Number(req.query.moviesPerPage)
     try{
         const Movies = await MoviesModel.find()
-        .limit(6)
+        .limit(10)
         .skip(moviesPerPage * page)
         res.status(200).json(Movies)
     } catch(error){
-        res.status(404).json({data : []})
+        res.status(404).json({status : "error",data : []})
     }
 }
 
