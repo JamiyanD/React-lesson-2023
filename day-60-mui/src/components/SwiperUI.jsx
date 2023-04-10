@@ -11,7 +11,7 @@ export const SwiperUI = () => {
     // handlechange function ni slide soligdonguut duudagdana. e- ni yag active bgaa swiperslide-iig ugnu
 
     let element = changeThumbRef.current.children[0].children;
-    console.log(Array.prototype.slice.call(element))
+    console.log(Array.prototype.slice.call(element));
     // active uyd thimbnail deer hargalzah zurgiigni suuderluuleh:
     // e.activeIndex - gedeg ni yag active bgaa zurgiin index
     element[e.activeIndex].children[0].children[1].style.backgroundColor =
@@ -33,12 +33,13 @@ export const SwiperUI = () => {
         modules={[Thumbs]}
         onSlideChange={(e) => {
           handleChange(e);
-          console.log(e)
+          console.log(e);
         }}
         thumbs={{
           swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
         }}
-        slidesPerView={1}>
+        slidesPerView={1}
+      >
         {images.map((image, index) => {
           return (
             <SwiperSlide key={index}>
@@ -54,7 +55,9 @@ export const SwiperUI = () => {
         watchSlidesProgress
         onSwiper={setThumbsSwiper}
         slidesPerView={4}
-        ref={changeThumbRef}>
+        ref={changeThumbRef}
+        direction="horizontal"
+      >
         {images.map((image, index) => {
           return (
             <SwiperSlide key={index}>
@@ -70,7 +73,8 @@ export const SwiperUI = () => {
                     bottom: 0,
                     left: 0,
                     right: 0,
-                  }}></div>
+                  }}
+                ></div>
               </div>
             </SwiperSlide>
           );
