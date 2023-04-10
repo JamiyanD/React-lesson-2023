@@ -67,7 +67,7 @@ interface IMovies {
   _id: number;
 }
 export default function (): JSX.Element {
-  const MOVIES_URL = "http://localhost:8080/movies/list";
+  const MOVIES_URL = "http://localhost:8083/movies/list";
   const [showMovies, setShowMovies] = useState<IMovies[]>([]);
   async function fetchMovie(): Promise<void> {
     const FETCHED_DATA = await axios.get(MOVIES_URL);

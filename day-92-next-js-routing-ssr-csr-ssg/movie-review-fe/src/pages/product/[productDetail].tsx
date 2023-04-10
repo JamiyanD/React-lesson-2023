@@ -70,7 +70,7 @@ interface IMovies {
 }
 export default function Greeting(): JSX.Element {
   const [currentMovies, setCurrentMovies] = useState<IMovies[]>([]);
-  const MOVIES_URL = "http://localhost:8080/movies/detail";
+  const MOVIES_URL = "http://localhost:8083/movies/detail";
   const { query, isReady } = useRouter();
   const id = query.productDetail;
   console.log(id);
@@ -82,6 +82,7 @@ export default function Greeting(): JSX.Element {
         console.log(AXIOS_DATA.data);
       }
       setCurrentMovies(AXIOS_DATA.data);
+      console.log(AXIOS_DATA.data);
       console.log(currentMovies);
     }
   }
