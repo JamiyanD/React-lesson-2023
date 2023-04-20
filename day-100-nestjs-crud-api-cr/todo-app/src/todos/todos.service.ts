@@ -24,15 +24,18 @@ export class TodosService {
     return result;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} todo`;
+ async findOne(id: number) {
+  const result = await this.todoModel.findById(id)
+    return result;
   }
 
-  update(id: number, updateTodoDto: UpdateTodoDto) {
-    return `This action updates a #${id} todo`;
+  async update(id: string, updateTodoDto: UpdateTodoDto) : Promise<Todo> {
+    const todo = await this.todoModel.findOneAndUpdate({_id : id},updateTodoDto)
+    return todo;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} todo`;
+  async remove(id: number) {
+    const result = await this.todoModel.findByIdAndDelete(id)
+    return result;
   }
 }
